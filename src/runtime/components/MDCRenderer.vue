@@ -8,6 +8,7 @@ import type { MDCElement, MDCNode, MDCRoot, MDCData, MDCRenderOptions } from '@n
 import htmlTags from '../parser/utils/html-tags-list'
 import { flatUnwrap, nodeTextContent } from '../utils/node'
 import { pick } from '../utils'
+import { isCustomElement } from '#imports'
 
 type CreateElement = typeof h
 
@@ -99,7 +100,7 @@ export default defineComponent({
     const contentKey = computed(() => {
       const components = (props.body?.children || [])
         .map(n => (n as any).tag || n.type)
-        .filter(t => !htmlTags.includes(t))
+        .filter(t => !ignoreTag(t))
 
       return Array.from(new Set(components)).sort().join('.')
     })
@@ -400,7 +401,7 @@ function propsToDataRxBind(key: string, value: any, data: any, documentMeta: MDC
  */
 const resolveComponentInstance = (component: any) => {
   if (typeof component === 'string') {
-    if (htmlTags.includes(component)) {
+    if (ignoreTag(component)) {
       return component
     }
 
@@ -514,7 +515,7 @@ async function resolveContentComponents(body: MDCRoot, meta: Record<string, any>
 
     const components: string[] = []
 
-    if (node.type !== 'root' && !htmlTags.includes(renderTag as any)) {
+    if (node.type !== 'root' && !ignoreTag(renderTag as any)) {
       components.push(renderTag)
     }
     for (const child of (node.children || [])) {
@@ -532,5 +533,13 @@ function findMappedTag(node: MDCElement, tags: Record<string, string>) {
   }
 
   return tags[tag] || tags[pascalCase(tag)] || tags[kebabCase(node.tag)] || tag
+}
+
+function ignoreTag(tag: string) {
+  // Checks if input tag is an html tag or
+  const isCustomEl = (typeof tag === 'string')
+    ? isCustomElement(tag)
+    : false
+  return htmlTags.includes(tag) || isCustomEl
 }
 </script>

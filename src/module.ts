@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import { defineNuxtModule, extendViteConfig, addComponent, addComponentsDir, createResolver, addServerHandler, addTemplate, addImports, addServerImports } from '@nuxt/kit'
+import type { Resolver } from '@nuxt/kit'
 import { defu } from 'defu'
 import { resolve } from 'pathe'
 import type { BundledLanguage } from 'shiki'
@@ -189,6 +190,17 @@ export default defineNuxtModule<ModuleOptions>({
       },
     })
 
+    // Add isCustomElement util from app utils if defined by user, otherwise use default
+    const appResolver = createResolver(nuxt.options.srcDir)
+    const cusElemPath = './utils/compilerOptions/isCustomElement'
+    addImports({
+      from: !(await fileExists(appResolver, cusElemPath))
+        ? resolver.resolve('./runtime', cusElemPath)
+        : appResolver.resolve(cusElemPath),
+      name: 'default',
+      as: 'isCustomElement',
+    })
+
     // Update Vite optimizeDeps
     extendViteConfig((config) => {
       const include = [
@@ -289,4 +301,10 @@ declare module '@nuxt/schema' {
       }
     }
   }
+}
+
+// resolver.resolvePath returns file path with extension (e.g. filepath/my-file.ts) if file exists
+// Returns same path as resolver.resolve if file doesn't exist
+async function fileExists(resolver: Resolver, path: string) {
+  return resolver.resolve(path) !== await resolver.resolvePath(path)
 }
