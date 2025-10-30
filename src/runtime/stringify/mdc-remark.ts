@@ -173,7 +173,7 @@ const mdcRemarkNodeHandlers = {
   }
 }
 
-const mdcRemarkHandlers: Record<string, (state: State, node: Parents) => unknown> = {
+const mdcRemarkHandlers: Record<string, (state: State, node: Parents, parent: Parents | undefined) => unknown> = {
   template: (state: State, node: Parents) => {
     const vSlot = Object.keys(node.properties || {}).find(prop => prop?.startsWith('v-slot:'))?.replace('v-slot:', '') || 'default'
 
@@ -194,6 +194,20 @@ const mdcRemarkHandlers: Record<string, (state: State, node: Parents) => unknown
       attributes: node.properties,
       children: state.toFlow(state.all(node))
     }
+  },
+  ul: (state: State, node: Parents, parent: Parents | undefined) => {
+    const result = defaultHandlers.ul(state, node as Element)
+
+    return parent?.tagName === 'p'
+      ? result
+      : { type: 'paragraph', children: [result] }
+  },
+  ol: (state: State, node: Parents, parent: Parents | undefined) => {
+    const result = defaultHandlers.ol(state, node as Element)
+
+    return parent?.tagName === 'p'
+      ? result
+      : { type: 'paragraph', children: [result] }
   },
   code: (state: State, node: Parents) => {
     const attributes = { ...node.properties }
