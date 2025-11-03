@@ -26,35 +26,35 @@ import type { MDCParseOptions } from '@nuxtjs/mdc'
 const props = defineProps({
   tag: {
     type: [String, Boolean],
-    default: 'div'
+    default: 'div',
   },
   /**
    * Raw markdown string or parsed markdown object from `parseMarkdown`
    */
   value: {
     type: [String, Object],
-    required: true
+    required: true,
   },
   /**
    * Render only the excerpt
    */
   excerpt: {
     type: Boolean,
-    default: false
+    default: false,
   },
   /**
    * Options for `parseMarkdown`
    */
   parserOptions: {
     type: Object as PropType<MDCParseOptions>,
-    default: () => ({})
+    default: () => ({}),
   },
   /**
    * Class to be applied to the root element
    */
   class: {
     type: [String, Array, Object],
-    default: ''
+    default: '',
   },
   /**
    * Tags to unwrap separated by spaces
@@ -62,7 +62,7 @@ const props = defineProps({
    */
   unwrap: {
     type: [Boolean, String],
-    default: false
+    default: false,
   },
   /**
    * Async Data Unique Key
@@ -70,15 +70,15 @@ const props = defineProps({
    */
   cacheKey: {
     type: String,
-    default: undefined
+    default: undefined,
   },
   /**
    * Partial parsing (if partial is `true`, title and toc generation will not be generated)
    */
   partial: {
     type: Boolean,
-    default: true
-  }
+    default: true,
+  },
 })
 
 const key = computed(() => props.cacheKey ?? hashString(props.value))
@@ -91,7 +91,7 @@ const { data, refresh, error } = await useAsyncData(key.value, async () => {
   return await parseMarkdown(props.value, {
     ...props.parserOptions,
     toc: props.partial ? false : props.parserOptions?.toc,
-    contentHeading: props.partial ? false : props.parserOptions?.contentHeading
+    contentHeading: props.partial ? false : props.parserOptions?.contentHeading,
   })
 })
 

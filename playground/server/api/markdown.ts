@@ -28,13 +28,14 @@ Navigate to the [No Async Components page](/async-components/no-async), refresh,
 :page-snippet{ name="document" }
 :page-snippet{ name="document" }
 `
-  } else if (name === 'snippet') {
+  }
+  else if (name === 'snippet') {
     content = `
 Nested paragraph content.
 `
   }
 
   return {
-    content
+    content,
   }
 })

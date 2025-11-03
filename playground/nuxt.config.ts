@@ -3,10 +3,10 @@ import { defineNuxtConfig } from 'nuxt/config'
 export default defineNuxtConfig({
   modules: [
     '@nuxt/ui',
-    '@nuxtjs/mdc'
+    '@nuxtjs/mdc',
   ],
   devtools: {
-    enabled: true
+    enabled: true,
   },
   css: ['~/assets/css/main.css'],
 
@@ -14,14 +14,14 @@ export default defineNuxtConfig({
     highlight: {
       theme: {
         default: 'vitesse-light',
-        dark: 'material-theme-palenight'
+        dark: 'material-theme-palenight',
       },
       shikiEngine: 'oniguruma',
       preload: [
-        'sql'
-      ]
-    }
+        'sql',
+      ],
+    },
   },
 
-  compatibilityDate: '2024-09-16'
+  compatibilityDate: '2024-09-16',
 })

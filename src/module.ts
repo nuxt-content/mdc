@@ -24,18 +24,18 @@ export const DefaultHighlightLangs: BundledLanguage[] = [
   'bash',
   'md',
   'mdc',
-  'yaml'
+  'yaml',
 ]
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: '@nuxtjs/mdc',
-    configKey: 'mdc'
+    configKey: 'mdc',
   },
   // Default configuration options of the Nuxt module
   defaults: {
     remarkPlugins: {
-      'remark-emoji': {}
+      'remark-emoji': {},
     },
     rehypePlugins: {},
     highlight: false,
@@ -46,14 +46,14 @@ export default defineNuxtModule<ModuleOptions>({
         h3: true,
         h4: true,
         h5: false,
-        h6: false
-      }
+        h6: false,
+      },
     },
     keepComments: false,
     components: {
       prose: true,
-      map: {}
-    }
+      map: {},
+    },
   },
   async setup(options, nuxt) {
     resolveOptions(options)
@@ -63,9 +63,9 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.public.mdc = defu(nuxt.options.runtimeConfig.public.mdc, {
       components: {
         prose: options.components!.prose!,
-        map: options.components!.map!
+        map: options.components!.map!,
       },
-      headings: options.headings!
+      headings: options.headings!,
     })
 
     nuxt.options.build.transpile ||= []
@@ -79,7 +79,7 @@ export default defineNuxtModule<ModuleOptions>({
         // Add server handlers
         addServerHandler({
           route: '/api/_mdc/highlight',
-          handler: resolver.resolve('./runtime/highlighter/event-handler')
+          handler: resolver.resolve('./runtime/highlighter/event-handler'),
         })
       }
       options.rehypePlugins ||= {}
@@ -93,7 +93,7 @@ export default defineNuxtModule<ModuleOptions>({
       const alias = '#' + name
       const results = addTemplate({
         ...options as any,
-        write: true // Write to disk for Nitro to consume
+        write: true, // Write to disk for Nitro to consume
       })
 
       nuxt.options.nitro.alias ||= {}
@@ -113,7 +113,8 @@ export default defineNuxtModule<ModuleOptions>({
       let path = resolve(layer.config.srcDir, 'mdc.config.ts')
       if (fs.existsSync(path)) {
         mdcConfigs.push(path)
-      } else {
+      }
+      else {
         path = resolve(layer.config.srcDir, 'mdc.config.js')
         if (fs.existsSync(path)) {
           mdcConfigs.push(path)
@@ -125,7 +126,7 @@ export default defineNuxtModule<ModuleOptions>({
     registerTemplate({
       filename: 'mdc-configs.mjs',
       getContents: templates.mdcConfigs,
-      options: { configs: mdcConfigs }
+      options: { configs: mdcConfigs },
     })
 
     // Add highlighter
@@ -140,15 +141,15 @@ export default defineNuxtModule<ModuleOptions>({
       options: {
         shikiPath: resolver.resolve('../dist/runtime/highlighter/shiki.js'),
         options: options.highlight,
-        useWasmAssets
-      }
+        useWasmAssets,
+      },
     })
 
     // Add imports template
     registerTemplate({
       filename: 'mdc-imports.mjs',
       getContents: templates.mdcImports,
-      options
+      options,
     })
 
     // Add components
@@ -174,7 +175,7 @@ export default defineNuxtModule<ModuleOptions>({
         path: resolver.resolve('./runtime/components/prose'),
         pathPrefix: false,
         prefix: '',
-        global: true
+        global: true,
       })
     }
 
@@ -185,7 +186,7 @@ export default defineNuxtModule<ModuleOptions>({
         const image = app.components.find(c => c.pascalName === 'NuxtImg' && !c.filePath.includes('nuxt/dist/app') && !c.filePath.includes('nuxt-nightly/dist/app'))
 
         return image ? `export { default } from "${image.filePath}"` : 'export default "img"'
-      }
+      },
     })
 
     // Update Vite optimizeDeps
@@ -199,10 +200,10 @@ export default defineNuxtModule<ModuleOptions>({
         'parse5', // transitive deps of rehype
         'unist-util-visit', // from runtime/highlighter/rehype.ts
         'unified', // deps by all the plugins
-        'debug' // deps by many libraries but it's not an ESM
+        'debug', // deps by many libraries but it's not an ESM
       ]
       const exclude = [
-        '@nuxtjs/mdc' // package itself, it's a build time module
+        '@nuxtjs/mdc', // package itself, it's a build time module
       ]
       config.optimizeDeps ||= {}
       config.optimizeDeps.exclude ||= []
@@ -233,14 +234,14 @@ export default defineNuxtModule<ModuleOptions>({
             path: globalComponents,
             global: true,
             pathPrefix: false,
-            prefix: ''
+            prefix: '',
           })
         })
       }
     }
 
     registerMDCSlotTransformer(resolver)
-  }
+  },
 })
 
 function resolveOptions(options: ModuleOptions) {
@@ -249,7 +250,7 @@ function resolveOptions(options: ModuleOptions) {
     options.highlight.highlighter ||= 'shiki'
     options.highlight.theme ||= {
       default: 'github-light',
-      dark: 'github-dark'
+      dark: 'github-dark',
     }
     options.highlight.shikiEngine ||= 'oniguruma'
     options.highlight.langs ||= DefaultHighlightLangs

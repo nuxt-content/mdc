@@ -30,14 +30,16 @@ function nestHeaders(headers: TocLink[]): TocLink[] {
       header.children = []
       parent = header
       toc.push(header)
-    } else {
+    }
+    else {
       parent.children!.push(header)
     }
   })
   toc.forEach((header) => {
     if (header.children?.length) {
       header.children = nestHeaders(header.children)
-    } else {
+    }
+    else {
       delete header.children
     }
   })
@@ -53,13 +55,13 @@ export function generateFlatToc(body: MDCNode, options: Toc): Toc {
   const links: TocLink[] = headers.map(node => ({
     id: (node as MDCElement).props?.id,
     depth: getHeaderDepth(node as MDCElement),
-    text: flattenNodeText(node)
+    text: flattenNodeText(node),
   }))
   return {
     title,
     searchDepth,
     depth,
-    links
+    links,
   }
 }
 

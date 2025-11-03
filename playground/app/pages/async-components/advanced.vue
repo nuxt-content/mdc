@@ -25,11 +25,11 @@ const { transform, getCachedData } = serveCachedData()
 const { data: pageData } = await useFetch('/api/markdown', {
   key: fetchKey.value,
   transform,
-  getCachedData
+  getCachedData,
 })
 const { data: ast } = await useAsyncData<any>(() => parseMarkdown(pageData.value?.content || ''), {
   transform,
-  getCachedData
+  getCachedData,
 })
 </script>
 

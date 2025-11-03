@@ -23,7 +23,7 @@ export function createStringifyProcessor(options: MDCStringifyOptions = {}) {
       listItemIndent: 'one',
       fence: '`',
       fences: true,
-      ...options?.plugins?.remarkStringify?.options
+      ...options?.plugins?.remarkStringify?.options,
     })
 }
 

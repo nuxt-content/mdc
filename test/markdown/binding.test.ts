@@ -11,7 +11,7 @@ describe('Markdown Binding', () => {
     `Hello {{ name }}`,
     `Hello{{ name }},`,
     `Hello {{ name }},`,
-    `Hello {{ name }} ,`
+    `Hello {{ name }} ,`,
   ]
 
   for (const markdown of markdowns) {

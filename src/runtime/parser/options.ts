@@ -11,39 +11,39 @@ export const defaults: MDCParseOptions = {
   remark: {
     plugins: {
       'remark-mdc': {
-        instance: remarkMDC
+        instance: remarkMDC,
       },
       'remark-gfm': {
-        instance: remarkGFM
-      }
-    }
+        instance: remarkGFM,
+      },
+    },
   },
   rehype: {
     options: {
       handlers,
-      allowDangerousHtml: true
+      allowDangerousHtml: true,
     },
     plugins: {
       'rehype-external-links': {
-        instance: rehypeExternalLinks
+        instance: rehypeExternalLinks,
       },
       'rehype-sort-attribute-values': {
-        instance: rehypeSortAttributeValues
+        instance: rehypeSortAttributeValues,
       },
       'rehype-sort-attributes': {
-        instance: rehypeSortAttributes
+        instance: rehypeSortAttributes,
       },
       'rehype-raw': {
         instance: rehypeRaw,
         options: {
-          passThrough: ['element']
-        }
-      }
-    }
+          passThrough: ['element'],
+        },
+      },
+    },
   },
   highlight: false,
   toc: {
     searchDepth: 2,
-    depth: 2
-  }
+    depth: 2,
+  },
 }

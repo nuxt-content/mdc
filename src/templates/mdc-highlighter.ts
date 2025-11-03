@@ -8,8 +8,8 @@ export async function mdcHighlighter({
   options: {
     shikiPath,
     options,
-    useWasmAssets
-  }
+    useWasmAssets,
+  },
 }: {
   options: {
     shikiPath: string
@@ -23,7 +23,7 @@ export async function mdcHighlighter({
   if (options.highlighter === 'shiki') {
     const file = [
       shikiPath,
-      shikiPath + '.mjs'
+      shikiPath + '.mjs',
     ].find(file => existsSync(file))
 
     if (!file)
@@ -35,14 +35,14 @@ export async function mdcHighlighter({
       code = code.replace(
         /import\((['"])shiki\/wasm\1\)/,
         // We can remove the .client condition once Vite supports WASM ESM import
-        'import.meta.client ? import(\'shiki/wasm\') : import(\'shiki/onig.wasm\')'
+        'import.meta.client ? import(\'shiki/wasm\') : import(\'shiki/onig.wasm\')',
       )
     }
 
     // from "shiki"; -> from "shiki/engine/javascript"
     code = code.replace(
       /from\s+(['"])shiki\1/,
-      'from "shiki/engine/javascript"'
+      'from "shiki/engine/javascript"',
     )
 
     /**
@@ -60,7 +60,8 @@ export async function mdcHighlighter({
         for (const alias of info.aliases || []) {
           langsMap.set(alias, info.id)
         }
-      } else {
+      }
+      else {
         langsMap.set(lang.name, lang)
       }
     })
@@ -69,11 +70,11 @@ export async function mdcHighlighter({
       ...typeof options?.theme === 'string'
         ? [options?.theme]
         : Object.values(options?.theme || {}),
-      ...options?.themes || []
+      ...options?.themes || [],
     ]))
 
     const {
-      shikiEngine = 'oniguruma'
+      shikiEngine = 'oniguruma',
     } = options
 
     return [
@@ -96,13 +97,13 @@ export async function mdcHighlighter({
       '}',
       'const options = ' + JSON.stringify({
         theme: options.theme,
-        wrapperStyle: options.wrapperStyle
+        wrapperStyle: options.wrapperStyle,
       }),
       shikiEngine === 'javascript'
         ? 'const engine = createJavaScriptRegexEngine({ forgiving: true })'
         : `const engine = createOnigurumaEngine(() => import('shiki/wasm'))`,
       'const highlighter = createShikiHighlighter({ bundledLangs, bundledThemes, options, getMdcConfigs, engine })',
-      'export default highlighter'
+      'export default highlighter',
     ].join('\n')
   }
 
@@ -117,7 +118,7 @@ export async function mdcHighlighter({
       '    }',
       '  }',
       '  throw new Error(\'[@nuxtjs/mdc] No custom highlighter specified\')',
-      '}'
+      '}',
     ].join('\n')
   }
 

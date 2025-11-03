@@ -30,7 +30,6 @@ const mdcTextComponentType = 'textComponent'
 const own = {}.hasOwnProperty
 type Parents = HastParents & { properties: Record<string, unknown>, tagName: string }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface Options extends ToMdastOptions {
 }
 
@@ -49,12 +48,12 @@ export function mdcRemark(options?: Options | undefined | null) {
       ...options,
       handlers: {
         ...mdcRemarkHandlers,
-        ...options?.handlers
+        ...options?.handlers,
       } as Options['handlers'],
       nodeHandlers: {
         ...mdcRemarkNodeHandlers,
-        ...options?.nodeHandlers
-      } as Options['nodeHandlers']
+        ...options?.nodeHandlers,
+      } as Options['nodeHandlers'],
     }) as MDastRoot
 
     /**
@@ -104,7 +103,7 @@ function preProcessElementNodes(node: MDCNode): RootContent {
       type: mdcRemarkElementType,
       tagName: node.tag,
       properties: node.props,
-      children: (node.children || []).map(preProcessElementNodes)
+      children: (node.children || []).map(preProcessElementNodes),
     } as unknown as RootContent
 
     // If there is no children in node, delete `children` property from node
@@ -121,7 +120,7 @@ function preProcessElementNodes(node: MDCNode): RootContent {
   if ((node as unknown as MDCElement)?.children) {
     return {
       ...node,
-      children: ((node as unknown as MDCElement).children || []).map(preProcessElementNodes)
+      children: ((node as unknown as MDCElement).children || []).map(preProcessElementNodes),
     } as unknown as RootContent
   }
 
@@ -160,7 +159,7 @@ const mdcRemarkNodeHandlers = {
         type: mdastTextComponentType,
         name: node.tagName,
         attributes: node.properties,
-        children: state.all(node)
+        children: state.all(node),
       }
     }
 
@@ -168,13 +167,13 @@ const mdcRemarkNodeHandlers = {
       type: 'containerComponent',
       name: node.tagName,
       attributes: node.properties,
-      children: state.all(node)
+      children: state.all(node),
     }
-  }
+  },
 }
 
 const mdcRemarkHandlers: Record<string, (state: State, node: Parents, parent: Parents | undefined) => unknown> = {
-  template: (state: State, node: Parents) => {
+  'template': (state: State, node: Parents) => {
     const vSlot = Object.keys(node.properties || {}).find(prop => prop?.startsWith('v-slot:'))?.replace('v-slot:', '') || 'default'
 
     // all props execpt v-slot
@@ -184,32 +183,32 @@ const mdcRemarkHandlers: Record<string, (state: State, node: Parents, parent: Pa
       type: 'componentContainerSection',
       name: vSlot,
       attributes,
-      children: state.toFlow(state.all(node))
+      children: state.toFlow(state.all(node)),
     }
   },
-  div: (state: State, node: Parents) => {
+  'div': (state: State, node: Parents) => {
     return {
       type: 'containerComponent',
       name: 'div',
       attributes: node.properties,
-      children: state.toFlow(state.all(node))
+      children: state.toFlow(state.all(node)),
     }
   },
-  ul: (state: State, node: Parents, parent: Parents | undefined) => {
+  'ul': (state: State, node: Parents, parent: Parents | undefined) => {
     const result = defaultHandlers.ul(state, node as Element)
 
     return parent?.tagName === 'p'
       ? result
       : { type: 'paragraph', children: [result] }
   },
-  ol: (state: State, node: Parents, parent: Parents | undefined) => {
+  'ol': (state: State, node: Parents, parent: Parents | undefined) => {
     const result = defaultHandlers.ol(state, node as Element)
 
     return parent?.tagName === 'p'
       ? result
       : { type: 'paragraph', children: [result] }
   },
-  code: (state: State, node: Parents) => {
+  'code': (state: State, node: Parents) => {
     const attributes = { ...node.properties }
     if ('style' in attributes && !attributes.style) {
       delete attributes.style
@@ -238,11 +237,11 @@ const mdcRemarkHandlers: Record<string, (state: State, node: Parents, parent: Pa
 
     return result
   },
-  pre: (_state: State, node: Parents) => {
+  'pre': (_state: State, node: Parents) => {
     const meta = [
       node.properties.filename ? `[${String(node.properties.filename).replace(/\]/g, '\\]')}]` : '',
       (node.properties.highlights as string[])?.length ? `{${computeHighlightRanges(node.properties.highlights as string[])}}` : '',
-      node.properties.meta
+      node.properties.meta,
     ].filter(Boolean).join(' ')
 
     // Remove trailing newline, This is to avoid the newline being rendered in the output
@@ -252,10 +251,10 @@ const mdcRemarkHandlers: Record<string, (state: State, node: Parents, parent: Pa
       type: 'code',
       value,
       lang: refineCodeLanguage(node.properties.language as string),
-      meta
+      meta,
     }
   },
-  button: (state: State, node: Parents) => {
+  'button': (state: State, node: Parents) => {
     if (
       // @ts-expect-error: custom type
       node.children?.find(child => child.type === mdcRemarkElementType)
@@ -265,19 +264,19 @@ const mdcRemarkHandlers: Record<string, (state: State, node: Parents, parent: Pa
         type: 'containerComponent',
         name: 'button',
         children: state.all(node),
-        attributes: node.properties
+        attributes: node.properties,
       }
     }
     return createTextComponent('button')(state, node)
   },
-  span: createTextComponent('span'),
-  binding: createTextComponent('binding'),
-  iframe: createTextComponent('iframe'),
-  video: createTextComponent('video'),
+  'span': createTextComponent('span'),
+  'binding': createTextComponent('binding'),
+  'iframe': createTextComponent('iframe'),
+  'video': createTextComponent('video'),
   'nuxt-img': createTextComponent('nuxt-img'),
   'nuxt-picture': createTextComponent('nuxt-picture'),
-  br: createTextComponent('br'),
-  table: (state: State, node: Parents) => {
+  'br': createTextComponent('br'),
+  'table': (state: State, node: Parents) => {
     visit(node, (node) => {
       // @ts-expect-error: custom type
       if ((node as Element).type === mdcRemarkElementType) {
@@ -289,13 +288,13 @@ const mdcRemarkHandlers: Record<string, (state: State, node: Parents, parent: Pa
       format({ type: 'root', children: [node as Element] })
       return {
         type: 'html',
-        value: toHtml(node)
+        value: toHtml(node),
       }
     }
 
     return defaultHandlers.table(state, node as Element)
   },
-  img: (state: State, node: Parents) => {
+  'img': (state: State, node: Parents) => {
     const { src, title, alt, ...attributes } = node.properties || {}
 
     const result = {
@@ -303,18 +302,18 @@ const mdcRemarkHandlers: Record<string, (state: State, node: Parents, parent: Pa
       url: state.resolve(String(src || '') || null),
       title: title ? String(title) : null,
       alt: alt ? String(alt) : '',
-      attributes
+      attributes,
     } as unknown as Nodes
 
     state.patch(node, result)
     return result
   },
-  em: (state: State, node: Parents) => {
+  'em': (state: State, node: Parents) => {
     const result = { type: 'emphasis', children: state.all(node), attributes: node.properties }
     state.patch(node, result as Nodes)
     return result
   },
-  strong: (state: State, node: Parents) => {
+  'strong': (state: State, node: Parents) => {
     const result = { type: 'strong', children: state.all(node), attributes: node.properties }
     state.patch(node, result as Nodes)
     return result
@@ -335,12 +334,12 @@ const mdcRemarkHandlers: Record<string, (state: State, node: Parents, parent: Pa
       url: state.resolve(String(href || '') || null),
       title: title ? String(title) : null,
       children: state.all(node),
-      attributes
+      attributes,
     } as unknown as Nodes
 
     state.patch(node, result)
     return result
-  }
+  },
 }
 
 function createTextComponent(name: string) {
@@ -349,7 +348,7 @@ function createTextComponent(name: string) {
       type: mdastTextComponentType,
       name,
       attributes: node.properties,
-      children: state.all(node)
+      children: state.all(node),
     }
 
     state.patch(node, result as Nodes)

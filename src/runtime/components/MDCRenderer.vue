@@ -37,42 +37,42 @@ export default defineComponent({
      */
     body: {
       type: Object as PropType<MDCRoot>,
-      required: true
+      required: true,
     },
     /**
      * Document meta data
      */
     data: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     /**
      * Class(es) to bind to the component
      */
     class: {
       type: [String, Object],
-      default: undefined
+      default: undefined,
     },
     /**
      * Root tag to use for rendering
      */
     tag: {
       type: [String, Boolean],
-      default: undefined
+      default: undefined,
     },
     /**
      * Whether or not to render Prose components instead of HTML tags
      */
     prose: {
       type: Boolean,
-      default: undefined
+      default: undefined,
     },
     /**
      * The map of custom components to use for rendering.
      */
     components: {
       type: Object as PropType<Record<string, string | DefineComponent<any, any, any>>>,
-      default: () => ({})
+      default: () => ({}),
     },
     /**
      * Tags to unwrap separated by spaces
@@ -80,8 +80,8 @@ export default defineComponent({
      */
     unwrap: {
       type: [Boolean, String],
-      default: false
-    }
+      default: false,
+    },
   },
   async setup(props) {
     const app = getCurrentInstance()?.appContext?.app as unknown as { $nuxt: any }
@@ -93,7 +93,7 @@ export default defineComponent({
       ...(mdc?.components?.prose && props.prose !== false ? proseComponentMap : {}),
       ...(mdc?.components?.map || {}),
       ...toRaw(props.data?.mdc?.components || {}),
-      ...props.components
+      ...props.components,
     }))
 
     const contentKey = computed(() => {
@@ -105,7 +105,7 @@ export default defineComponent({
     })
 
     const runtimeData = reactive({
-      ...props.data
+      ...props.data,
     })
 
     watch(() => props.data, (newData) => {
@@ -152,12 +152,12 @@ export default defineComponent({
       if (unwrap) {
         return flatUnwrap(
           defaultSlot.default(),
-          typeof unwrap === 'string' ? unwrap.split(' ') : ['*']
+          typeof unwrap === 'string' ? unwrap.split(' ') : ['*'],
         )
       }
       return defaultSlot.default()
     }
-  }
+  },
 })
 
 /**
@@ -192,7 +192,7 @@ function _renderNode(node: MDCNode, h: CreateElement, options: MDCRenderOptions,
     return h(
       'pre',
       { class: 'mdc-renderer-dangerous-tag' },
-      '<' + renderTag + '>' + nodeTextContent(node) + '<' + '/' + renderTag + '>'
+      '<' + renderTag + '>' + nodeTextContent(node) + '<' + '/' + renderTag + '>',
     )
   }
 
@@ -215,8 +215,8 @@ function _renderNode(node: MDCNode, h: CreateElement, options: MDCRenderOptions,
       {
         documentMeta,
         parentScope: { ...parentScope, ...props },
-        resolveComponent: _resolveComponent
-      })
+        resolveComponent: _resolveComponent,
+      }),
   )
 }
 /**
@@ -242,7 +242,7 @@ function _renderSlots(node: MDCNode, h: CreateElement, options: MDCRenderOptions
 
     return data
   }, {
-    [DEFAULT_SLOT]: { props: {}, children: [] }
+    [DEFAULT_SLOT]: { props: {}, children: [] },
   } as Record<string, { props?: Record<string, any>, children: MDCNode[] }>)
 
   const slots = Object.entries(slotNodes).reduce((slots, [name, { props, children }]) => {
@@ -259,9 +259,9 @@ function _renderSlots(node: MDCNode, h: CreateElement, options: MDCRenderOptions
           {
             documentMeta,
             parentScope: { ...parentScope, ...scopedProps },
-            resolveComponent
+            resolveComponent,
           },
-          String((child as MDCElement).props?.key || index)
+          String((child as MDCElement).props?.key || index),
         )
       })
 
@@ -282,7 +282,7 @@ function renderBinding(node: MDCElement, h: CreateElement, documentMeta: MDCData
     ...documentMeta.runtimeData,
     ...parentScope,
     $document: documentMeta,
-    $doc: documentMeta
+    $doc: documentMeta,
   }
   const splitter = /\.|\[(\d+)\]/
   const keys: string[] = node.props?.value.trim().split(splitter).filter(Boolean)
@@ -290,7 +290,8 @@ function renderBinding(node: MDCElement, h: CreateElement, documentMeta: MDCData
     if (data && key in data) {
       if (typeof data[key] === 'function') {
         return data[key]()
-      } else {
+      }
+      else {
         return data[key]
       }
     }
@@ -474,7 +475,8 @@ function mergeTextNodes(nodes: Array<VNode>) {
     const previousNode = mergedNodes[mergedNodes.length - 1]
     if (node.type === Text && previousNode?.type === Text) {
       previousNode.children = (previousNode.children as string) + node.children
-    } else {
+    }
+    else {
       mergedNodes.push(node)
     }
   }

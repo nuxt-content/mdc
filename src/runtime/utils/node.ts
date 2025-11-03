@@ -130,10 +130,12 @@ export function flatUnwrap(vnodes: VNode | VNode[], tags: string | string[] = []
       if (isText(item)) {
         if (typeof acc[acc.length - 1] === 'string') {
           acc[acc.length - 1] += item.children as string
-        } else {
+        }
+        else {
           acc.push(item.children as string)
         }
-      } else {
+      }
+      else {
         acc.push(item)
       }
       return acc

@@ -1,10 +1,10 @@
 export const unsafeTags = [
-  'object'
+  'object',
 ]
 
 export const unsafeAttributes = [
   'srcdoc',
-  'formaction'
+  'formaction',
 ]
 
 export const unsafeLinkPrefix = [
@@ -15,7 +15,7 @@ export const unsafeLinkPrefix = [
   'data:text/vbscript',
   'data:text/css',
   'data:text/plain',
-  'data:text/xml'
+  'data:text/xml',
 ]
 
 function isAnchorLinkAllowed(value: string) {
@@ -33,7 +33,8 @@ function isAnchorLinkAllowed(value: string) {
     if (unsafeLinkPrefix.some(prefix => url.protocol.toLowerCase().startsWith(prefix))) {
       return false
     }
-  } catch {
+  }
+  catch {
     return false
   }
 
@@ -73,7 +74,7 @@ export const validateProps = (type: string, props?: Record<string, any>) => {
       }
 
       return isValid
-    })
+    }),
   )
 
   if (type === 'pre') {

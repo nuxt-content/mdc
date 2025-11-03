@@ -7,7 +7,7 @@ export default function emphasis(state: State, node: Emphasis & { attributes?: P
     type: 'element',
     tagName: 'em',
     properties: node.attributes || {},
-    children: state.all(node)
+    children: state.all(node),
   }
   state.patch(node, result)
   return state.applyData(node, result)

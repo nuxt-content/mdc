@@ -13,7 +13,7 @@ const ast = {
           type: 'element',
           tag: 'h3',
           props: { id: 'create-your-docs-directory' },
-          children: [{ type: 'text', value: 'Create your docs directory' }]
+          children: [{ type: 'text', value: 'Create your docs directory' }],
         },
         {
           type: 'element',
@@ -25,10 +25,10 @@ const ast = {
               type: 'element',
               tag: 'code',
               props: {},
-              children: [{ type: 'text', value: 'create-docus' }]
+              children: [{ type: 'text', value: 'create-docus' }],
             },
-            { type: 'text', value: ' CLI to create a new Docus project:' }
-          ]
+            { type: 'text', value: ' CLI to create a new Docus project:' },
+          ],
         },
         {
           type: 'element',
@@ -39,7 +39,7 @@ const ast = {
             filename: 'Terminal',
             language: 'bash',
             meta: '',
-            style: ''
+            style: '',
           },
           children: [
             {
@@ -56,31 +56,31 @@ const ast = {
                       type: 'element',
                       tag: 'span',
                       props: { class: 'sBMFI' },
-                      children: [{ type: 'text', value: 'npx' }]
+                      children: [{ type: 'text', value: 'npx' }],
                     },
                     {
                       type: 'element',
                       tag: 'span',
                       props: { class: 'sfazB' },
-                      children: [{ type: 'text', value: ' create-docus' }]
+                      children: [{ type: 'text', value: ' create-docus' }],
                     },
                     {
                       type: 'element',
                       tag: 'span',
                       props: { class: 'sfazB' },
-                      children: [{ type: 'text', value: ' my-docs\n' }]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+                      children: [{ type: 'text', value: ' my-docs\n' }],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
         },
         {
           type: 'element',
           tag: 'p',
           props: {},
-          children: [{ type: 'text', value: 'You can choose between two templates:' }]
+          children: [{ type: 'text', value: 'You can choose between two templates:' }],
         },
         {
           type: 'element',
@@ -96,10 +96,10 @@ const ast = {
                   type: 'element',
                   tag: 'code',
                   props: {},
-                  children: [{ type: 'text', value: 'default' }]
+                  children: [{ type: 'text', value: 'default' }],
                 },
-                { type: 'text', value: ': Basic Docus setup for single-language documentation' }
-              ]
+                { type: 'text', value: ': Basic Docus setup for single-language documentation' },
+              ],
             },
             {
               type: 'element',
@@ -110,16 +110,16 @@ const ast = {
                   type: 'element',
                   tag: 'code',
                   props: {},
-                  children: [{ type: 'text', value: 'i18n' }]
+                  children: [{ type: 'text', value: 'i18n' }],
                 },
-                { type: 'text', value: ': Includes internationalization support for multi-language documentation' }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+                { type: 'text', value: ': Includes internationalization support for multi-language documentation' },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 }
 
 describe('stringify ordered list (ol)', () => {

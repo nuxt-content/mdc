@@ -26,7 +26,7 @@ export const createParseProcessor = async (inlineOptions: MDCParseOptions = {}) 
 
   const mdcConfigs = [
     ...generatedMdcConfigs || [],
-    ...(inlineOptions.configs || [])
+    ...(inlineOptions.configs || []),
   ]
 
   // TODO: remove the passing in @nuxt/content and then we could remove this line
@@ -37,8 +37,8 @@ export const createParseProcessor = async (inlineOptions: MDCParseOptions = {}) 
     inlineOptions = {
       ...inlineOptions,
       highlight: {
-        ...inlineOptions.highlight
-      }
+        ...inlineOptions.highlight,
+      },
     }
     delete (inlineOptions.highlight as any).highlighter
   }
@@ -46,13 +46,14 @@ export const createParseProcessor = async (inlineOptions: MDCParseOptions = {}) 
   const options = defu(inlineOptions, {
     remark: { plugins: moduleOptions?.remarkPlugins },
     rehype: { plugins: moduleOptions?.rehypePlugins },
-    highlight: moduleOptions?.highlight
+    highlight: moduleOptions?.highlight,
   }, defaults) as MDCParseOptions
 
   if (options.rehype?.plugins?.highlight) {
     if (inlineOptions.highlight === false) {
       delete options.rehype.plugins.highlight
-    } else {
+    }
+    else {
       options.rehype.plugins.highlight.options = defu({}, options.rehype.plugins.highlight.options, options.highlight || {})
     }
   }
@@ -112,7 +113,8 @@ export const createMarkdownParser = async (inlineOptions: MDCParseOptions = {}) 
       processor.process({ cwd, ...fileOptions, value: content, data: frontmatter }, (err, file) => {
         if (err) {
           reject(err)
-        } else {
+        }
+        else {
           resolve(file)
         }
       })
@@ -124,7 +126,7 @@ export const createMarkdownParser = async (inlineOptions: MDCParseOptions = {}) 
     const data = Object.assign(
       inlineOptions.contentHeading !== false ? contentHeading(parsedContent.body) : {},
       frontmatter,
-      processedFile?.data || {}
+      processedFile?.data || {},
     ) as MDCData
 
     const parsedResult = { data, body: parsedContent.body } as MDCParserResult
@@ -185,6 +187,6 @@ export function contentHeading(body: MDCRoot) {
 
   return {
     title,
-    description
+    description,
   }
 }

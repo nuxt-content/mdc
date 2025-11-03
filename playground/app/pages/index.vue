@@ -10,7 +10,7 @@ import { useColorMode } from '#build/imports'
 const examples = {
   default: samllDemo,
   features: markdownFeatures,
-  table
+  table,
 }
 
 const colorMode = useColorMode()
@@ -35,23 +35,49 @@ onMounted(() => {
   <div class="flex w-screen h-screen">
     <div class="fixed left-0 right-0 h-12 px-2 p-1 backdrop-blur-xl flex items-center justify-between border-b border-gray-200 dark:border-gray-800">
       <div>
-        <UButton v-for="(example, name) in examples" :key="name" size="xs" :color="source === example ? 'green' : 'gray'" variant="ghost" @click="source = example">
+        <UButton
+          v-for="(example, name) in examples"
+          :key="name"
+          size="xs"
+          :color="source === example ? 'green' : 'gray'"
+          variant="ghost"
+          @click="source = example"
+        >
           {{ name }}
         </UButton>
         .
-        <UButton size="xs" color="gray" variant="ghost" to="/async-components">
+        <UButton
+          size="xs"
+          color="gray"
+          variant="ghost"
+          to="/async-components"
+        >
           Async Components
         </UButton>
       </div>
-      <UButton :icon="colorMode.preference === 'dark' ? 'lucide-moon' : 'lucide-sun'" color="gray" variant="ghost" size="xs" @click="colorMode.preference = colorMode.preference === 'dark' ? 'light' : 'dark'" />
+      <UButton
+        :icon="colorMode.preference === 'dark' ? 'lucide-moon' : 'lucide-sun'"
+        color="gray"
+        variant="ghost"
+        size="xs"
+        @click="colorMode.preference = colorMode.preference === 'dark' ? 'light' : 'dark'"
+      />
     </div>
     <div class="flex flex-1 pt-12">
       <div class="flex-1 flex flex-col border-2 border-neutral-900">
         <code class="text-xs px-2 py-1">Source</code>
-        <Editor v-model:code="source" class="flex-1" />
+        <Editor
+          v-model:code="source"
+          class="flex-1"
+        />
         <!-- MDC AST -->
         <code class="text-xs px-2 py-1">MDC AST</code>
-        <Editor :code="JSON.stringify(ast?.body, null, 2) || ''" language="json" class="flex-1" read-only />
+        <Editor
+          :code="JSON.stringify(ast?.body, null, 2) || ''"
+          language="json"
+          class="flex-1"
+          read-only
+        />
       </div>
       <div class="flex-1 h-full flex flex-col  border-2 border-neutral-900">
         <code class="text-xs px-2 py-1">Source -> MDC -> Render</code>
@@ -65,7 +91,11 @@ onMounted(() => {
         </div>
         <code class="text-xs px-2 py-1">Source -> MDC -> Markdown</code>
 
-        <Editor :code="outputFromMDC || ''" class="flex-1" read-only />
+        <Editor
+          :code="outputFromMDC || ''"
+          class="flex-1"
+          read-only
+        />
       </div>
     </div>
   </div>

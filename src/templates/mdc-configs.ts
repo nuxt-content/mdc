@@ -8,6 +8,6 @@ export async function mdcConfigs({ options }: any) {
     '  ])',
     '}',
     'return configs',
-    '}'
+    '}',
   ].join('\n')
 }

@@ -19,12 +19,12 @@ it('No empty line or paragraph', async () => {
     {
       type: 'element',
       tag: 'p',
-      children: [{ type: 'text', value: 'hello' }]
+      children: [{ type: 'text', value: 'hello' }],
     },
     {
       type: 'element',
       tag: 'p',
-      children: [{ type: 'text', value: 'world' }]
-    }
+      children: [{ type: 'text', value: 'world' }],
+    },
   ])
 })

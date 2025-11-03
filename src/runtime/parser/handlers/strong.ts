@@ -7,7 +7,7 @@ export default function strong(state: State, node: Strong & { attributes?: Prope
     type: 'element',
     tagName: 'strong',
     properties: node.attributes || {},
-    children: state.all(node)
+    children: state.all(node),
   }
   state.patch(node, result)
   return state.applyData(node, result)

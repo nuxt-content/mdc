@@ -12,7 +12,7 @@ export function parseThematicBlock(lang: string) {
       language: undefined,
       highlights: undefined,
       filename: undefined,
-      meta: undefined
+      meta: undefined,
     }
   }
 
@@ -38,7 +38,7 @@ export function parseThematicBlock(lang: string) {
     highlights: parseHighlightedLines(highlightTokensMatches?.[1] || undefined),
     // https://github.com/nuxt/content/pull/2169
     filename,
-    meta
+    meta,
   }
 }
 

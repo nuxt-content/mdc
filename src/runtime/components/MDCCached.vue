@@ -28,35 +28,35 @@ import { createCachedParser } from '@nuxtjs/mdc/runtime'
 const props = defineProps({
   tag: {
     type: [String, Boolean],
-    default: 'div'
+    default: 'div',
   },
   /**
    * Raw markdown string or parsed markdown object from `parseMarkdown`
    */
   value: {
     type: [String, Object],
-    required: true
+    required: true,
   },
   /**
    * Render only the excerpt
    */
   excerpt: {
     type: Boolean,
-    default: false
+    default: false,
   },
   /**
    * Options for `parseMarkdown`
    */
   parserOptions: {
     type: Object as PropType<MDCParseOptions>,
-    default: () => ({})
+    default: () => ({}),
   },
   /**
    * Class to be applied to the root element
    */
   class: {
     type: [String, Array, Object],
-    default: ''
+    default: '',
   },
   /**
    * Tags to unwrap separated by spaces
@@ -64,7 +64,7 @@ const props = defineProps({
    */
   unwrap: {
     type: [Boolean, String],
-    default: false
+    default: false,
   },
   /**
    * Async Data Unique Key
@@ -72,22 +72,22 @@ const props = defineProps({
    */
   cacheKey: {
     type: String,
-    default: undefined
+    default: undefined,
   },
   /**
    * Partial parsing (if partial is `true`, title and toc generation will not be generated)
    */
   partial: {
     type: Boolean,
-    default: true
+    default: true,
   },
   /**
    * The map of custom components to use for rendering.
    */
   components: {
     type: Object as PropType<Record<string, string | DefineComponent<any, any, any>>>,
-    default: () => ({})
-  }
+    default: () => ({}),
+  },
 })
 
 const key = computed(() => props.cacheKey ?? hashString(props.value))
@@ -95,7 +95,7 @@ const key = computed(() => props.cacheKey ?? hashString(props.value))
 const parse = createCachedParser({
   ...props.parserOptions,
   toc: props.partial ? false : props.parserOptions?.toc,
-  contentHeading: props.partial ? false : props.parserOptions?.contentHeading
+  contentHeading: props.partial ? false : props.parserOptions?.contentHeading,
 })
 
 const { data, refresh, error } = await useAsyncData(key.value, async () => {

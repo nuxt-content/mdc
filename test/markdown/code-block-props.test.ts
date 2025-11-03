@@ -13,7 +13,7 @@ const c = new C()
 
 it('Code block with Props', async () => {
   const { body } = await parseMarkdown(md, {
-    highlight: false
+    highlight: false,
   })
   expect(body).toHaveProperty('type', 'root')
   expect(body.children).toHaveLength(1)

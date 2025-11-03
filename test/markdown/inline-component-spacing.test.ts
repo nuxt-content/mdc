@@ -41,7 +41,7 @@ it('No spacing inside inline components', async () => {
   const inputs = [
     `**:component[text]{.class}**`,
     `*:component[text]{.class}*`,
-    `[:component[text]{.class}]`
+    `[:component[text]{.class}]`,
   ]
 
   for (const input of inputs) {

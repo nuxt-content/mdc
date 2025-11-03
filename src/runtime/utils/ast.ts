@@ -7,7 +7,8 @@ export function flattenNodeText(node: MDCNode): string {
 
   if (node.type === 'text') {
     return node.value || ''
-  } else {
+  }
+  else {
     return (node.children || []).reduce((text: string, child: MDCNode) => {
       return text.concat(flattenNodeText(child))
     }, '')
@@ -20,7 +21,7 @@ export function flattenNode(node: MDCNode, maxDepth = 2, _depth = 0): Array<MDCN
   }
   return [
     node,
-    ...(node as MDCElement).children.reduce((acc, child) => acc.concat(flattenNode(child, maxDepth, _depth + 1)), [] as Array<MDCNode>)
+    ...(node as MDCElement).children.reduce((acc, child) => acc.concat(flattenNode(child, maxDepth, _depth + 1)), [] as Array<MDCNode>),
   ]
 }
 

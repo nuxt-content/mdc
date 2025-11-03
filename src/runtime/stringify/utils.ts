@@ -7,7 +7,8 @@ export function computeHighlightRanges(input: string[] | string) {
     if (numbers[i] !== numbers[i - 1]! + 1) {
       if (start === numbers[i - 1]) {
         ranges.push(`${start}`)
-      } else {
+      }
+      else {
         ranges.push(`${start}-${numbers[i - 1]}`)
       }
       start = numbers[i]

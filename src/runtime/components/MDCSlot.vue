@@ -12,7 +12,7 @@ export default defineComponent({
   props: {
     name: {
       type: String,
-      default: 'default'
+      default: 'default',
     },
     /**
      * Tags to unwrap separated by spaces
@@ -20,7 +20,7 @@ export default defineComponent({
      */
     unwrap: {
       type: [Boolean, String],
-      default: false
+      default: false,
     },
     /**
      * VNode to render
@@ -28,8 +28,8 @@ export default defineComponent({
      */
     use: {
       type: Function,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   setup(props) {
     const { parent } = getCurrentInstance()!
@@ -45,7 +45,7 @@ export default defineComponent({
     return {
       fallbackSlot,
       tags,
-      parent
+      parent,
     }
   },
   render({ use, unwrap, fallbackSlot, tags, parent }: any) {
@@ -62,10 +62,11 @@ export default defineComponent({
       }
 
       return unwrap ? flatUnwrap(slot(), tags) : [slot()]
-    } catch {
+    }
+    catch {
       // Catching errors to allow content reactivity
       return h('div')
     }
-  }
+  },
 })
 </script>

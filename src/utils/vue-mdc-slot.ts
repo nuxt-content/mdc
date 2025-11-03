@@ -29,7 +29,7 @@ export const registerMDCSlotTransformer = (resolver: Resolver) => {
             if (!context.imports.some(i => String(i.exp) === importExp)) {
               context.imports.push({
                 exp: importExp,
-                path: resolver.resolve(`./runtime/utils/${context.ssr ? 'ssrSlot' : 'slot'}`)
+                path: resolver.resolve(`./runtime/utils/${context.ssr ? 'ssrSlot' : 'slot'}`),
               })
             }
           }
@@ -42,7 +42,7 @@ export const registerMDCSlotTransformer = (resolver: Resolver) => {
             context.nodeTransforms.unshift(nt[0]!)
           }
         }
-      }
+      },
     ]
   })
 }

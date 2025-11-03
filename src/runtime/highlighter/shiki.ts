@@ -28,7 +28,7 @@ export function createShikiHighlighter({
   bundledThemes = {},
   getMdcConfigs,
   options: shikiOptions,
-  engine
+  engine,
 }: CreateShikiHighlighterOptions = {}): Highlighter {
   let shiki: ReturnType<typeof _getShiki> | undefined
   let configs: Promise<MdcConfig[]> | undefined
@@ -40,7 +40,7 @@ export function createShikiHighlighter({
     const shiki: HighlighterCore = await createHighlighterCore({
       langs,
       themes,
-      engine: engine || createJavaScriptRegexEngine()
+      engine: engine || createJavaScriptRegexEngine(),
     })
 
     for await (const config of await getConfigs()) {
@@ -56,8 +56,8 @@ export function createShikiHighlighter({
         transformerNotationDiff(),
         transformerNotationErrorLevel(),
         transformerNotationFocus(),
-        transformerNotationHighlight()
-      ] as ShikiTransformer[]
+        transformerNotationHighlight(),
+      ] as ShikiTransformer[],
     }
   }
 
@@ -81,21 +81,22 @@ export function createShikiHighlighter({
       addClassToHast,
       isSpecialLang,
       isSpecialTheme,
-      transformers: baseTransformers
+      transformers: baseTransformers,
     } = await getShiki()
 
     const codeToHastOptions: Partial<CodeToHastOptions<string, string>> = {
       defaultColor: false,
       meta: {
-        __raw: options.meta
-      }
+        __raw: options.meta,
+      },
     }
 
     // Custom embedded languages
     if (lang === 'ts-type' || lang === 'typescript-type') {
       lang = 'typescript'
       codeToHastOptions.grammarContextCode = 'let a:'
-    } else if (lang === 'vue-html' || lang === 'vue-template') {
+    }
+    else if (lang === 'vue-html' || lang === 'vue-template') {
       lang = 'vue'
       codeToHastOptions.grammarContextCode = '<template>'
     }
@@ -107,7 +108,8 @@ export function createShikiHighlighter({
     if (typeof lang === 'string' && !loadedLanguages.includes(lang) && !isSpecialLang(lang)) {
       if (bundledLangs[lang]) {
         await shiki.loadLanguage(bundledLangs[lang]!)
-      } else {
+      }
+      else {
         // eslint-disable-next-line nuxt/prefer-import-meta
         if (process.dev) {
           console.warn(`[@nuxtjs/mdc] Language "${lang}" is not loaded to the Shiki highlighter, fallback to plain text. Add the language to "mdc.highlight.langs" to fix this.`)
@@ -120,7 +122,8 @@ export function createShikiHighlighter({
       if (typeof theme === 'string' && !loadedThemes.includes(theme) && !isSpecialTheme(theme)) {
         if (bundledThemes[theme]) {
           await shiki.loadTheme(bundledThemes[theme])
-        } else {
+        }
+        else {
           // eslint-disable-next-line nuxt/prefer-import-meta
           if (process.dev) {
             console.warn(`[@nuxtjs/mdc] Theme "${theme}" is not loaded to the Shiki highlighter. Add the theme to "mdc.highlight.themes" to fix this.`)
@@ -156,7 +159,7 @@ export function createShikiHighlighter({
             if (options.highlights?.includes(line))
               addClassToHast(node, 'highlight')
             node.properties.line = line
-          }
+          },
         },
         {
           name: 'mdc:newline',
@@ -173,9 +176,9 @@ export function createShikiHighlighter({
                   type: 'element',
                   tagName: 'span',
                   properties: {
-                    emptyLinePlaceholder: true
+                    emptyLinePlaceholder: true,
                   },
-                  children: [{ type: 'text', value: '\n' }]
+                  children: [{ type: 'text', value: '\n' }],
                 }]
                 return
               }
@@ -189,8 +192,8 @@ export function createShikiHighlighter({
                   text.value += '\n'
               }
             }
-          }
-        }]
+          },
+        }],
     })
 
     const preEl = root.children[0] as Element
@@ -216,7 +219,7 @@ export function createShikiHighlighter({
           `font-style: var(--shiki-${color}-font-style);`,
           `font-weight: var(--shiki-${color}-font-weight);`,
           `text-decoration: var(--shiki-${color}-text-decoration);`,
-          '}'
+          '}',
         )
 
         styles.push(
@@ -226,7 +229,7 @@ export function createShikiHighlighter({
           `font-style: var(--shiki-${color}-font-style);`,
           `font-weight: var(--shiki-${color}-font-weight);`,
           `text-decoration: var(--shiki-${color}-text-decoration);`,
-          '}'
+          '}',
         )
       })
 
@@ -236,7 +239,7 @@ export function createShikiHighlighter({
         ? preEl.properties.class.join(' ')
         : preEl.properties.class as string,
       inlineStyle: preEl.properties.style as string,
-      style: styles.join('')
+      style: styles.join(''),
     }
   }
 

@@ -11,7 +11,7 @@ export function createCachedParser(parserOptions: MDCParseOptions) {
     if (!processor) {
       processor = await import('@nuxtjs/mdc/runtime').then(m => m.createParseProcessor({
         ...parserOptions,
-        keepPosition: true
+        keepPosition: true,
       }))
     }
 
@@ -40,10 +40,10 @@ export function createCachedParser(parserOptions: MDCParseOptions) {
             ...child,
             position: child.position && {
               start: child.position.start + startOffset,
-              end: child.position.end + startOffset
-            }
-          }))
-        ]
+              end: child.position.end + startOffset,
+            },
+          })),
+        ],
       } as MDCRoot
 
       lastParse = { ...result, body }

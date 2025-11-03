@@ -15,7 +15,7 @@ export default function serveCachedData() {
       return {
         // Add a new _fetched_at property to determine the TTL in the getCachedData below
         _fetched_at: new Date(),
-        ...input
+        ...input,
       }
     },
     getCachedData(key: string, nuxtApp: NuxtApp) {
@@ -39,6 +39,6 @@ export default function serveCachedData() {
 
       // There is data and not expired, return the cached data
       return data
-    }
+    },
   }
 }

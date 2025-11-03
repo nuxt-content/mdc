@@ -14,10 +14,11 @@ const defaults: RehypeHighlightOption = {
           code,
           lang,
           theme: JSON.stringify(theme),
-          options: JSON.stringify(options)
-        }
+          options: JSON.stringify(options),
+        },
       })
-    } catch (e: any) {
+    }
+    catch (e: any) {
       if (import.meta.client && e?.response?.status === 404) {
         window.sessionStorage.setItem('mdc-shiki-highlighter', 'browser')
         return this.highlighter?.(code, lang, theme, options)
@@ -25,7 +26,7 @@ const defaults: RehypeHighlightOption = {
     }
 
     return Promise.resolve({ tree: [{ type: 'text', value: code }], className: '', style: '' } as HighlightResult)
-  }
+  },
 }
 export default rehypeHighlight
 

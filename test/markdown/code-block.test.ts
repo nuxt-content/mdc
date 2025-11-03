@@ -11,7 +11,7 @@ class C {
 
 it('Simple code block', async () => {
   const { body } = await parseMarkdown(md, {
-    highlight: false
+    highlight: false,
   })
   expect(body).toHaveProperty('type', 'root')
   expect(body.children).toHaveLength(1)
