@@ -35,7 +35,7 @@ export function createMarkdownStringifier(options: MDCStringifyOptions = {}) {
 
     // Stringify front matter returns empty string if no data is provided
     if (Object.keys(data).length) {
-      return stringifyFrontMatter(data, result.value as string)
+      return stringifyFrontMatter(data, result.value as string, options.frontMatter?.options)
     }
 
     return result.value as string
