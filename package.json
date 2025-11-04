@@ -109,7 +109,7 @@
     "unified": "^11.0.5",
     "unist-builder": "^4.0.0",
     "unist-util-visit": "^5.0.0",
-    "unwasm": "^0.3.11",
+    "unwasm": "^0.4.2",
     "vfile": "^6.0.3"
   },
   "devDependencies": {
@@ -121,7 +121,7 @@
     "@nuxt/ui": "^4.1.0",
     "@nuxtjs/mdc": "link:.",
     "@types/node": "^24.10.0",
-    "eslint": "^9.39.0",
+    "eslint": "^9.39.1",
     "nuxt": "^4.2.0",
     "rehype": "^13.0.2",
     "release-it": "^19.0.5",
