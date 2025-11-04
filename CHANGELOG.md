@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.18.2
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.18.1...v0.18.2)
+
+### 🩹 Fixes
+
+- **stringify:** Frontmatter stringify options ([eb5ef82](https://github.com/nuxt-content/mdc/commit/eb5ef82))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+
 ## v0.18.1
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.18.0...v0.18.1)
