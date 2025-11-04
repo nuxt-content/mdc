@@ -1,6 +1,24 @@
 # Changelog
 
 
+## v0.18.1
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.18.0...v0.18.1)
+
+### 🩹 Fixes
+
+- **stringify:** Preserve children order ([5c1ea1b](https://github.com/nuxt-content/mdc/commit/5c1ea1b))
+
+### 🏡 Chore
+
+- Upgrade deps ([bf09212](https://github.com/nuxt-content/mdc/commit/bf09212))
+- Upgrade deps ([690fd53](https://github.com/nuxt-content/mdc/commit/690fd53))
+- Upgrade deps ([382bd7d](https://github.com/nuxt-content/mdc/commit/382bd7d))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+
 ## v0.18.0
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.17.4...v0.18.0)
