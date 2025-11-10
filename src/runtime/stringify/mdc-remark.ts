@@ -153,7 +153,7 @@ const mdcRemarkNodeHandlers = {
     }
 
     const isInlineElement = (parent?.children || [])
-      .some(child => child.type === 'text') || ['p', 'li', 'strong', 'em', 'span'].includes(parent?.tagName)
+      .some(child => child.type === 'text') || ['p', 'li', 'strong', 'em', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(parent?.tagName)
     if (isInlineElement) {
       return {
         type: mdastTextComponentType,
