@@ -2,7 +2,6 @@ import { expect, it } from 'vitest'
 import { parseMarkdown } from '../utils/parser'
 import { stringifyMarkdown } from '../../src/runtime/stringify'
 
-
 it('Element in heading', async () => {
   const { body } = await parseMarkdown('### :hello')
   expect(body).toHaveProperty('type', 'root')
