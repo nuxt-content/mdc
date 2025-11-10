@@ -488,9 +488,11 @@ You can dive into this module online using StackBlitz:
 
 Or locally:
 
-1. Clone this repository
-2. Install dependencies using `pnpm install`
-3. Start the development server using `pnpm dev`
+- Clone this repository
+- Install dependencies using `pnpm install`
+- Prepare using pnpm `dev:prepare`
+- Start the development server using `pnpm dev`
+- Test using `pnpm test`
 
 ## License
 
