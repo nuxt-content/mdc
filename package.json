@@ -109,7 +109,7 @@
     "unified": "^11.0.5",
     "unist-builder": "^4.0.0",
     "unist-util-visit": "^5.0.0",
-    "unwasm": "^0.4.2",
+    "unwasm": "^0.5.0",
     "vfile": "^6.0.3"
   },
   "devDependencies": {
@@ -120,7 +120,7 @@
     "@nuxt/test-utils": "^3.20.1",
     "@nuxt/ui": "^4.1.0",
     "@nuxtjs/mdc": "link:.",
-    "@types/node": "^24.10.0",
+    "@types/node": "^24.10.1",
     "eslint": "^9.39.1",
     "nuxt": "^4.2.1",
     "rehype": "^13.0.2",
@@ -132,7 +132,7 @@
   "resolutions": {
     "@nuxtjs/mdc": "workspace:*"
   },
-  "packageManager": "pnpm@10.21.0",
+  "packageManager": "pnpm@10.22.0",
   "release-it": {
     "git": {
       "commitMessage": "chore(release): release v${version}"
