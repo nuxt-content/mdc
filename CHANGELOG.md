@@ -1,6 +1,28 @@
 # Changelog
 
 
+## v0.18.3
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.18.2...v0.18.3)
+
+### 🩹 Fixes
+
+- Treat heading children as inline elements ([045c49d](https://github.com/nuxt-content/mdc/commit/045c49d))
+
+### 📖 Documentation
+
+- Update readme ([3f1cddb](https://github.com/nuxt-content/mdc/commit/3f1cddb))
+
+### 🏡 Chore
+
+- Upgrade deps ([350bbbf](https://github.com/nuxt-content/mdc/commit/350bbbf))
+- Update lock file ([cb6a227](https://github.com/nuxt-content/mdc/commit/cb6a227))
+- Upgrade deps ([398e912](https://github.com/nuxt-content/mdc/commit/398e912))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+
 ## v0.18.2
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.18.1...v0.18.2)
