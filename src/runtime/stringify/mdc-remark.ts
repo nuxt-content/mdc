@@ -163,11 +163,15 @@ const mdcRemarkNodeHandlers = {
       }
     }
 
+    let children = state.all(node)
+    if (children.every(child => [mdastTextComponentType, 'text'].includes(child.type))) {
+      children = [{ type: 'paragraph', children: children }] as unknown as typeof children
+    }
     return {
       type: 'containerComponent',
       name: node.tagName,
       attributes: node.properties,
-      children: state.all(node),
+      children,
     }
   },
 }
@@ -270,6 +274,7 @@ const mdcRemarkHandlers: Record<string, (state: State, node: Parents, parent: Pa
     return createTextComponent('button')(state, node)
   },
   'span': createTextComponent('span'),
+  'kbd': createTextComponent('kbd'),
   'binding': createTextComponent('binding'),
   'iframe': createTextComponent('iframe'),
   'video': createTextComponent('video'),
