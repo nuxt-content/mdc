@@ -6,10 +6,16 @@ export interface MDCStringifyOptions {
     options?: YamlToStringOptions
   }
   plugins?: {
-    remarkStringify?: {
+    'remarkStringify'?: {
       options?: RemarkStringifyOptions
     }
-    remarkMDC?: {
+    /**
+     * @deprecated use 'remark-mdc' instead
+     */
+    'remarkMDC'?: {
+      options?: RemarkMDCOptions
+    }
+    'remark-mdc'?: {
       options?: RemarkMDCOptions
     }
   }

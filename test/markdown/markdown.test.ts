@@ -1,6 +1,7 @@
 import { expect, it } from 'vitest'
 import { parseMarkdown } from '../utils/parser'
 import { stringifyMarkdown } from '../../src/runtime/stringify'
+import type { MDCElement } from '@nuxtjs/mdc'
 
 it('Element in heading', async () => {
   const { body } = await parseMarkdown('### :hello')
@@ -14,8 +15,40 @@ it('Element in heading', async () => {
     children: [{ type: 'element', tag: 'hello', props: {}, children: [] }],
   })
 
-  const result = await stringifyMarkdown(body)
+  const result = await stringifyMarkdown(body, {})
   expect(result).toMatchInlineSnapshot(`
     "### :hello\n"
+  `)
+})
+
+it('(autoUnwrap) component -> paragraph -> kbd', async () => {
+  const { body } = await parseMarkdown('::tip\nYou can also use the shortcut :kbd{value="meta"} + :kbd{value="."} to redirect to the Studio route.\n::', {
+    remark: {
+      plugins: {
+        'remark-mdc': {
+          options: {
+            autoUnwrap: true,
+          },
+        },
+      },
+    },
+  })
+  expect(body).toHaveProperty('type', 'root')
+
+  expect(body.children).toHaveLength(1)
+
+  expect((body.children[0] as MDCElement).children?.[0]?.type).toBe('text')
+
+  const result = await stringifyMarkdown(body, {}, {
+    plugins: {
+      'remark-mdc': {
+        options: {
+          autoUnwrap: true,
+        },
+      },
+    },
+  })
+  expect(result).toMatchInlineSnapshot(`
+    "::tip\nYou can also use the shortcut :kbd{value="meta"} + :kbd{value="."} to redirect to the Studio route.\n::\n"
   `)
 })
