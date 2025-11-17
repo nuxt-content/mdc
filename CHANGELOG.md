@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.18.4
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.18.3...v0.18.4)
+
+### 🩹 Fixes
+
+- Handle `kbd` element and preserve component inline children order ([67e1fc2](https://github.com/nuxt-content/mdc/commit/67e1fc2))
+
+### 🏡 Chore
+
+- Upgrade deps ([f99e6e4](https://github.com/nuxt-content/mdc/commit/f99e6e4))
+- Deprecate `remarkMDC` option in favor of `remark-mdc` ([aa041b9](https://github.com/nuxt-content/mdc/commit/aa041b9))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+
 ## v0.18.3
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.18.2...v0.18.3)
