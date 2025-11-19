@@ -18,7 +18,7 @@ export default function paragraph(state: State, node: Paragraph) {
     type: 'element',
     tagName: 'p',
     properties: {},
-    children: state.all(node)
+    children: state.all(node),
   }
   state.patch(node, result)
   return state.applyData(node, result)

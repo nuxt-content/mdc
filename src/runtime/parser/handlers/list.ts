@@ -16,7 +16,8 @@ export default function list(state: State, node: List) {
     const child = results[index]
 
     if (
-      child.type === 'element'
+      child
+      && child.type === 'element'
       && child.tagName === 'li'
       && child.properties
       && Array.isArray(child.properties.className)
@@ -36,7 +37,7 @@ export default function list(state: State, node: List) {
     type: 'element',
     tagName: node.ordered ? 'ol' : 'ul',
     properties,
-    children: state.wrap(results, true)
+    children: state.wrap(results, true),
   }
   state.patch(node, result)
   return state.applyData(node, result)

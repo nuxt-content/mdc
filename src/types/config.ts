@@ -12,19 +12,19 @@ export interface MdcConfig {
     /**
      * Custom setup for unified processor before other plugins
      */
-    pre?: (processor: Processor) => Awaitable<void | Processor>
+    pre?: (processor: Processor) => Awaitable<undefined | Processor>
     /**
      * Custom setup for unified processor after remark but before rehype
      */
-    remark?: (processor: Processor) => Awaitable<void | Processor>
+    remark?: (processor: Processor) => Awaitable<undefined | Processor>
     /**
      * Custom setup for unified processor after rehype
      */
-    rehype?: (processor: Processor) => Awaitable<void | Processor>
+    rehype?: (processor: Processor) => Awaitable<undefined | Processor>
     /**
      * Custom setup for unified processor after all plugins
      */
-    post?: (processor: Processor) => Awaitable<void | Processor>
+    post?: (processor: Processor) => Awaitable<undefined | Processor>
   }
 
   /**

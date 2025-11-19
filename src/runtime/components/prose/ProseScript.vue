@@ -8,8 +8,8 @@
 defineProps({
   src: {
     type: String,
-    default: ''
-  }
+    default: '',
+  },
 })
 const isDev = import.meta.dev
 </script>

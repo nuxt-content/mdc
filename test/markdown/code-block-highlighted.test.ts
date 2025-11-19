@@ -12,8 +12,8 @@ class C {
 it('Highlighted code block', async () => {
   const { body } = await parseMarkdown(md, {
     highlight: {
-      theme: 'github-dark'
-    }
+      theme: 'github-dark',
+    },
   })
   expect(body).toHaveProperty('type', 'root')
   expect(body.children).toHaveLength(2)

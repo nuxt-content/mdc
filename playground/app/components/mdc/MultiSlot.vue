@@ -1,8 +1,14 @@
 <template>
   <div>
-    <slot name="header" mdc-unwrap="p" />
+    <slot
+      name="header"
+      mdc-unwrap="p"
+    />
     <slot />
-    <slot name="footer" :href="href" />
+    <slot
+      name="footer"
+      :href="href"
+    />
   </div>
 </template>
 

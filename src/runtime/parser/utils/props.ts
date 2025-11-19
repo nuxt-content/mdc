@@ -1,3 +1,12 @@
+export const unsafeTags = [
+  'object',
+]
+
+export const unsafeAttributes = [
+  'srcdoc',
+  'formaction',
+]
+
 export const unsafeLinkPrefix = [
   'javascript:',
   'data:text/html',
@@ -6,7 +15,7 @@ export const unsafeLinkPrefix = [
   'data:text/vbscript',
   'data:text/css',
   'data:text/plain',
-  'data:text/xml'
+  'data:text/xml',
 ]
 
 function isAnchorLinkAllowed(value: string) {
@@ -24,7 +33,8 @@ function isAnchorLinkAllowed(value: string) {
     if (unsafeLinkPrefix.some(prefix => url.protocol.toLowerCase().startsWith(prefix))) {
       return false
     }
-  } catch {
+  }
+  catch {
     return false
   }
 
@@ -32,7 +42,8 @@ function isAnchorLinkAllowed(value: string) {
 }
 
 export const validateProp = (attribute: string, value: string) => {
-  if (attribute.startsWith('on')) {
+  attribute = attribute.toLowerCase()
+  if (attribute.startsWith('on') || unsafeAttributes.includes(attribute)) {
     return false
   }
 
@@ -44,6 +55,13 @@ export const validateProp = (attribute: string, value: string) => {
 }
 
 export const validateProps = (type: string, props?: Record<string, any>) => {
+  /**
+   * If the tag is marked as unsafe, drop all props
+   */
+  if (unsafeTags.includes(type)) {
+    return {}
+  }
+
   if (!props) {
     return {}
   }
@@ -56,7 +74,7 @@ export const validateProps = (type: string, props?: Record<string, any>) => {
       }
 
       return isValid
-    })
+    }),
   )
 
   if (type === 'pre') {

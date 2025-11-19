@@ -35,8 +35,8 @@ const props = defineProps({
      * an empty `name` and avoid warnings.
      */
     required: false,
-    default: ''
-  }
+    default: '',
+  },
 })
 
 // Determine the snippet name
@@ -56,7 +56,7 @@ const fetchKey = computed((): string => `portal-snippet-${(snippetName.value || 
 const { transform, getCachedData } = serveCachedData()
 const { data: snippetData, error: snippetError } = await useFetch('/api/markdown', {
   query: {
-    name: 'snippet'
+    name: 'snippet',
   },
   // Reuse the same key to avoid re-fetching the document, e.g. `portal-page-about`
   key: fetchKey.value,
@@ -64,7 +64,7 @@ const { data: snippetData, error: snippetError } = await useFetch('/api/markdown
   immediate: !!snippetName.value, // Do not immediately fetch in case there's no snippet name
   retry: false, // Do not retry on 404 in case the snippet doesn't exist
   transform,
-  getCachedData
+  getCachedData,
 })
 
 const nodes = [...snippetParentNodes.value].join('|')
@@ -79,7 +79,8 @@ const removeInvalidSnippets = (obj: Record<string, any>): Record<string, any> | 
     return obj
       .map(item => removeInvalidSnippets(item))
       .filter(item => item !== null)
-  } else if (typeof obj === 'object' && obj !== null) {
+  }
+  else if (typeof obj === 'object' && obj !== null) {
     // Check if the object has 'tag' property and the required 'props.name' condition
     if (
       obj.tag
@@ -124,7 +125,7 @@ const { data: ast } = await useAsyncData(`parsed-${fetchKey.value}`, async (): P
   // Return the MDCParserResult with the sanitized body
   return {
     ...parsedDoc,
-    body: processedBody as MDCRoot
+    body: processedBody as MDCRoot,
   }
 }, {
   // Only parse if there is content and no error. Must be true to allow for async rendering
@@ -132,7 +133,7 @@ const { data: ast } = await useAsyncData(`parsed-${fetchKey.value}`, async (): P
   dedupe: 'defer',
   deep: false,
   transform,
-  getCachedData
+  getCachedData,
 })
 
 if (snippetName.value && snippetError.value) {

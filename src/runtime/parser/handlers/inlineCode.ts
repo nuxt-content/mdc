@@ -11,7 +11,7 @@ export default function inlineCode(state: State, node: InlineCode & { attributes
     type: 'element',
     tagName: 'code',
     properties: node.attributes || {},
-    children: [text]
+    children: [text],
   }
 
   const classes = (result.properties.class as string || '').split(' ')

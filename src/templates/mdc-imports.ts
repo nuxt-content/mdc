@@ -21,8 +21,8 @@ export async function mdcImports({ options }: any) {
     '',
     `export const highlight = ${JSON.stringify({
       theme: options.highlight?.theme,
-      wrapperStyle: options.highlight?.wrapperStyle
-    })}`
+      wrapperStyle: options.highlight?.wrapperStyle,
+    })}`,
   ].join('\n')
 }
 
@@ -35,10 +35,12 @@ function processUnistPlugins(plugins: Record<string, UnistPlugin>) {
       imports.push(`import ${instanceName} from '${plugin.src || name}'`)
       if (Object.keys(plugin).length) {
         definitions.push(`  '${name}': { instance: ${instanceName}, options: ${JSON.stringify(plugin.options || plugin)} },`)
-      } else {
+      }
+      else {
         definitions.push(`  '${name}': { instance: ${instanceName} },`)
       }
-    } else {
+    }
+    else {
       definitions.push(`  '${name}': false,`)
     }
   })

@@ -14,9 +14,9 @@ export default function containerComponent(state: State, node: Node) {
     tagName: node.name,
     properties: {
       ...node.attributes,
-      ...node.data?.hProperties
+      ...node.data?.hProperties,
     },
-    children: state.all(node)
+    children: state.all(node),
   }
   state.patch(node, result)
 

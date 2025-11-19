@@ -14,12 +14,12 @@ export default (state: State, node: Code) => {
     type: 'element',
     tagName: 'code',
     properties: { __ignoreMap: '' },
-    children: [{ type: 'text', value }]
+    children: [{ type: 'text', value }],
   }
 
   if (meta) {
     result.data = {
-      meta
+      meta,
     }
   }
 
@@ -31,7 +31,7 @@ export default (state: State, node: Code) => {
     filename,
     highlights,
     meta,
-    code: value
+    code: value,
   }
 
   if (language) {

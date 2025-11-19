@@ -13,12 +13,12 @@ import type { PropType } from 'vue'
 const props = defineProps({
   href: {
     type: String,
-    default: ''
+    default: '',
   },
   target: {
     type: String as PropType<'_blank' | '_parent' | '_self' | '_top' | (string & object) | null | undefined>,
     default: undefined,
-    required: false
-  }
+    required: false,
+  },
 })
 </script>

@@ -29,18 +29,20 @@ export const registerMDCSlotTransformer = (resolver: Resolver) => {
             if (!context.imports.some(i => String(i.exp) === importExp)) {
               context.imports.push({
                 exp: importExp,
-                path: resolver.resolve(`./runtime/utils/${context.ssr ? 'ssrSlot' : 'slot'}`)
+                path: resolver.resolve(`./runtime/utils/${context.ssr ? 'ssrSlot' : 'slot'}`),
               })
             }
           }
         }
 
-        if (context.nodeTransforms[0].name !== 'viteMDCSlot') {
+        if (context.nodeTransforms[0]?.name !== 'viteMDCSlot') {
           const index = context.nodeTransforms.findIndex(f => f.name === 'viteMDCSlot')
-          const nt = context.nodeTransforms.splice(index, 1)
-          context.nodeTransforms.unshift(nt[0])
+          if (index !== -1) {
+            const nt = context.nodeTransforms.splice(index, 1)
+            context.nodeTransforms.unshift(nt[0]!)
+          }
         }
-      }
+      },
     ]
   })
 }

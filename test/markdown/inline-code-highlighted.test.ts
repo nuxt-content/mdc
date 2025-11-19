@@ -8,8 +8,8 @@ const md = `
 it('', async () => {
   const { body } = await parseMarkdown(md, {
     highlight: {
-      theme: 'github-dark'
-    }
+      theme: 'github-dark',
+    },
   })
 
   expect(body).toHaveProperty('type', 'root')

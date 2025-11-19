@@ -4,7 +4,7 @@ import type { MDCParseOptions, RehypePlugin, RemarkPlugin } from '@nuxtjs/mdc'
 
 export const useProcessorPlugins = async (
   processor: Processor,
-  plugins: Exclude<MDCParseOptions['rehype'] | MDCParseOptions['remark'], undefined>['plugins'] = {}
+  plugins: Exclude<MDCParseOptions['rehype'] | MDCParseOptions['remark'], undefined>['plugins'] = {},
 ) => {
   const toUse = Object.entries(plugins).filter(p => p[1] !== false) as Array<[string, RemarkPlugin | RehypePlugin]>
 

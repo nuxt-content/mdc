@@ -13,14 +13,14 @@ export function compileHast(this: any, options: MDCParseOptions = {}) {
     if (node.type === 'root') {
       return {
         type: 'root',
-        children: node.children.map(child => compileToJSON(child, node)).filter(Boolean)
+        children: node.children.map(child => compileToJSON(child, node)).filter(Boolean),
       }
     }
 
     const position: NodePosition | undefined = (node.position?.start?.offset && node.position?.end?.offset)
       ? {
           start: node.position.start.offset!,
-          end: node.position.end.offset!
+          end: node.position.end.offset!,
         }
       : undefined
 
@@ -41,7 +41,7 @@ export function compileHast(this: any, options: MDCParseOptions = {}) {
                 type: 'element',
                 tagName: 'br',
                 properties: {},
-                children: []
+                children: [],
               })
             }
 
@@ -80,7 +80,7 @@ export function compileHast(this: any, options: MDCParseOptions = {}) {
         type: 'element',
         tag: node.tagName,
         props: validateProps(node.tagName, node.properties),
-        children
+        children,
       } as MDCNode
 
       if (options.keepPosition) {
@@ -113,13 +113,13 @@ export function compileHast(this: any, options: MDCParseOptions = {}) {
     if (excerptIndex !== -1) {
       excerpt = compileToJSON({
         type: 'root',
-        children: tree.children.slice(0, excerptIndex)
+        children: tree.children.slice(0, excerptIndex),
       })
 
       // Include styles if excerpt contains code block
       if (excerpt.children.find(node => node.type === 'element' && node.tag === 'pre')) {
         const lastChild = body.children[body.children.length - 1]
-        if (lastChild.type === 'element' && lastChild.tag === 'style') {
+        if (lastChild && lastChild.type === 'element' && lastChild.tag === 'style') {
           excerpt.children.push(lastChild)
         }
       }
@@ -130,7 +130,7 @@ export function compileHast(this: any, options: MDCParseOptions = {}) {
 
     return {
       body,
-      excerpt
+      excerpt,
     }
   }
 }

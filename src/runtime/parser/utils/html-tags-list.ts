@@ -116,5 +116,5 @@ export default [
   'ul',
   'var',
   'video',
-  'wbr'
+  'wbr',
 ]

@@ -19,5 +19,5 @@ export default {
   image,
   strong,
   inlineCode,
-  containerComponent
+  containerComponent,
 }

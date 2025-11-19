@@ -15,7 +15,7 @@ export function createStringifyProcessor(options: MDCStringifyOptions = {}) {
     })
     .use(mdcRemark)
     .use(gfm)
-    .use(mdc)
+    .use(mdc, options?.plugins?.['remark-mdc']?.options || options?.plugins?.remarkMDC?.options || {})
     .use(stringify, {
       bullet: '-',
       emphasis: '*',
@@ -23,7 +23,7 @@ export function createStringifyProcessor(options: MDCStringifyOptions = {}) {
       listItemIndent: 'one',
       fence: '`',
       fences: true,
-      ...options?.plugins?.remarkStringify?.options
+      ...options?.plugins?.remarkStringify?.options,
     })
 }
 
@@ -35,7 +35,7 @@ export function createMarkdownStringifier(options: MDCStringifyOptions = {}) {
 
     // Stringify front matter returns empty string if no data is provided
     if (Object.keys(data).length) {
-      return stringifyFrontMatter(data, result.value as string)
+      return stringifyFrontMatter(data, result.value as string, options.frontMatter?.options)
     }
 
     return result.value as string

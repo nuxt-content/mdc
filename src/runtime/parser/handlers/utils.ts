@@ -12,7 +12,7 @@ export function parseThematicBlock(lang: string) {
       language: undefined,
       highlights: undefined,
       filename: undefined,
-      meta: undefined
+      meta: undefined,
     }
   }
 
@@ -38,7 +38,7 @@ export function parseThematicBlock(lang: string) {
     highlights: parseHighlightedLines(highlightTokensMatches?.[1] || undefined),
     // https://github.com/nuxt/content/pull/2169
     filename,
-    meta
+    meta,
   }
 }
 
@@ -48,7 +48,7 @@ function parseHighlightedLines(lines?: string | null) {
     .filter(Boolean)
     .flatMap((line) => {
       const [start, end] = line.trim().split('-').map(a => Number(a.trim()))
-      return Array.from({ length: (end || start) - start + 1 }).map((_, i) => start + i)
+      return Array.from({ length: (end || start || 0) - ((start || 0)) + 1 }).map((_, i) => (start || 0) + i)
     })
   return lineArray.length ? lineArray : undefined
 }

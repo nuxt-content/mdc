@@ -13,7 +13,7 @@ const c = new C()
 
 it('Code block with server API route filename with single brackets', async () => {
   const { body } = await parseMarkdown(md, {
-    highlight: false
+    highlight: false,
   })
   expect(body).toHaveProperty('type', 'root')
   expect(body.children).toHaveLength(1)
@@ -78,7 +78,7 @@ const c = new C()
 
 it('Code block with server API route filename with double brackets', async () => {
   const { body } = await parseMarkdown(md2, {
-    highlight: false
+    highlight: false,
   })
   expect(body).toHaveProperty('type', 'root')
   expect(body.children).toHaveLength(1)
@@ -141,7 +141,7 @@ function search(params) {
 
 it('Code block with filename containing query parameters', async () => {
   const { body } = await parseMarkdown(mdQueryParams, {
-    highlight: false
+    highlight: false,
   })
   expect(body).toHaveProperty('type', 'root')
   expect(body.children).toHaveLength(1)
@@ -162,7 +162,7 @@ export default defineAuthStrategy({
 
 it('Code block with deeply nested filepath', async () => {
   const { body } = await parseMarkdown(mdNestedPath, {
-    highlight: false
+    highlight: false,
   })
   expect(body).toHaveProperty('type', 'root')
   expect(body.children).toHaveLength(1)
@@ -181,7 +181,7 @@ const mdSpecialChars = `
 
 it('Code block with filename containing square brackets as part of the filename', async () => {
   const { body } = await parseMarkdown(mdSpecialChars, {
-    highlight: false
+    highlight: false,
   })
   expect(body).toHaveProperty('type', 'root')
   expect(body.children).toHaveLength(1)
@@ -202,7 +202,7 @@ export default defineEventHandler(async (event) => {
 
 it('Code block with path containing multiple parameters', async () => {
   const { body } = await parseMarkdown(mdMultipleParams, {
-    highlight: false
+    highlight: false,
   })
   expect(body).toHaveProperty('type', 'root')
   expect(body.children).toHaveLength(1)
@@ -222,7 +222,7 @@ const mdDashesAndUnderscores = `
 
 it('Code block with dashes and underscores in filename', async () => {
   const { body } = await parseMarkdown(mdDashesAndUnderscores, {
-    highlight: false
+    highlight: false,
   })
   expect(body).toHaveProperty('type', 'root')
   expect(body.children).toHaveLength(1)
@@ -247,7 +247,7 @@ export function Navigation() {
 
 it('Code block with Windows-style backslash path separators', async () => {
   const { body } = await parseMarkdown(mdWindowsPath, {
-    highlight: false
+    highlight: false,
   })
   expect(body).toHaveProperty('type', 'root')
   expect(body.children).toHaveLength(1)

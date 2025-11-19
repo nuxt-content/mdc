@@ -10,13 +10,13 @@ vi.mock('#mdc-imports', () => {
   return {
     remarkPlugins: {},
     rehypePlugins: {},
-    highlight: {}
+    highlight: {},
   }
 })
 
 vi.mock('#mdc-configs', () => {
   return {
-    getMdcConfigs: async () => []
+    getMdcConfigs: async () => [],
   }
 })
 
@@ -28,15 +28,15 @@ export const parseMarkdown = (md: string, options: MDCParseOptions = {}) => {
     const highlighter = createShikiHighlighter({
       langs: [
         import('@shikijs/langs/typescript'),
-        import('@shikijs/langs/javascript')
+        import('@shikijs/langs/javascript'),
       ],
       themes: [
         import('@shikijs/themes/github-light'),
-        import('@shikijs/themes/github-dark')
+        import('@shikijs/themes/github-dark'),
       ],
       options: {},
       getMdcConfigs: async () => [],
-      engine: createOnigurumaEngine(import('shiki/wasm'))
+      engine: createOnigurumaEngine(import('shiki/wasm')),
     })
 
     options.highlight.highlighter = highlighter

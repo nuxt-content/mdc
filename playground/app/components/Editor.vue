@@ -1,5 +1,8 @@
 <template>
-  <div ref="editorContainer" class="h-full w-full" />
+  <div
+    ref="editorContainer"
+    class="h-full w-full"
+  />
 </template>
 
 <script setup>
@@ -10,20 +13,20 @@ import { language as mdc } from '@nuxtlabs/monarch-mdc'
 const props = defineProps({
   code: {
     type: String,
-    required: true
+    required: true,
   },
   language: {
     type: String,
-    default: 'mdc'
+    default: 'mdc',
   },
   readOnly: {
     type: Boolean,
-    default: false
+    default: false,
   },
   theme: {
     type: String,
-    default: 'vs-dark'
-  }
+    default: 'vs-dark',
+  },
 })
 
 const emit = defineEmits(['update:code'])
@@ -44,20 +47,20 @@ onMounted(async () => {
     automaticLayout: true,
     readOnly: props.readOnly,
     minimap: {
-      enabled: false
+      enabled: false,
     },
     fontSize: 14,
     lineNumbers: 'on',
     scrollBeyondLastLine: false,
     roundedSelection: false,
     padding: {
-      top: 8
+      top: 8,
     },
     bracketPairColorization: {
-      enabled: true
+      enabled: true,
     },
     formatOnPaste: true,
-    formatOnType: true
+    formatOnType: true,
   })
 
   editor.onDidChangeModelContent(() => {

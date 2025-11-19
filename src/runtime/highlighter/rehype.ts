@@ -35,8 +35,8 @@ export function rehypeHighlight(opts: RehypeHighlightOption) {
           options.theme!,
           {
             highlights: highlights.filter(Boolean),
-            meta: _node.properties.meta as string
-          }
+            meta: _node.properties.meta as string,
+          },
         )
           .then(({ tree, className, style, inlineStyle }) => {
             _node.properties!.className = ((_node.properties!.className || '') + ' ' + className).trim()
@@ -44,7 +44,8 @@ export function rehypeHighlight(opts: RehypeHighlightOption) {
 
             if ((_node.children[0] as Element)?.tagName === 'code') {
               (_node.children[0] as Element).children = tree
-            } else {
+            }
+            else {
               _node.children = (tree[0] as any).children || tree
             }
 
@@ -53,7 +54,7 @@ export function rehypeHighlight(opts: RehypeHighlightOption) {
           })
 
         tasks.push(task)
-      }
+      },
     )
 
     if (tasks.length) {
@@ -63,7 +64,7 @@ export function rehypeHighlight(opts: RehypeHighlightOption) {
         type: 'element',
         tagName: 'style',
         children: [{ type: 'text', value: cleanCSS(styles.join('')) }],
-        properties: {}
+        properties: {},
       })
     }
   }

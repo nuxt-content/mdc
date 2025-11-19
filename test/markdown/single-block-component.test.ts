@@ -18,8 +18,8 @@ describe('Single Block Compoennt', () => {
       type: 'element',
       tag: 'block-component',
       props: {
-        prop: 'value'
-      }
+        prop: 'value',
+      },
     })
   })
 })

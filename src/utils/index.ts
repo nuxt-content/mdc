@@ -16,8 +16,8 @@ export function addWasmSupport(nuxt: Nuxt) {
         rollupConfig.plugins = rollupConfig.plugins || []
         ;(rollupConfig.plugins as any[]).push(
           unwasm({
-            ...(_nitro.options.wasm as any)
-          })
+            ...(_nitro.options.wasm as any),
+          }),
         )
       })
     }

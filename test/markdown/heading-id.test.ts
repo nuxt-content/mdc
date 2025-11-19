@@ -29,7 +29,7 @@ it('Heading id', async () => {
     'slash-in-title',
     'starting-dash',
     'ending-dash',
-    'dash'
+    'dash',
   ]
   ids.forEach((id, index) => {
     expect((body.children[index] as any).props.id).toEqual(id)
