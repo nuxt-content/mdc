@@ -198,17 +198,30 @@ const mdcRemarkHandlers: Record<string, (state: State, node: Parents, parent: Pa
       children: state.toFlow(state.all(node)),
     }
   },
+  'li': (state: State, node: Parents) => {
+    const result = defaultHandlers.li(state, node as Element)
+
+    if (result.children[0]?.type === 'paragraph') {
+      const paragraph = result.children[0]!
+      const lastChild = paragraph.children[paragraph.children.length - 1] as Text
+      if (lastChild?.type === 'text' && lastChild.value?.endsWith('\n')) {
+        lastChild.value = lastChild.value.trim()
+      }
+    }
+
+    return result
+  },
   'ul': (state: State, node: Parents, parent: Parents | undefined) => {
     const result = defaultHandlers.ul(state, node as Element)
 
-    return parent?.tagName === 'p'
+    return ['p', 'li'].includes(parent?.tagName || '')
       ? result
       : { type: 'paragraph', children: [result] }
   },
   'ol': (state: State, node: Parents, parent: Parents | undefined) => {
     const result = defaultHandlers.ol(state, node as Element)
 
-    return parent?.tagName === 'p'
+    return ['p', 'li'].includes(parent?.tagName || '')
       ? result
       : { type: 'paragraph', children: [result] }
   },
