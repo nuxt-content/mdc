@@ -13,9 +13,8 @@ describe('stringify format', () => {
       '  Well',
       '  :::',
       '::',
-      ''
+      '',
     ].join('\n')
-    
 
     const { body } = await parseMarkdown(md)
     const result = await stringifyMarkdown(body)

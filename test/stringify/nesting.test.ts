@@ -25,9 +25,8 @@ describe('stringify ordered list (ol)', () => {
       '  ```',
       '  :::',
       '::',
-      ''
+      '',
     ].join('\n')
-    
 
     const { body } = await parseMarkdown(md)
     const result = await stringifyMarkdown(body)

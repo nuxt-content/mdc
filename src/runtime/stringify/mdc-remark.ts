@@ -172,7 +172,7 @@ const mdcRemarkNodeHandlers = {
           name: node.tagName,
           attributes: node.properties,
           children: state.all(node),
-        }]
+        }],
       }
     }
 
