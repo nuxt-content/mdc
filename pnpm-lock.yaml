@@ -105,8 +105,8 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1
       remark-mdc:
-        specifier: ^3.8.1
-        version: 3.8.1
+        specifier: https://pkg.pr.new/remark-mdc@0c5d4fa
+        version: https://pkg.pr.new/remark-mdc@0c5d4fa
       remark-parse:
         specifier: ^11.0.0
         version: 11.0.0
@@ -4732,8 +4732,9 @@ packages:
   remark-gfm@4.0.1:
     resolution: {integrity: sha512-1quofZ2RQ9EWdeN34S79+KExV1764+wCUGop5CPL1WGdD0ocPpu91lzPGbwWMECpEpd42kJGQwzRfyov9j4yNg==}
 
-  remark-mdc@3.8.1:
-    resolution: {integrity: sha512-TGFY61OhgziAITAomenbw4THQvEHC7MxZI1kO1YL/VuWQTHZ0RG20G6GGATIFeGnq65IUe7dngiQVcVIeFdB/g==}
+  remark-mdc@https://pkg.pr.new/remark-mdc@0c5d4fa:
+    resolution: {tarball: https://pkg.pr.new/remark-mdc@0c5d4fa}
+    version: 3.8.1
 
   remark-parse@11.0.0:
     resolution: {integrity: sha512-FCxlKLNGknS5ba/1lmpYijMUzX2esxW5xQqjWxw2eHFfS2MSdaHVINFmhjo+qN1WhZhNimq0dZATN9pH0IDrpA==}
@@ -11370,7 +11371,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  remark-mdc@3.8.1:
+  remark-mdc@https://pkg.pr.new/remark-mdc@0c5d4fa:
     dependencies:
       '@types/mdast': 4.0.4
       '@types/unist': 3.0.3

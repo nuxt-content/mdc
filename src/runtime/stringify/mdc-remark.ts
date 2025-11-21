@@ -163,6 +163,19 @@ const mdcRemarkNodeHandlers = {
       }
     }
 
+    // if node is not a list item or paragraph and has no children, wrap it in a paragraph and render it as a text component
+    if (!['li', 'p'].includes(parent?.tagName || '') && !node.children?.length) {
+      return {
+        type: 'paragraph',
+        children: [{
+          type: mdastTextComponentType,
+          name: node.tagName,
+          attributes: node.properties,
+          children: state.all(node),
+        }]
+      }
+    }
+
     let children = state.all(node)
     if (children.every(child => [mdastTextComponentType, 'text'].includes(child.type))) {
       children = [{ type: 'paragraph', children: children }] as unknown as typeof children

@@ -10,7 +10,6 @@ describe('stringify unordered list (ul)', () => {
       '',
     ].join('\n')
     const { body } = await parseMarkdown(md)
-    // console.log(JSON.stringify(body, null, 2))
     const result = await stringifyMarkdown(body)
     expect(result).toBe(md)
   })
