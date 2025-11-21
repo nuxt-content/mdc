@@ -20,4 +20,27 @@ describe('stringify format', () => {
     const result = await stringifyMarkdown(body)
     expect(result).toBe(md)
   })
+
+  it('should stringify format correctly with children', async () => {
+    const md = [
+      '::container',
+      '---',
+      'background-image:',
+      '  url: https://example.com',
+      '  background-size: contain',
+      'another: property',
+      'foo: bar',
+      'styles: |',
+      '  p {',
+      '    color: red;',
+      '  }',
+      '---',
+      '::',
+      '',
+    ].join('\n')
+
+    const { body } = await parseMarkdown(md)
+    const result = await stringifyMarkdown(body)
+    expect(result).toBe(md)
+  })
 })

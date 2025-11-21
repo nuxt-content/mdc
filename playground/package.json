@@ -8,8 +8,8 @@
     "generate": "nuxi generate"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.73",
-    "@monaco-editor/loader": "^1.6.1",
+    "@iconify-json/lucide": "^1.2.74",
+    "@monaco-editor/loader": "^1.7.0",
     "@nuxtjs/mdc": "workspace:*",
     "@nuxtlabs/monarch-mdc": "^0.8.1",
     "nuxt": "^4.2.1"
