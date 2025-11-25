@@ -86,4 +86,43 @@ describe('stringify format', () => {
     const result = await stringifyMarkdown(body)
     expect(result).toBe(md)
   })
+
+  it('should stringify format correctly with yaml props and nested objects', async () => {
+    const md = [
+      '::page-section',
+      '  :::page-section',
+      '  #tagline',
+      '  {{ $doc.snippet.tagline }}',
+      '',
+      '  #title',
+      '  {{ $doc.snippet.title }}',
+      '',
+      '  #description',
+      '  {{ $doc.snippet.description }}',
+      '',
+      '    ::::button{:to="$doc.snippet.link" appearance="primary"}',
+      '    Button Text',
+      '    ::::',
+      '',
+      '    ::::button{:to="$doc.snippet.link" appearance="primary"}',
+      '    Button Text',
+      '    ::::',
+      '',
+      '    ::::button',
+      '    ---',
+      '    :data-testid: $doc.snippet.description',
+      '    external: true',
+      '    :to: $doc.snippet.link',
+      '    appearance: primary',
+      '    ---',
+      '    Button Text',
+      '    ::::',
+      '  :::',
+      '::',
+      '',
+    ].join('\n')
+    const { body } = await parseMarkdown(md)
+    const result = await stringifyMarkdown(body)
+    expect(result).toBe(md)
+  })
 })

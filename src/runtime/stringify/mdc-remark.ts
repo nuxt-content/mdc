@@ -152,8 +152,7 @@ const mdcRemarkNodeHandlers = {
       return result
     }
 
-    const isInlineElement = (parent?.children || [])
-      .some(child => child.type === 'text') || ['p', 'li', 'strong', 'em', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(parent?.tagName)
+    const isInlineElement = isForcedToBeInlineByItsParent(node, parent)
     if (isInlineElement) {
       return {
         type: mdastTextComponentType,
@@ -287,20 +286,17 @@ const mdcRemarkHandlers: Record<string, (state: State, node: Parents, parent: Pa
       meta,
     }
   },
-  'button': (state: State, node: Parents) => {
-    if (
-      // @ts-expect-error: custom type
-      node.children?.find(child => child.type === mdcRemarkElementType)
-      || node.children?.find(child => child.type === 'text' && child.value.includes('\n'))
-    ) {
-      return {
-        type: 'containerComponent',
-        name: 'button',
-        children: state.all(node),
-        attributes: node.properties,
-      }
+  'button': (state: State, node: Parents, parent: Parents | undefined) => {
+    if (isInlineNode(node, parent)) {
+      return createTextComponent('button')(state, node)
     }
-    return createTextComponent('button')(state, node)
+
+    return {
+      type: 'containerComponent',
+      name: 'button',
+      children: state.all(node),
+      attributes: node.properties,
+    }
   },
   'span': createTextComponent('span'),
   'kbd': createTextComponent('kbd'),
@@ -389,4 +385,32 @@ function createTextComponent(name: string) {
 
     return result
   }
+}
+
+function isForcedToBeInlineByItsParent(node: Parents, parent: Parents | undefined) {
+  if (['p', 'li', 'strong', 'em', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(parent?.tagName || '')) {
+    return true
+  }
+
+  if (parent?.children?.some(child => child.type === 'text')) {
+    return true
+  }
+
+  return false
+}
+
+function isInlineNode(node: Parents, parent: Parents | undefined) {
+  if (
+    // @ts-expect-error: custom type
+    node.children?.find(child => child.type === mdcRemarkElementType)
+    || node.children?.find(child => child.type === 'text' && child.value.includes('\n'))
+  ) {
+    return false
+  }
+
+  if (!isForcedToBeInlineByItsParent(node, parent)) {
+    return false
+  }
+
+  return true
 }
