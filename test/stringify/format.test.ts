@@ -43,4 +43,47 @@ describe('stringify format', () => {
     const result = await stringifyMarkdown(body)
     expect(result).toBe(md)
   })
+
+  it('should stringify format correctly with yaml props', async () => {
+    const md = [
+      '::page-container',
+      '---',
+      'simple-array:',
+      '  - item1',
+      '  - item2',
+      '  - item3',
+      '---',
+      '::',
+      '',
+      '::page-container',
+      '---',
+      'items:',
+      '  - name: Item 1',
+      '    description: First item',
+      '  - name: Item 2',
+      '    description: Second item',
+      '---',
+      '::',
+      '',
+      '::page-container',
+      '---',
+      'attributes:',
+      '  - domains:',
+      '      - internal',
+      '  - env:',
+      '      - dev',
+      '      - staging',
+      '      - prod',
+      '  - dogs:',
+      '      - husky',
+      '      - beagle',
+      '---',
+      '::',
+      '',
+    ].join('\n')
+
+    const { body } = await parseMarkdown(md)
+    const result = await stringifyMarkdown(body)
+    expect(result).toBe(md)
+  })
 })

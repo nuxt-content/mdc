@@ -166,7 +166,7 @@ const mdcRemarkNodeHandlers = {
     // if node is not a list item or paragraph and has no children, wrap it in a paragraph and render it as a text component
     if (!['li', 'p'].includes(parent?.tagName || '') && !node.children?.length) {
       const attributes = Object.entries(node.properties || {})
-      if (attributes.length < 4 && !attributes.some(([key]) => key.includes('\n'))) {
+      if (attributes.length < 4 && !attributes.some(([key, value]) => String(value).includes('\n') || key.startsWith(':'))) {
         return {
           type: 'paragraph',
           children: [{
