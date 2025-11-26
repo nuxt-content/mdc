@@ -1,5 +1,6 @@
 // @ts-check
 import { createConfigForNuxt } from '@nuxt/eslint-config/flat'
+import { mdcLint } from 'mdcLint'
 
 // Run `npx @eslint/config-inspector` to inspect the resolved config interactively
 export default createConfigForNuxt({
@@ -26,3 +27,16 @@ export default createConfigForNuxt({
       },
     },
   )
+  .append(mdcLint({
+    files: [
+      'docs/**/*.md',
+      'playground/**/*.md',
+      'examples/**/*.md',
+      'README.md',
+    ],
+    markdownlint: {
+      config: {
+        MD013: false,
+      },
+    },
+  }))

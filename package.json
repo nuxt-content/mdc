@@ -122,6 +122,7 @@
     "@nuxtjs/mdc": "link:.",
     "@types/node": "^24.10.1",
     "eslint": "^9.39.1",
+    "mdclint": "^0.0.3",
     "nuxt": "^4.2.1",
     "rehype": "^13.0.2",
     "release-it": "^19.0.6",
