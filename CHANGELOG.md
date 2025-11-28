@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.19.1
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.19.0...v0.19.1)
+
+### 🏡 Chore
+
+- Freeze `mkdist` version ([c3761b4](https://github.com/nuxt-content/mdc/commit/c3761b4))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+
 ## v0.19.0
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.18.4...v0.19.0)
