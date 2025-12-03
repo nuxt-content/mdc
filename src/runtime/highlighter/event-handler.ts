@@ -1,7 +1,8 @@
-import { getQuery } from 'h3'
+import { getQuery, type H3Event } from 'h3'
+// @ts-expect-error - cachedEventHandler is not exported from h3
 import { cachedEventHandler } from '#imports'
 
-export default cachedEventHandler(async (event) => {
+export default cachedEventHandler(async (event: H3Event) => {
   const { code, lang, theme: themeString, options: optionsStr } = getQuery(event)
   const theme = JSON.parse(themeString as string)
   const options = optionsStr ? JSON.parse(optionsStr as string) : {}
