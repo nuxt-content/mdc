@@ -9,5 +9,5 @@ export default cachedEventHandler(async (event) => {
   return await highlighter(code, lang, theme, options)
 }, {
   maxAge: 60 * 60 * 24 * 30,
-  swr: true
+  swr: true,
 })
