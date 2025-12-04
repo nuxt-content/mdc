@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import { createOnigurumaEngine } from 'shiki/engine/oniguruma'
+import { createOnigurumaEngine } from '@shikijs/engine-oniguruma'
 import { createShikiHighlighter } from '../../src/runtime/highlighter/shiki'
 import { rehypeHighlight } from '../../src/runtime/highlighter/rehype-nuxt'
 import type { MDCParseOptions } from '../../src/types'

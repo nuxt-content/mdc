@@ -1,6 +1,6 @@
 import type { CodeToHastOptions } from 'shiki/core'
 import type { HighlighterCore, LanguageInput, ShikiTransformer, ThemeInput, RegexEngine } from '@shikijs/types'
-import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
+import { createJavaScriptRegexEngine } from '@shikijs/engine-javascript'
 import type { Element } from 'hast'
 import type { MdcConfig, Highlighter } from '@nuxtjs/mdc'
 
