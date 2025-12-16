@@ -128,7 +128,7 @@ export default defineNuxtConfig({
     components: {
       prose: false, // Disable predefined prose components
       map: {
-        p: 'MyCustomPComponent'
+        p: 'MyCustomPComponent' // add global like MyCustomPComponent.global.vue
       }
     }
   }
