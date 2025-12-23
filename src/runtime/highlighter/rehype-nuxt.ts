@@ -24,6 +24,18 @@ const defaults: RehypeHighlightOption = {
         return import('#mdc-highlighter').then(h => h.default(code, lang, theme, options)).catch(() => ({}))
       }
 
+      if (import.meta.client) {
+        const nuxt = (await import('nuxt/app')).useRuntimeConfig()
+        const highlight = nuxt.public.mdc.highlight
+        if (highlight === false) {
+          return Promise.resolve({ tree: [{ type: 'text', value: code }], className: '', style: '' } as HighlightResult)
+        }
+        // https://github.com/nuxt-content/mdc/blob/690fd5359e743db04edf21bcd488f2c5292db176/src/module.ts#L78
+        if (highlight?.noApiRoute === true) {
+          return import('#mdc-highlighter').then(h => h.default(code, lang, theme, options)).catch(() => ({}))
+        }
+      }
+
       const result = await $fetch<HighlightResult | undefined>('/api/_mdc/highlight', {
         params: {
           code,

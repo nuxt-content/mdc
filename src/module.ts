@@ -66,6 +66,7 @@ export default defineNuxtModule<ModuleOptions>({
         map: options.components!.map!,
       },
       headings: options.headings!,
+      highlight: options.highlight!,
     })
 
     nuxt.options.build.transpile ||= []
@@ -273,6 +274,7 @@ declare module '@nuxt/schema' {
         map: Record<string, string>
       }
       headings: ModuleOptions['headings']
+      highlight: ModuleOptions['highlight']
     }
   }
 
