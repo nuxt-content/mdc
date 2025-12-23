@@ -1,5 +1,6 @@
 import type { HighlightResult, RehypeHighlightOption } from '@nuxtjs/mdc'
 import { rehypeHighlight as rehypeHighlightUniversal } from './rehype'
+import { useRuntimeConfig } from '#imports'
 
 class HighlighterError extends Error {
   constructor(
@@ -25,8 +26,7 @@ const defaults: RehypeHighlightOption = {
       }
 
       if (import.meta.client) {
-        const nuxt = (await import('nuxt/app')).useRuntimeConfig()
-        const highlight = nuxt.public.mdc.highlight
+        const highlight = useRuntimeConfig().public.mdc.highlight
         if (highlight === false) {
           return Promise.resolve({ tree: [{ type: 'text', value: code }], className: '', style: '' } as HighlightResult)
         }
