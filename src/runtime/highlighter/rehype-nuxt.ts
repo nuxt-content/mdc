@@ -1,6 +1,21 @@
 import type { HighlightResult, RehypeHighlightOption } from '@nuxtjs/mdc'
 import { rehypeHighlight as rehypeHighlightUniversal } from './rehype'
 
+class HighlighterError extends Error {
+  constructor(
+    message: string,
+    public readonly httpStatus?: number,
+  ) {
+    super(message)
+    this.name = 'HighlighterError'
+  }
+}
+
+function isHighlightResult(res?: HighlightResult): res is HighlightResult {
+  if (!res) return false
+  return 'tree' in res
+}
+
 const defaults: RehypeHighlightOption = {
   theme: {},
   async highlighter(code, lang, theme, options) {
@@ -9,7 +24,7 @@ const defaults: RehypeHighlightOption = {
         return import('#mdc-highlighter').then(h => h.default(code, lang, theme, options)).catch(() => ({}))
       }
 
-      return await $fetch('/api/_mdc/highlight', {
+      const result = await $fetch<HighlightResult | undefined>('/api/_mdc/highlight', {
         params: {
           code,
           lang,
@@ -17,9 +32,13 @@ const defaults: RehypeHighlightOption = {
           options: JSON.stringify(options),
         },
       })
+      if (!isHighlightResult(result)) {
+        throw new HighlighterError(`result:${result}`)
+      }
+      return result
     }
     catch (e: any) {
-      if (import.meta.client && e?.response?.status === 404) {
+      if (import.meta.client && (e?.response?.status > 399 || e?.name == 'HighlighterError')) {
         window.sessionStorage.setItem('mdc-shiki-highlighter', 'browser')
         return this.highlighter?.(code, lang, theme, options)
       }
