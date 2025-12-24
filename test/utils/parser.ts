@@ -6,6 +6,16 @@ import type { MDCParseOptions } from '../../src/types'
 import { parseMarkdown as _parseMarkDown } from '../../src/runtime/parser'
 import { stringifyMarkdown as _stringifyMarkDown } from '../../src/runtime/stringify'
 
+vi.mock('#imports', () => {
+  return {
+    useRuntimeConfig: vi.fn().mockReturnValue({
+      public: {
+        mdc: {},
+      },
+    }),
+  }
+})
+
 vi.mock('#mdc-imports', () => {
   return {
     remarkPlugins: {},
