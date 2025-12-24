@@ -1,6 +1,29 @@
 # Changelog
 
 
+## v0.19.2
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.19.1...v0.19.2)
+
+### 🩹 Fixes
+
+- Missing `shiki/engine/*` from build bundle ([434a79c](https://github.com/nuxt-content/mdc/commit/434a79c))
+- Check highlight result not empty #451 ([#452](https://github.com/nuxt-content/mdc/pull/452), [#451](https://github.com/nuxt-content/mdc/issues/451))
+
+### 📖 Documentation
+
+- Update customization instructions for prose components ([#450](https://github.com/nuxt-content/mdc/pull/450))
+
+### 🏡 Chore
+
+- Upgrade deps ([1d4cf47](https://github.com/nuxt-content/mdc/commit/1d4cf47))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+- PBK Bin <pbk9.bin@gmail.com>
+- Aydin <a1oky@yandex.ru>
+
 ## v0.19.1
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.19.0...v0.19.1)
