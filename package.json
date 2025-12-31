@@ -124,15 +124,15 @@
     "eslint": "^9.39.2",
     "nuxt": "^4.2.2",
     "rehype": "^13.0.2",
-    "release-it": "^19.2.1",
+    "release-it": "^19.2.2",
     "typescript": "5.9.3",
     "vitest": "^4.0.16",
     "vue-tsc": "^3.2.1"
   },
   "resolutions": {
-    "mkdist": "2.3.0"
+    "mkdist": "2.4.1"
   },
-  "packageManager": "pnpm@10.26.2",
+  "packageManager": "pnpm@10.27.0",
   "release-it": {
     "git": {
       "commitMessage": "chore(release): release v${version}"
