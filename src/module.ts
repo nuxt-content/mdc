@@ -122,12 +122,15 @@ export default defineNuxtModule<ModuleOptions>({
         }
       }
     }
-    await nuxt.callHook('mdc:configSources', mdcConfigs)
 
-    registerTemplate({
-      filename: 'mdc-configs.mjs',
-      getContents: templates.mdcConfigs,
-      options: { configs: mdcConfigs },
+    nuxt.hook('modules:done', async () => {
+      await nuxt.callHook('mdc:configSources', mdcConfigs)
+
+      registerTemplate({
+        filename: 'mdc-configs.mjs',
+        getContents: templates.mdcConfigs,
+        options: { configs: mdcConfigs },
+      })
     })
 
     // Add highlighter
