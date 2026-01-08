@@ -122,7 +122,8 @@ export default defineNuxtModule<ModuleOptions>({
         }
       }
     }
-    await nuxt.callHook('mdc:configSources', mdcConfigs)
+
+    nuxt.hook('modules:done', () => nuxt.callHook('mdc:configSources', mdcConfigs))
 
     registerTemplate({
       filename: 'mdc-configs.mjs',
