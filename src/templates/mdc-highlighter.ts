@@ -39,10 +39,10 @@ export async function mdcHighlighter({
       )
     }
 
-    // from "shiki"; -> from "shiki/engine/javascript"
+    // from "shiki"; -> from "@shikijs/engine-javascript"
     code = code.replace(
       /from\s+(['"])shiki\1/,
-      'from "shiki/engine/javascript"',
+      'from "@shikijs/engine-javascript"',
     )
 
     /**
@@ -81,8 +81,8 @@ export async function mdcHighlighter({
       'import { getMdcConfigs } from \'#mdc-configs\'',
       shikiEngine === 'javascript'
         // `createJavaScriptRegexEngine` import comes from `shiki.ts` file
-        ? ''// 'import { createJavaScriptRegexEngine } from \'shiki/engine/javascript\''
-        : 'import { createOnigurumaEngine } from \'shiki/engine/oniguruma\'',
+        ? ''// 'import { createJavaScriptRegexEngine } from \'@shikijs/engine-javascript\''
+        : 'import { createOnigurumaEngine } from \'@shikijs/engine-oniguruma\'',
       code,
       'const bundledLangs = {',
       ...Array.from(langsMap.entries())

@@ -67,6 +67,7 @@ export default defineNuxtModule<ModuleOptions>({
         map: options.components!.map!,
       },
       headings: options.headings!,
+      highlight: options.highlight!,
     })
 
     nuxt.options.build.transpile ||= []
@@ -122,7 +123,8 @@ export default defineNuxtModule<ModuleOptions>({
         }
       }
     }
-    await nuxt.callHook('mdc:configSources', mdcConfigs)
+
+    nuxt.hook('modules:done', () => nuxt.callHook('mdc:configSources', mdcConfigs))
 
     registerTemplate({
       filename: 'mdc-configs.mjs',
@@ -285,6 +287,7 @@ declare module '@nuxt/schema' {
         map: Record<string, string>
       }
       headings: ModuleOptions['headings']
+      highlight: ModuleOptions['highlight']
     }
   }
 

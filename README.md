@@ -128,14 +128,14 @@ export default defineNuxtConfig({
     components: {
       prose: false, // Disable predefined prose components
       map: {
-        p: 'MyCustomPComponent'
+        p: 'MyCustomPComponent' // add global like MyCustomPComponent.global.vue
       }
     }
   }
 })
 ```
 
-In order to customize these components yourself simply make a component with the same name of the prose component you are trying to take control over. Make sure to put these prose components in their own prose folder and tell nuxt to globally register them so that MDC can get proper access. 
+In order to customize these components yourself simply make a component with the same name of the prose component you are trying to take control over. Make sure to put these prose components in their own prose folder and tell nuxt to globally register or simple create in `prose` folder `P.global.vue` them so that MDC can get proper access. 
 
 ```ts
 export default defineNuxtConfig({

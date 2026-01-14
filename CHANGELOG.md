@@ -1,6 +1,63 @@
 # Changelog
 
 
+## v0.19.2
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.19.1...v0.19.2)
+
+### 🩹 Fixes
+
+- Missing `shiki/engine/*` from build bundle ([434a79c](https://github.com/nuxt-content/mdc/commit/434a79c))
+- Check highlight result not empty #451 ([#452](https://github.com/nuxt-content/mdc/pull/452), [#451](https://github.com/nuxt-content/mdc/issues/451))
+
+### 📖 Documentation
+
+- Update customization instructions for prose components ([#450](https://github.com/nuxt-content/mdc/pull/450))
+
+### 🏡 Chore
+
+- Upgrade deps ([1d4cf47](https://github.com/nuxt-content/mdc/commit/1d4cf47))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+- PBK Bin <pbk9.bin@gmail.com>
+- Aydin <a1oky@yandex.ru>
+
+## v0.19.1
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.19.0...v0.19.1)
+
+### 🏡 Chore
+
+- Freeze `mkdist` version ([c3761b4](https://github.com/nuxt-content/mdc/commit/c3761b4))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+
+## v0.19.0
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.18.4...v0.19.0)
+
+### 🩹 Fixes
+
+- **stringify:** Nested lists ([840b059](https://github.com/nuxt-content/mdc/commit/840b059))
+- **stringify:** Detect inline components ([a63389f](https://github.com/nuxt-content/mdc/commit/a63389f))
+- **stringify:** Inline component with -3 attributes ([76a5a85](https://github.com/nuxt-content/mdc/commit/76a5a85))
+- Convert json attributes to yaml syntax ([96d3555](https://github.com/nuxt-content/mdc/commit/96d3555))
+- Better inline detection for buttons ([1aeaa52](https://github.com/nuxt-content/mdc/commit/1aeaa52))
+
+### 🏡 Chore
+
+- Upgrade deps ([9eebbe1](https://github.com/nuxt-content/mdc/commit/9eebbe1))
+- Upgrade to `remark-mdc` nightly ([31c04dc](https://github.com/nuxt-content/mdc/commit/31c04dc))
+- Upgrade deps ([d79bda0](https://github.com/nuxt-content/mdc/commit/d79bda0))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+
 ## v0.18.4
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.18.3...v0.18.4)
