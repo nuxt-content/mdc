@@ -65,7 +65,7 @@ export default defineNuxtModule<ModuleOptions>({
       components: {
         prose: options.components!.prose!,
         map: options.components!.map!,
-        customElements: options.components?.customElements || options.components?.custom || [],
+        customElements: options.components?.customElements || [],
       },
       headings: options.headings!,
       highlight: options.highlight!,
