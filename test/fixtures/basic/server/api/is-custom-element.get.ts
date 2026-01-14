@@ -13,4 +13,3 @@ export default defineEventHandler((event) => {
     isCustomElement: customElements.includes(tag),
   }
 })
-
