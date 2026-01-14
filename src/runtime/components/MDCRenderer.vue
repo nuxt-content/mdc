@@ -8,7 +8,6 @@ import type { MDCElement, MDCNode, MDCRoot, MDCData, MDCRenderOptions } from '@n
 import htmlTags from '../parser/utils/html-tags-list'
 import { flatUnwrap, nodeTextContent } from '../utils/node'
 import { pick } from '../utils'
-import { isCustomElement } from '#imports'
 
 type CreateElement = typeof h
 
@@ -21,7 +20,8 @@ const rxOn = /^@|^v-on:/
 const rxBind = /^:|^v-bind:/
 const rxModel = /^v-model/
 const nativeInputs = ['select', 'textarea', 'input']
-const specialParentTags = ['math', 'svg']
+const specialParentTags = new Set(['math', 'svg'])
+const customElements = new Set<string>()
 
 const proseComponentMap = Object.fromEntries(['p', 'a', 'blockquote', 'code', 'pre', 'code', 'em', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'img', 'ul', 'ol', 'li', 'strong', 'table', 'thead', 'tbody', 'td', 'th', 'tr', 'script'].map(t => [t, `prose-${t}`]))
 
@@ -89,6 +89,12 @@ export default defineComponent({
     const $nuxt = app?.$nuxt
     const route = $nuxt?.$route || $nuxt?._route
     const { mdc } = $nuxt?.$config?.public || {}
+
+    // Custom elements
+    const customElementTags = mdc?.components?.customElements || mdc?.components?.custom
+    if (customElementTags) {
+      customElementTags.forEach((tag: string) => customElements.add(tag))
+    }
 
     const tags = computed(() => ({
       ...(mdc?.components?.prose && props.prose !== false ? proseComponentMap : {}),
@@ -464,7 +470,7 @@ function isTemplate(node: MDCNode) {
  * Check if tag is a special tag that should not be resolved to a component
  */
 function isUnresolvableTag(tag: unknown) {
-  return specialParentTags.includes(tag as string)
+  return specialParentTags.has(tag as string)
 }
 
 /**
@@ -538,8 +544,8 @@ function findMappedTag(node: MDCElement, tags: Record<string, string>) {
 function ignoreTag(tag: string) {
   // Checks if input tag is an html tag or
   const isCustomEl = (typeof tag === 'string')
-    ? isCustomElement(tag)
+    ? customElements.has(tag)
     : false
-  return htmlTags.includes(tag) || isCustomEl
+  return isCustomEl || htmlTags.has(tag)
 }
 </script>

@@ -21,4 +21,12 @@ describe('ssr', async () => {
     expect(html).toContain('[Global Paragraph]')
     expect(html).toContain('Sample paragraph')
   })
+
+  it('respects mdc.components.customElements at MDC runtime', async () => {
+    const res = await $fetch('/api/is-custom-element', { query: { tag: 'x-foo' } }) as any
+    expect(res).toEqual({ tag: 'x-foo', isCustomElement: true })
+
+    const res2 = await $fetch('/api/is-custom-element', { query: { tag: 'div' } }) as any
+    expect(res2).toEqual({ tag: 'div', isCustomElement: false })
+  })
 })
