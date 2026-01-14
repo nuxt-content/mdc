@@ -87,5 +87,9 @@ export interface ModuleOptions {
   components?: {
     prose?: boolean
     map?: Record<string, string>
+    /**
+     * Custom element tags to ignore at MDC runtime (ex: ['mjx-container', 'my-element'])
+     */
+    customElements?: string[]
   }
 }

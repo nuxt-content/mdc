@@ -53,6 +53,7 @@ export default defineNuxtModule<ModuleOptions>({
     components: {
       prose: true,
       map: {},
+      customElements: [],
     },
   },
   async setup(options, nuxt) {
@@ -60,14 +61,20 @@ export default defineNuxtModule<ModuleOptions>({
 
     const resolver = createResolver(import.meta.url)
 
-    nuxt.options.runtimeConfig.public.mdc = defu(nuxt.options.runtimeConfig.public.mdc, {
+    const mdc = nuxt.options.runtimeConfig.public.mdc = defu(nuxt.options.runtimeConfig.public.mdc, {
       components: {
         prose: options.components!.prose!,
         map: options.components!.map!,
+        customElements: options.components?.customElements || [],
       },
       headings: options.headings!,
       highlight: options.highlight!,
     })
+
+    if (mdc.components.customElements.length > 0 && !nuxt.options.vue.compilerOptions?.isCustomElement) {
+      nuxt.options.vue.compilerOptions ||= {}
+      nuxt.options.vue.compilerOptions.isCustomElement = (tag: string) => mdc.components.customElements.includes(tag)
+    }
 
     nuxt.options.build.transpile ||= []
     nuxt.options.build.transpile.push('yaml')
@@ -273,6 +280,7 @@ declare module '@nuxt/schema' {
       components: {
         prose: boolean
         map: Record<string, string>
+        customElements: string[]
       }
       headings: ModuleOptions['headings']
       highlight: ModuleOptions['highlight']
@@ -286,6 +294,7 @@ declare module '@nuxt/schema' {
           components: {
             prose: boolean
             map: Record<string, string>
+            customElements: string[]
           }
         }
         headings: ModuleOptions['headings']

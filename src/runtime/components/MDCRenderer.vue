@@ -20,7 +20,8 @@ const rxOn = /^@|^v-on:/
 const rxBind = /^:|^v-bind:/
 const rxModel = /^v-model/
 const nativeInputs = ['select', 'textarea', 'input']
-const specialParentTags = ['math', 'svg']
+const specialParentTags = new Set(['math', 'svg'])
+const customElements = new Set<string>()
 
 const proseComponentMap = Object.fromEntries(['p', 'a', 'blockquote', 'code', 'pre', 'code', 'em', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'img', 'ul', 'ol', 'li', 'strong', 'table', 'thead', 'tbody', 'td', 'th', 'tr', 'script'].map(t => [t, `prose-${t}`]))
 
@@ -89,6 +90,12 @@ export default defineComponent({
     const route = $nuxt?.$route || $nuxt?._route
     const { mdc } = $nuxt?.$config?.public || {}
 
+    // Custom elements
+    const customElementTags = mdc?.components?.customElements || mdc?.components?.custom
+    if (customElementTags) {
+      customElementTags.forEach((tag: string) => customElements.add(tag))
+    }
+
     const tags = computed(() => ({
       ...(mdc?.components?.prose && props.prose !== false ? proseComponentMap : {}),
       ...(mdc?.components?.map || {}),
@@ -99,7 +106,7 @@ export default defineComponent({
     const contentKey = computed(() => {
       const components = (props.body?.children || [])
         .map(n => (n as any).tag || n.type)
-        .filter(t => !htmlTags.includes(t))
+        .filter(t => !ignoreTag(t))
 
       return Array.from(new Set(components)).sort().join('.')
     })
@@ -400,7 +407,7 @@ function propsToDataRxBind(key: string, value: any, data: any, documentMeta: MDC
  */
 const resolveComponentInstance = (component: any) => {
   if (typeof component === 'string') {
-    if (htmlTags.includes(component)) {
+    if (ignoreTag(component)) {
       return component
     }
 
@@ -463,7 +470,7 @@ function isTemplate(node: MDCNode) {
  * Check if tag is a special tag that should not be resolved to a component
  */
 function isUnresolvableTag(tag: unknown) {
-  return specialParentTags.includes(tag as string)
+  return specialParentTags.has(tag as string)
 }
 
 /**
@@ -514,7 +521,7 @@ async function resolveContentComponents(body: MDCRoot, meta: Record<string, any>
 
     const components: string[] = []
 
-    if (node.type !== 'root' && !htmlTags.includes(renderTag as any)) {
+    if (node.type !== 'root' && !ignoreTag(renderTag as any)) {
       components.push(renderTag)
     }
     for (const child of (node.children || [])) {
@@ -532,5 +539,13 @@ function findMappedTag(node: MDCElement, tags: Record<string, string>) {
   }
 
   return tags[tag] || tags[pascalCase(tag)] || tags[kebabCase(node.tag)] || tag
+}
+
+function ignoreTag(tag: string) {
+  // Checks if input tag is an html tag or
+  const isCustomEl = (typeof tag === 'string')
+    ? customElements.has(tag)
+    : false
+  return isCustomEl || htmlTags.has(tag)
 }
 </script>

@@ -1,5 +1,5 @@
 // Ref https://github.com/sindresorhus/html-tags/blob/v3.2.0/html-tags.json
-export default [
+export default new Set([
   'a',
   'abbr',
   'address',
@@ -117,4 +117,4 @@ export default [
   'var',
   'video',
   'wbr',
-]
+])

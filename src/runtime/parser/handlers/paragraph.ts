@@ -9,7 +9,7 @@ export default function paragraph(state: State, node: Paragraph) {
   if (node.children && node.children[0] && node.children[0].type === 'html') {
     const tagName = kebabCase(getTagName(node.children[0].value) || 'div')
     // Unwrap if component
-    if (!htmlTags.includes(tagName)) {
+    if (!htmlTags.has(tagName)) {
       return state.all(node)
     }
   }
