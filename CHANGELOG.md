@@ -1,6 +1,29 @@
 # Changelog
 
 
+## v0.20.0
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.19.2...v0.20.0)
+
+### 🚀 Enhancements
+
+- Introduce `mdc.componenets.customElements` ([#444](https://github.com/nuxt-content/mdc/pull/444))
+
+### 🩹 Fixes
+
+- Call `mdc:configSources` after all modules have run ([#455](https://github.com/nuxt-content/mdc/pull/455))
+
+### 🏡 Chore
+
+- Upgrade deps ([ded01e9](https://github.com/nuxt-content/mdc/commit/ded01e9))
+- Upgrade deps ([6113f84](https://github.com/nuxt-content/mdc/commit/6113f84))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+- Ari Gestetner ([@Ariges770](https://github.com/Ariges770))
+- Daniel Roe ([@danielroe](https://github.com/danielroe))
+
 ## v0.19.2
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.19.1...v0.19.2)
