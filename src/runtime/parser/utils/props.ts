@@ -67,6 +67,10 @@ export const validateProps = (type: string, props?: Record<string, any>) => {
   }
   props = Object.fromEntries(
     Object.entries(props).filter(([name, value]) => {
+      // remove duplicate props `:name` and `name`
+      if (props[`:${name}`]) {
+        return false
+      }
       const isValid = validateProp(name, value)
 
       if (!isValid) {
