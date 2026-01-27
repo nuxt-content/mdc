@@ -2,6 +2,12 @@
  * Parses the value defined next to 3 back ticks
  * in a codeblock and set line-highlights or
  * filename from it
+ *
+ * Supports icon syntax: [filename|icon|position]
+ * Examples:
+ *   [Script|logos:python|right] - filename with icon on right
+ *   [Script|logos:python] - filename with icon on left (default)
+ *   [|logos:python|right] - icon only, no filename
  */
 export function parseThematicBlock(lang: string) {
   /**
@@ -13,6 +19,8 @@ export function parseThematicBlock(lang: string) {
       highlights: undefined,
       filename: undefined,
       meta: undefined,
+      icon: undefined,
+      iconPosition: undefined,
     }
   }
 
@@ -26,11 +34,32 @@ export function parseThematicBlock(lang: string) {
     .replace(filenameMatches?.[0] ?? '', '')
     .trim()
 
-  // Process filename to handle backslashes correctly
-  let filename = undefined
+  // Process filename and extract icon syntax
+  let filename: string | undefined
+  let icon: string | undefined
+  let iconPosition: 'left' | 'right' | undefined
+
   if (filenameMatches?.[1]) {
-    // Only unescape special regex characters but preserve path backslashes
-    filename = filenameMatches[1].replace(/\\([[\]{}().*+?^$|])/g, '$1')
+    const bracketContent = filenameMatches[1]
+
+    // Check if it contains pipe delimiter for icon syntax
+    if (bracketContent.includes('|')) {
+      const parts = bracketContent.split('|')
+      // [filename|icon] or [filename|icon|position]
+      const rawFilename = parts[0]?.trim()
+      const rawIcon = parts[1]?.trim()
+      const rawPosition = parts[2]?.trim()
+
+      filename = rawFilename || undefined
+      icon = rawIcon || undefined
+      if (rawPosition === 'left' || rawPosition === 'right') {
+        iconPosition = rawPosition
+      }
+    }
+    else {
+      // Only unescape special regex characters but preserve path backslashes
+      filename = bracketContent.replace(/\\([[\]{}().*+?^$|])/g, '$1')
+    }
   }
 
   return {
@@ -39,6 +68,8 @@ export function parseThematicBlock(lang: string) {
     // https://github.com/nuxt/content/pull/2169
     filename,
     meta,
+    icon,
+    iconPosition,
   }
 }
 

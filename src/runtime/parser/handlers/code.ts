@@ -6,7 +6,7 @@ import { parseThematicBlock } from './utils'
 
 export default (state: State, node: Code) => {
   const lang = (node.lang || '') + ' ' + (node.meta || '')
-  const { language = 'text', highlights, filename, meta } = parseThematicBlock(lang)
+  const { language = 'text', highlights, filename, meta, icon, iconPosition } = parseThematicBlock(lang)
   const value = node.value ? detab(node.value + '\n') : ''
 
   // Create `<code>`.
@@ -32,6 +32,8 @@ export default (state: State, node: Code) => {
     highlights,
     meta,
     code: value,
+    icon,
+    iconPosition,
   }
 
   if (language) {
