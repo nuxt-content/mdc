@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.20.1
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.20.0...v0.20.1)
+
+### 🩹 Fixes
+
+- **parser:** Remove duplicate props `:name` ~ `name` ([deb07c8](https://github.com/nuxt-content/mdc/commit/deb07c8))
+- Types ([f82fed2](https://github.com/nuxt-content/mdc/commit/f82fed2))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+
 ## v0.20.0
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.19.2...v0.20.0)
