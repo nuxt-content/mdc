@@ -20,6 +20,15 @@ async function main(mdc: string) {
   return ast // [!code --]
 }
 \`\`\`
+
+Code block with icon:
+\`\`\`python [Script|logos:python|right]
+print("Hello, World!")
+\`\`\`
+
+\`\`\`javascript [app.js|logos:javascript]
+console.log("Hello!")
+\`\`\`
 `
 
 export const markdownFeatures = `
