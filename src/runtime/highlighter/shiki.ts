@@ -75,7 +75,7 @@ export function createShikiHighlighter({
     return configs
   }
 
-  const highlighter: Highlighter = async (code, lang, theme, options = {}) => {
+  const highlighter: Highlighter = async (code, _lang, theme, options = {}) => {
     const {
       shiki,
       addClassToHast,
@@ -83,6 +83,8 @@ export function createShikiHighlighter({
       isSpecialTheme,
       transformers: baseTransformers,
     } = await getShiki()
+
+    const lang = _lang.toLowerCase()
 
     const codeToHastOptions: Partial<CodeToHastOptions<string, string>> = {
       defaultColor: false,
