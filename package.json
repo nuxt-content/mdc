@@ -121,7 +121,7 @@
     "@nuxt/ui": "^4.3.0",
     "@nuxtjs/mdc": "link:.",
     "@types/node": "^25.0.8",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.0",
     "nuxt": "^4.2.2",
     "rehype": "^13.0.2",
     "release-it": "^19.2.3",
