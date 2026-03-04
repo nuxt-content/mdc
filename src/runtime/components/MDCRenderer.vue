@@ -195,7 +195,7 @@ function _renderNode(node: MDCNode, h: CreateElement, options: MDCRenderOptions,
 
   // Prevent script execution by converting dangerous tags to pre tags
   // This security check can be bypassed by Prose components.
-  if (dangerousTags.includes(renderTag)) {
+  if (dangerousTags.includes(pascalCase(renderTag).toLowerCase())) {
     return h(
       'pre',
       { class: 'mdc-renderer-dangerous-tag' },
