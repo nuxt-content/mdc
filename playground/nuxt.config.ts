@@ -19,6 +19,7 @@ export default defineNuxtConfig({
       shikiEngine: 'oniguruma',
       preload: [
         'sql',
+        'python',
       ],
     },
   },
