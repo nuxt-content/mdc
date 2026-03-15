@@ -210,6 +210,7 @@ export default defineNuxtModule<ModuleOptions>({
         'unist-util-visit', // from runtime/highlighter/rehype.ts
         'unified', // deps by all the plugins
         'debug', // deps by many libraries but it's not an ESM
+        'extend', // transitive dep of unified, CJS-only
       ]
       const exclude = [
         '@nuxtjs/mdc', // package itself, it's a build time module
