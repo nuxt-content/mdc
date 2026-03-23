@@ -125,7 +125,7 @@
     "nuxt": "^4.2.2",
     "rehype": "^13.0.2",
     "release-it": "^19.2.3",
-    "typescript": "5.9.3",
+    "typescript": "6.0.2",
     "vitest": "^4.0.17",
     "vue-tsc": "^3.2.2"
   },
