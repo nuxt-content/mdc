@@ -7,6 +7,7 @@ import type { ModuleOptions } from './types'
 import { registerMDCSlotTransformer } from './utils/vue-mdc-slot'
 import * as templates from './templates'
 import { addWasmSupport } from './utils'
+import type { NitroConfig } from 'nitropack'
 
 export type * from './types'
 
@@ -96,6 +97,8 @@ export default defineNuxtModule<ModuleOptions>({
       options.rehypePlugins.highlight.options ||= {}
     }
 
+    // @ts-expect-error nitro options are not typed
+    const nitroOptions = nuxt.options.nitro as NitroConfig
     const registerTemplate: typeof addTemplate = (options) => {
       const name = (options as any).filename.replace(/\.m?js$/, '')
       const alias = '#' + name
@@ -104,14 +107,14 @@ export default defineNuxtModule<ModuleOptions>({
         write: true, // Write to disk for Nitro to consume
       })
 
-      nuxt.options.nitro.alias ||= {}
-      nuxt.options.nitro.externals ||= {}
-      nuxt.options.nitro.externals.inline ||= []
+      nitroOptions.alias ||= {}
+      nitroOptions.externals ||= {}
+      nitroOptions.externals.inline ||= []
 
       nuxt.options.alias[alias] = results.dst
-      nuxt.options.nitro.alias[alias] = nuxt.options.alias[alias]
-      nuxt.options.nitro.externals.inline.push(nuxt.options.alias[alias])
-      nuxt.options.nitro.externals.inline.push(alias)
+      nitroOptions.alias[alias] = nuxt.options.alias[alias]
+      nitroOptions.externals.inline.push(nuxt.options.alias[alias])
+      nitroOptions.externals.inline.push(alias)
       return results as any
     }
 
@@ -148,9 +151,9 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     // Add highlighter
-    const nitroPreset = nuxt.options.nitro.preset as string || process.env.NITRO_PRESET || process.env.SERVER_PRESET || ''
+    const nitroPreset = nitroOptions.preset as string || process.env.NITRO_PRESET || process.env.SERVER_PRESET || ''
     const useWasmAssets = !nuxt.options.dev && (
-      !!nuxt.options.nitro.experimental?.wasm
+      !!nitroOptions.experimental?.wasm
       || ['cloudflare-pages', 'cloudflare-module', 'cloudflare'].includes(nitroPreset)
     )
     registerTemplate({
@@ -298,6 +301,7 @@ declare module '@nuxt/schema' {
   }
 
   interface ConfigSchema {
+    // @ts-expect-error duplicate definition
     runtimeConfig: {
       public?: {
         mdc: {
