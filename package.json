@@ -129,6 +129,9 @@
     "vitest": "^4.1.2",
     "vue-tsc": "^3.2.6"
   },
+  "resolutions": {
+    "mkdist": "2.3.0"
+  },
   "packageManager": "pnpm@10.33.0",
   "release-it": {
     "git": {
