@@ -84,7 +84,7 @@ export function createShikiHighlighter({
       transformers: baseTransformers,
     } = await getShiki()
 
-    const lang = _lang?.toLowerCase()
+    let lang = _lang?.toLowerCase()
 
     const codeToHastOptions: Partial<CodeToHastOptions<string, string>> = {
       defaultColor: false,
