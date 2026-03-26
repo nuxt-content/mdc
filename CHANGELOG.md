@@ -1,6 +1,29 @@
 # Changelog
 
 
+## v0.21.0
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.20.2...v0.21.0)
+
+### 🩹 Fixes
+
+- Don't memoise configs, and allow external modules to call `mdc:configSources` ([#471](https://github.com/nuxt-content/mdc/pull/471))
+- Normalize lang ([#459](https://github.com/nuxt-content/mdc/pull/459))
+- **cache:** Fix issue where value watch could get out of sync ([#385](https://github.com/nuxt-content/mdc/pull/385))
+
+### 🏡 Chore
+
+- Upgrade deps ([930318c](https://github.com/nuxt-content/mdc/commit/930318c))
+- Remove mkdist resolution ([344ee69](https://github.com/nuxt-content/mdc/commit/344ee69))
+- Keep mkdist@2.3.0 ([8881f62](https://github.com/nuxt-content/mdc/commit/8881f62))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+- Chris Towles <chris.towles@gmail.com>
+- Juls0730 ([@juls0730](https://github.com/juls0730))
+- Daniel Roe ([@danielroe](https://github.com/danielroe))
+
 ## v0.20.2
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.20.1...v0.20.2)
