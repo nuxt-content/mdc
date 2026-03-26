@@ -31,7 +31,6 @@ export function createShikiHighlighter({
   engine,
 }: CreateShikiHighlighterOptions = {}): Highlighter {
   let shiki: ReturnType<typeof _getShiki> | undefined
-  let configs: Promise<MdcConfig[]> | undefined
 
   async function _getShiki() {
     const { createHighlighterCore, addClassToHast, isSpecialLang, isSpecialTheme } = await import('@shikijs/core')
@@ -69,10 +68,7 @@ export function createShikiHighlighter({
   }
 
   async function getConfigs() {
-    if (!configs) {
-      configs = Promise.resolve(getMdcConfigs?.() || [])
-    }
-    return configs
+    return getMdcConfigs?.() || []
   }
 
   const highlighter: Highlighter = async (code, lang, theme, options = {}) => {

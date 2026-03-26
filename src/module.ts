@@ -117,18 +117,27 @@ export default defineNuxtModule<ModuleOptions>({
 
     // mdc.config.ts support
     const mdcConfigs: string[] = []
+    const fileConfigs: string[] = []
     for (const layer of nuxt.options._layers) {
       let path = resolve(layer.config.srcDir, 'mdc.config.ts')
       if (fs.existsSync(path)) {
-        mdcConfigs.push(path)
+        fileConfigs.push(path)
       }
       else {
         path = resolve(layer.config.srcDir, 'mdc.config.js')
         if (fs.existsSync(path)) {
-          mdcConfigs.push(path)
+          fileConfigs.push(path)
         }
       }
     }
+
+    // Register file-based configs as a hook listener so they are included
+    // whenever mdc:configSources is fired, not just from modules:done.
+    nuxt.hook('mdc:configSources', (configs) => {
+      for (const path of fileConfigs) {
+        if (!configs.includes(path)) configs.push(path)
+      }
+    })
 
     nuxt.hook('modules:done', () => nuxt.callHook('mdc:configSources', mdcConfigs))
 
