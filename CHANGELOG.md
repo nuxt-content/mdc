@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.21.1
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.21.0...v0.21.1)
+
+### 🏡 Chore
+
+- Updgrade & add missing `@shikijs/engine-javascript` dependency ([f4f3b58](https://github.com/nuxt-content/mdc/commit/f4f3b58))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+
 ## v0.21.0
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.20.2...v0.21.0)
