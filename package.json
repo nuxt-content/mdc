@@ -70,6 +70,7 @@
   "dependencies": {
     "@nuxt/kit": "^4.4.2",
     "@shikijs/core": "^4.0.2",
+    "@shikijs/engine-javascript": "^4.0.2",
     "@shikijs/langs": "^4.0.2",
     "@shikijs/themes": "^4.0.2",
     "@shikijs/transformers": "^4.0.2",
