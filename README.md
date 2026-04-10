@@ -7,6 +7,15 @@
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
+> [!IMPORTANT]
+> **`@nuxtjs/mdc` is being deprecated in favor of [Comark](https://comark.dev).**
+>
+> [Comark](https://comark.dev) is the successor to MDC — it is faster, AI-friendly, and no longer bound to Vue or Nuxt. You can use it with **Svelte**, **Vue**, **React**, or any other framework.
+>
+> Your existing markdown files are compatible — no content changes needed.
+>
+> **[Migration Guide: from MDC to Comark](https://comark.dev/kb/migration-from-mdc)**
+
 MDC supercharges regular Markdown to write documents interacting deeply with any Vue component. MDC stands for MarkDown Components.
 
 - [✨ &nbsp;Release Notes](https://github.com/nuxt-content/mdc/releases)
