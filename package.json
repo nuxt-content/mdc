@@ -76,7 +76,7 @@
     "@shikijs/transformers": "^4.0.2",
     "@types/hast": "^3.0.4",
     "@types/mdast": "^4.0.4",
-    "@vue/compiler-core": "^3.5.31",
+    "@vue/compiler-core": "^3.5.32",
     "consola": "^3.4.2",
     "debug": "^4.4.3",
     "defu": "^6.1.4",
@@ -118,20 +118,20 @@
     "@nuxt/eslint-config": "^1.15.2",
     "@nuxt/module-builder": "^1.0.2",
     "@nuxt/schema": "^4.4.2",
-    "@nuxt/test-utils": "^4.0.0",
-    "@nuxt/ui": "^4.6.0",
+    "@nuxt/test-utils": "^4.0.2",
+    "@nuxt/ui": "^4.6.1",
     "@nuxtjs/mdc": "link:.",
-    "@types/node": "^25.5.0",
-    "eslint": "^10.1.0",
+    "@types/node": "^25.6.0",
+    "eslint": "^10.2.0",
     "nuxt": "^4.4.2",
     "rehype": "^13.0.2",
     "release-it": "^19.2.4",
     "typescript": "6.0.2",
-    "vitest": "^4.1.2",
+    "vitest": "^4.1.4",
     "vue-tsc": "^3.2.6"
   },
   "resolutions": {
-    "mkdist": "2.3.0"
+    "mkdist": "2.4.1"
   },
   "packageManager": "pnpm@10.33.0",
   "release-it": {
