@@ -135,7 +135,7 @@ Consider the following component with a named slot:
 ```html [Alert.vue]
 <template>
   <div class="alert">
-    <slot name="slot1"><slot />
+    <slot name="slot1"></slot>
   </div>
 </template>
 ```
@@ -169,7 +169,7 @@ In particular, **slot markers (for named slots) must not be indented relative to
 ::
 ```
 
-> [!note]
+> [!NOTE]
 > When using default (unnamed) slots, content can still render, but if indented it may be parsed as a code block and end up wrapped in a `<pre>`.
 
 It's recommended to keep `#slotName` and slot content aligned with the opening `::my-component` line (no extra indentation inside the container).
