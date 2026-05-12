@@ -125,7 +125,7 @@
     "eslint": "^10.3.0",
     "nuxt": "^4.4.5",
     "rehype": "^13.0.2",
-    "release-it": "^19.2.4",
+    "release-it": "^20.0.1",
     "typescript": "6.0.3",
     "vitest": "^4.1.6",
     "vue-tsc": "^3.2.8"
