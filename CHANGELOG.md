@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.22.0
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.21.1...v0.22.0)
+
+### 📖 Documentation
+
+- Add Comark migration guide in README ([595fe77](https://github.com/nuxt-content/mdc/commit/595fe77))
+
+### 🏡 Chore
+
+- Upgrade deps ([b3de9fc](https://github.com/nuxt-content/mdc/commit/b3de9fc))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+
 ## v0.21.1
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.21.0...v0.21.1)
