@@ -133,7 +133,7 @@
   "resolutions": {
     "mkdist": "2.3.0"
   },
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@11.1.2",
   "release-it": {
     "git": {
       "commitMessage": "chore(release): release v${version}"
