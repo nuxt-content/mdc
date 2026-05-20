@@ -1,2 +1,11 @@
 packages:
   - playground
+
+shamefullyHoist: true
+strictPeerDependencies: false
+
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  unrs-resolver: true
+  vue-demi: false
