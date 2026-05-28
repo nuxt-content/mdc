@@ -210,20 +210,21 @@ export default defineNuxtModule<ModuleOptions>({
       },
     })
 
+    const viteOptimizeDepsInclude = await resolveViteOptimizeDeps(createResolver(nuxt.options.rootDir), [
+      'remark-gfm', // from runtime/parser/index.ts
+      'remark-emoji', // from runtime/parser/index.ts
+      'remark-mdc', // from runtime/parser/index.ts
+      'remark-rehype', // from runtime/parser/index.ts
+      'rehype-raw', // from runtime/parser/index.ts
+      'parse5', // transitive deps of rehype
+      'unist-util-visit', // from runtime/highlighter/rehype.ts
+      'unified', // deps by all the plugins
+      'debug', // deps by many libraries but it's not an ESM
+      'extend', // transitive dep of unified, CJS-only
+    ])
+
     // Update Vite optimizeDeps
     extendViteConfig((config) => {
-      const include = [
-        'remark-gfm', // from runtime/parser/index.ts
-        'remark-emoji', // from runtime/parser/index.ts
-        'remark-mdc', // from runtime/parser/index.ts
-        'remark-rehype', // from runtime/parser/index.ts
-        'rehype-raw', // from runtime/parser/index.ts
-        'parse5', // transitive deps of rehype
-        'unist-util-visit', // from runtime/highlighter/rehype.ts
-        'unified', // deps by all the plugins
-        'debug', // deps by many libraries but it's not an ESM
-        'extend', // transitive dep of unified, CJS-only
-      ]
       const exclude = [
         '@nuxtjs/mdc', // package itself, it's a build time module
       ]
@@ -231,7 +232,7 @@ export default defineNuxtModule<ModuleOptions>({
       config.optimizeDeps.exclude ||= []
       config.optimizeDeps.include ||= []
 
-      for (const pkg of include) {
+      for (const pkg of viteOptimizeDepsInclude) {
         if (!config.optimizeDeps.include.includes(pkg)) {
           config.optimizeDeps.include.push('@nuxtjs/mdc > ' + pkg)
         }
@@ -281,6 +282,22 @@ function resolveOptions(options: ModuleOptions) {
       options.highlight.langs.push(...options.highlight.preload as any || [])
     }
   }
+}
+
+async function resolveViteOptimizeDeps(resolver: ReturnType<typeof createResolver>, deps: string[]) {
+  const resolvedDeps: string[] = []
+
+  for (const dep of deps) {
+    try {
+      await resolver.resolvePath(dep)
+      resolvedDeps.push(dep)
+    }
+    catch {
+      // Skip unresolved optional/transitive deps to avoid Vite optimizeDeps warnings.
+    }
+  }
+
+  return resolvedDeps
 }
 
 declare module '@nuxt/schema' {
