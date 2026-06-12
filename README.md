@@ -124,6 +124,56 @@ It is the default behavior of markdown to wrap every text inside a paragraph. MD
 </template>
 ```
 
+### Slots in MDC components
+
+When using your own components in Markdown (`::my-component ... ::`), **indentation inside the container matters**. 
+
+For the renderer to work as expected, it's important that the indentation of the content nested *within* `::my-component ... ::` aligns with the indentation of the `::my-component` line itself.
+
+Consider the following component with a named slot: 
+
+```html [Alert.vue]
+<template>
+  <div class="alert">
+    <slot name="slot1"></slot>
+  </div>
+</template>
+```
+
+#### ✅ Indenting the whole container block is OK
+
+Both these work fine (in either default or named slots):
+
+```md [markdown.md]
+::alert
+#slot1
+slot-content
+::
+```
+
+```md [markdown.md]
+  ::alert
+  #slot1
+  slot-content
+  ::
+```
+
+#### ⚠️ But indenting *within* the container can break things
+
+In particular, **slot markers (for named slots) must not be indented relative to the `::my-component` line**. If the `#slotName` line (or its content) is further indented, MDC may fail to detect the slot and the content won’t render as expected:
+
+```md [markdown.md]
+::alert
+  #slot1
+  slot-content
+::
+```
+
+> [!NOTE]
+> When using default (unnamed) slots, content can still render, but if indented it may be parsed as a code block and end up wrapped in a `<pre>`.
+
+It's recommended to keep `#slotName` and slot content aligned with the opening `::my-component` line (no extra indentation inside the container).
+
 ### Prose Components
 
 Prose components are a list of components that will be rendered instead of regular HTML tags. For example, instead of rendering a `<p>` tag, `@nuxtjs/mdc` renders a `<ProseP>` component. This is useful when you want to add extra features to your markdown files. For example, you can add a `copy` button to your code blocks.
