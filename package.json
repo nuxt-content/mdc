@@ -131,9 +131,9 @@
     "vue-tsc": "^3.3.4"
   },
   "resolutions": {
-    "mkdist": "2.3.0"
+    "mkdist": "2.4.1"
   },
-  "packageManager": "pnpm@11.5.2",
+  "packageManager": "pnpm@11.6.0",
   "release-it": {
     "git": {
       "commitMessage": "chore(release): release v${version}"
