@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest'
 import { parseMarkdown } from '../utils/parser'
-import type { MDCElement } from '../../src/types'
+import type { MDCElement, MDCNode } from '../../src/types'
 import { validateProp } from '../../src/runtime/parser/utils/props'
 
 const md = `\
@@ -67,4 +67,44 @@ it('XSS payloads with HTML entities should be caught', async () => {
       expect(Object.keys(props)).toHaveLength(0)
     }
   }
+})
+
+it('should block xlink:href on SVG anchor elements', async () => {
+  const { body } = await parseMarkdown(`\
+<svg viewBox="0 0 10 10">
+  <a xlink:href="javascript:alert(1)">click</a>
+</svg>
+`.trim())
+
+  const svg = body.children[0] as MDCElement
+  const a = svg.children?.find((c): c is MDCElement => (c as MDCElement).tag === 'a')
+
+  expect(a).toBeDefined()
+  expect((a as MDCElement).props?.xLinkHref).toBeUndefined()
+})
+
+it('should block data:text/html on iframe src', async () => {
+  const { body } = await parseMarkdown(`\
+<iframe src="data:text/html,<script>alert(1)</script>"></iframe>
+`.trim())
+
+  const iframe = body.children[0] as MDCElement
+  expect(iframe.props?.src).toBeUndefined()
+})
+
+it('should block data:text/html on anchor href', async () => {
+  const { body } = await parseMarkdown(`\
+<a href="data:text/html,<script>alert(1)</script>">click</a>
+`.trim())
+
+  const p = body.children[0] as MDCElement
+  const a = (p.children?.[0] as MDCElement)
+  expect(a.props?.href).toBeUndefined()
+})
+
+it('should allow safe xlink:href values', async () => {
+  expect(validateProp('xlinkhref', 'https://example.com')).toBe(true)
+  expect(validateProp('xLinkHref', 'https://example.com')).toBe(true)
+  expect(validateProp('xlink:href', 'https://example.com')).toBe(true)
+  expect(validateProp('xlinkhref', '/relative/path')).toBe(true)
 })
