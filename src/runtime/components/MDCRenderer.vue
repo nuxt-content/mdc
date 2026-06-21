@@ -8,6 +8,7 @@ import type { MDCElement, MDCNode, MDCRoot, MDCData, MDCRenderOptions } from '@n
 import htmlTags from '../parser/utils/html-tags-list'
 import { flatUnwrap, nodeTextContent } from '../utils/node'
 import { pick } from '../utils'
+import { validateProps } from '../parser/utils/props'
 
 type CreateElement = typeof h
 
@@ -143,12 +144,29 @@ export default defineComponent({
 
     const meta = { ...data, tags, $route: route, runtimeData, updateRuntimeData }
 
+    // Tags that are dangerous when selected as root component from frontmatter
+    const unsafeRootTags = [...dangerousTags, 'iframe']
+
+    // Determine root tag, sanitizing when derived from frontmatter
+    const rootTag = (tag || meta.component?.name || meta.component || 'div') as string
+    const isRootFromContent = !tag && !!meta.component
+
+    // Sanitize dangerous root tags from frontmatter
+    const sanitizedTag = isRootFromContent && unsafeRootTags.includes(pascalCase(rootTag).toLowerCase())
+      ? 'div'
+      : rootTag
+
+    // Sanitize root props from frontmatter (block event handlers, srcdoc, formaction, etc.)
+    const sanitizedProps = isRootFromContent && meta.component?.props
+      ? validateProps(sanitizedTag, meta.component.props)
+      : meta.component?.props
+
     // Resolve root component
-    const component: string | ConcreteComponent = tag !== false ? resolveComponentInstance((tag || meta.component?.name || meta.component || 'div') as string) : undefined
+    const component: string | ConcreteComponent = tag !== false ? resolveComponentInstance(sanitizedTag) : undefined
 
     // Return Vue component
     return component
-      ? h(component as any, { ...meta.component?.props, class: ctx.class, ...this.$attrs, key: contentKey }, { default: defaultSlotRenderer })
+      ? h(component as any, { ...sanitizedProps, class: ctx.class, ...this.$attrs, key: contentKey }, { default: defaultSlotRenderer })
       : defaultSlotRenderer?.()
 
     function defaultSlotRenderer() {

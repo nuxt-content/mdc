@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest'
 import { parseMarkdown } from '../utils/parser'
 import type { MDCElement } from '../../src/types'
-import { validateProp } from '../../src/runtime/parser/utils/props'
+import { validateProp, validateProps } from '../../src/runtime/parser/utils/props'
 
 const md = `\
 <!-- anchol link -->
@@ -67,4 +67,15 @@ it('XSS payloads with HTML entities should be caught', async () => {
       expect(Object.keys(props)).toHaveLength(0)
     }
   }
+})
+
+it('validateProps should strip srcdoc from root div', async () => {
+  const sanitized = validateProps('div', { srcdoc: '<script>alert(1)</script>', class: 'foo' })
+  expect(sanitized.srcdoc).toBeUndefined()
+  expect(sanitized.class).toBe('foo')
+})
+
+it('validateProps should strip all props from unsafe tags', async () => {
+  const sanitized = validateProps('object', { data: 'http://evil.com', width: '100', height: '100' })
+  expect(Object.keys(sanitized)).toHaveLength(0)
 })
