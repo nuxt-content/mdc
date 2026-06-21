@@ -51,4 +51,21 @@ describe('ssr', async () => {
     // Safe component should still render normally
     expect(html).toContain('Hello')
   })
+
+  it('validates frontmatter POC: iframe srcdoc root is blocked by renderer', async () => {
+    const html = await $fetch('/xss/xss-frontmatter-poc')
+
+    // Working payload: frontmatter root iframe with srcdoc — iframe replaced with div, srcdoc stripped
+    const workingSection = html.match(/<p id="working-payload">(.*?)<\/p>/)?.[1] || ''
+    expect(workingSection).not.toContain('<iframe')
+    expect(workingSection).not.toMatch(/srcdoc\s*=/)
+    expect(workingSection).toContain('safe')
+
+    // Negative control: raw iframe in body AST (bypasses compiler validation) —
+    // the iframe renders because propsToData doesn't re-validate; the compiler
+    // is what strips srcdoc from child nodes. This confirms the fix targets
+    // the frontmatter root path specifically, not breaking child-node behavior.
+    const controlSection = html.match(/<p id="negative-control">(.*?)<\/p>/)?.[1] || ''
+    expect(controlSection).toContain('<iframe')
+  })
 })
