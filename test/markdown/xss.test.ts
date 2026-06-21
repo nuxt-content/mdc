@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest'
 import { parseMarkdown } from '../utils/parser'
-import type { MDCElement, MDCNode } from '../../src/types'
+import type { MDCElement } from '../../src/types'
 import { validateProp } from '../../src/runtime/parser/utils/props'
 
 const md = `\
@@ -98,7 +98,7 @@ it('should block data:text/html on anchor href', async () => {
 `.trim())
 
   const p = body.children[0] as MDCElement
-  const a = (p.children?.[0] as MDCElement)
+  const a = p.children?.[0] as MDCElement
   expect(a.props?.href).toBeUndefined()
 })
 
