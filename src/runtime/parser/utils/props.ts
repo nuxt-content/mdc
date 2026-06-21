@@ -30,7 +30,7 @@ function isAnchorLinkAllowed(value: string) {
       return true
     }
 
-    if (unsafeLinkPrefix.some(prefix => url.protocol.toLowerCase().startsWith(prefix))) {
+    if (unsafeLinkPrefix.some(prefix => url.href.toLowerCase().startsWith(prefix))) {
       return false
     }
   }
@@ -47,7 +47,7 @@ export const validateProp = (attribute: string, value: string) => {
     return false
   }
 
-  if (attribute === 'href' || attribute === 'src') {
+  if (attribute === 'href' || attribute === 'src' || attribute === 'xlinkhref') {
     return isAnchorLinkAllowed(value)
   }
 
