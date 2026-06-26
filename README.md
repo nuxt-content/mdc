@@ -1,6 +1,6 @@
 ![Nuxt MDC](https://github.com/nuxt-content/mdc/assets/904724/ce6aa142-0820-4bcc-988c-a926cf03f0a5)
 
-# Nuxt MDC s
+# Nuxt MDC
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
@@ -568,7 +568,6 @@ Copyright (c) NuxtLabs
 
 [license-src]: https://img.shields.io/github/license/nuxt-content/mdc.svg?style=flat&colorA=18181B&colorB=28CF8D
 [license-href]: https://github.com/nuxt-content/mdc/blob/main/LICENSE
-
 
 [nuxt-src]: https://img.shields.io/badge/Nuxt-18181B?logo=nuxt.js
 [nuxt-href]: https://nuxt.com
