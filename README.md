@@ -1,6 +1,6 @@
 ![Nuxt MDC](https://github.com/nuxt-content/mdc/assets/904724/ce6aa142-0820-4bcc-988c-a926cf03f0a5)
 
-# Nuxt MDC
+# Nuxt MDC s
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
