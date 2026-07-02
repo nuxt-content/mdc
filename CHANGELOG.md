@@ -1,6 +1,29 @@
 # Changelog
 
 
+## v0.22.1
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.22.0...v0.22.1)
+
+### 🩹 Fixes
+
+- Validate xlink:href and fix data:text/html prefix check in sanitizer ([#491](https://github.com/nuxt-content/mdc/pull/491))
+
+### 📖 Documentation
+
+- Clarify indentation when using components ([#482](https://github.com/nuxt-content/mdc/pull/482))
+
+### 🏡 Chore
+
+- Upgrade to pnpm 11 ([#486](https://github.com/nuxt-content/mdc/pull/486))
+- Upgrade deps ([4f01e82](https://github.com/nuxt-content/mdc/commit/4f01e82))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+- Farnabaz 01 <farnabaz.hand@gmail.com>
+- Dawit ([@oneminch](https://github.com/oneminch))
+
 ## v0.22.0
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.21.1...v0.22.0)
