@@ -43,6 +43,18 @@ it('XSS generic payloads', async () => {
   }
 })
 
+it('should strip plain javascript: href from anchor elements', async () => {
+  const { body } = await parseMarkdown(`\
+<a href="javascript:alert(1)">this gets sanitized, yay!</a>
+`.trim())
+
+  const p = body.children[0] as MDCElement
+  const a = p.children?.[0] as MDCElement
+
+  expect(a.tag).toBe('a')
+  expect(a.props?.href).toBeUndefined()
+})
+
 it('XSS payloads with HTML entities should be caught', async () => {
   const md = `\
 ## XSS payloads with HTML entities
@@ -107,4 +119,58 @@ it('should allow safe xlink:href values', async () => {
   expect(validateProp('xLinkHref', 'https://example.com')).toBe(true)
   expect(validateProp('xlink:href', 'https://example.com')).toBe(true)
   expect(validateProp('xlinkhref', '/relative/path')).toBe(true)
+})
+
+it('should block Vue directive-form event handlers and unsafe URLs', () => {
+  const payloads: Array<[string, string]> = [
+    [':onerror', 'alert(1)'],
+    [':onload', 'alert(1)'],
+    ['v-bind:onerror', 'alert(1)'],
+    ['@click', 'alert(1)'],
+    ['v-on:click', 'alert(1)'],
+    [':href', 'javascript:alert(1)'],
+    ['v-bind:href', 'javascript:alert(1)'],
+    [':src', 'javascript:alert(1)'],
+    ['v-bind:src', 'data:text/html,<script>alert(1)</script>'],
+  ]
+
+  for (const [attribute, value] of payloads) {
+    expect(validateProp(attribute, value), `${attribute}="${value}"`).toBe(false)
+  }
+})
+
+it('should allow safe Vue directive-form href and src values', () => {
+  expect(validateProp(':href', 'https://example.com')).toBe(true)
+  expect(validateProp('v-bind:href', '/relative/path')).toBe(true)
+  expect(validateProp(':src', 'https://example.com/image.png')).toBe(true)
+})
+
+it('should strip Vue directive-form unsafe attributes from parsed HTML', async () => {
+  const { body } = await parseMarkdown(`\
+<p>
+  <img :src="x" :onerror="alert(1)">
+  <a :href="javascript:alert(1)">click</a>
+  <svg :onload="alert(1)"></svg>
+</p>
+`.trim())
+
+  const p = body.children[0] as MDCElement
+  const img = p.children?.find((c): c is MDCElement => (c as MDCElement).tag === 'img')
+  const a = p.children?.find((c): c is MDCElement => (c as MDCElement).tag === 'a')
+  const svg = p.children?.find((c): c is MDCElement => (c as MDCElement).tag === 'svg')
+
+  expect(img?.props?.onerror ?? img?.props?.[':onerror']).toBeUndefined()
+  expect(a?.props?.href ?? a?.props?.[':href']).toBeUndefined()
+  expect(svg?.props?.onload ?? svg?.props?.[':onload']).toBeUndefined()
+})
+
+it('should strip v-bind directive-form unsafe attributes from parsed HTML', async () => {
+  const { body } = await parseMarkdown(`\
+<a v-bind:href="javascript:alert(1)">click</a>
+`.trim())
+
+  const p = body.children[0] as MDCElement
+  const a = p.children?.[0] as MDCElement
+
+  expect(a.props?.href ?? a.props?.['v-bind:href']).toBeUndefined()
 })
