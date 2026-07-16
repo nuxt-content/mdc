@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.22.2
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.22.1...v0.22.2)
+
+### 🩹 Fixes
+
+- **security:** All attributes should validate ([#496](https://github.com/nuxt-content/mdc/pull/496))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+
 ## v0.22.1
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.22.0...v0.22.1)
