@@ -43,6 +43,8 @@ function isAnchorLinkAllowed(value: string) {
 
 export const validateProp = (attribute: string, value: string) => {
   attribute = attribute.toLowerCase()
+    .replace(/^(:|v-bind:)/, '')
+    .replace(/^(@|v-on:)/, 'on')
   if (attribute.startsWith('on') || unsafeAttributes.includes(attribute)) {
     return false
   }
