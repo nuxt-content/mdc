@@ -24,6 +24,7 @@ export default function inlineCode(state: State, node: InlineCode & { attributes
     classes.push('language-' + language)
   }
 
+  // @ts-expect-error className type is string[] on hast new version
   result.properties.className = classes.join(' ')
 
   state.patch(node, result)
