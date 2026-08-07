@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.23.0
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.22.2...v0.23.0)
+
+### 🩹 Fixes
+
+- Vite 8 alias resolution supression ([#501](https://github.com/nuxt-content/mdc/pull/501))
+
+### 🏡 Chore
+
+- Upgrade deps ([51a20ed](https://github.com/nuxt-content/mdc/commit/51a20ed))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+- Adam DeHaven ([@adamdehaven](https://github.com/adamdehaven))
+
 ## v0.22.2
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.22.1...v0.22.2)
