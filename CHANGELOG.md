@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.23.1
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.23.0...v0.23.1)
+
+### 🩹 Fixes
+
+- Freeze `@nuxt/module-builder@1.0.2` ([4ff9bd8](https://github.com/nuxt-content/mdc/commit/4ff9bd8))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+
 ## v0.23.0
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.22.2...v0.23.0)
