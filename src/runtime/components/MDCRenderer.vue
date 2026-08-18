@@ -3,7 +3,7 @@ import { h, resolveComponent as vueResolveComponent, reactive, watch, Text, Comm
 import destr from 'destr'
 import { kebabCase, pascalCase } from 'scule'
 import { find, html } from 'property-information'
-import type { VNode, ConcreteComponent, PropType, DefineComponent } from 'vue'
+import type { VNode, ConcreteComponent, PropType, DefineComponent, Component } from 'vue'
 import type { MDCElement, MDCNode, MDCRoot, MDCData, MDCRenderOptions } from '@nuxtjs/mdc'
 import htmlTags from '../parser/utils/html-tags-list'
 import { flatUnwrap, nodeTextContent } from '../utils/node'
@@ -402,6 +402,10 @@ function propsToDataRxBind(key: string, value: any, data: any, documentMeta: MDC
   return data
 }
 
+// `defineAsyncComponent` returns a new component type on every call, and this runs from the
+// render function. Caching keeps the type identity stable so Vue patches instead of remounting.
+const asyncWrappedComponents = new WeakMap<object, Component>()
+
 /**
  * Resolve component if it's a Vue component
  */
@@ -422,7 +426,12 @@ const resolveComponentInstance = (component: any) => {
     }
 
     if ('setup' in _component) {
-      return defineAsyncComponent(() => new Promise(resolve => resolve(_component)))
+      let asyncComponent = asyncWrappedComponents.get(_component)
+      if (!asyncComponent) {
+        asyncComponent = defineAsyncComponent(() => new Promise(resolve => resolve(_component)))
+        asyncWrappedComponents.set(_component, asyncComponent)
+      }
+      return asyncComponent
     }
 
     return _component
