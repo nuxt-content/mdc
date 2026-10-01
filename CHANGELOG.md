@@ -1,6 +1,25 @@
 # Changelog
 
 
+## v0.23.2
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.23.1...v0.23.2)
+
+### 🩹 Fixes
+
+- Sanitize root component tags and props from markdown frontmatter ([#492](https://github.com/nuxt-content/mdc/pull/492))
+- Respect user-defined nodeTransforms from nuxt.config ([#510](https://github.com/nuxt-content/mdc/pull/510))
+
+### 🏡 Chore
+
+- Upgrade deps ([#511](https://github.com/nuxt-content/mdc/pull/511))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+- Dostufffancy ([@dostufffancy](https://github.com/dostufffancy))
+- Farnabaz 01 <01@farnabaz.dev>
+
 ## v0.23.1
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.23.0...v0.23.1)
