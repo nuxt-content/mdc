@@ -110,7 +110,7 @@
     "unified": "^11.0.5",
     "unist-builder": "^4.0.0",
     "unist-util-visit": "^5.1.0",
-    "unwasm": "^0.5.3",
+    "unwasm": "^0.6.0",
     "vfile": "^6.0.3"
   },
   "devDependencies": {
@@ -125,15 +125,15 @@
     "eslint": "^10.11.0",
     "nuxt": "^4.5.2",
     "rehype": "^13.0.2",
-    "release-it": "^20.2.0",
+    "release-it": "^20.2.1",
     "typescript": "6.0.3",
-    "vitest": "^4.1.10",
+    "vitest": "^4.1.11",
     "vue-tsc": "^3.3.11"
   },
   "resolutions": {
-    "mkdist": "2.3.0"
+    "mkdist": "2.4.1"
   },
-  "packageManager": "pnpm@11.20.0",
+  "packageManager": "pnpm@11.28.2",
   "release-it": {
     "git": {
       "commitMessage": "chore(release): release v${version}"
