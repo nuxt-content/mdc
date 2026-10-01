@@ -8,6 +8,7 @@ import type { MDCElement, MDCNode, MDCRoot, MDCData, MDCRenderOptions } from '@n
 import htmlTags from '../parser/utils/html-tags-list'
 import { flatUnwrap, nodeTextContent } from '../utils/node'
 import { pick } from '../utils'
+import { validateProps } from '../parser/utils/props'
 
 type CreateElement = typeof h
 
@@ -29,6 +30,12 @@ const proseComponentMap = Object.fromEntries(['p', 'a', 'blockquote', 'code', 'p
  * Tags that are dangerous and should be rendered as plain text
  */
 const dangerousTags = ['script', 'base']
+
+/**
+ * Tags that must not be used as root element when it comes from content (`data.component`)
+ */
+const unsafeRootTags = new Set([...dangerousTags, 'iframe', 'frame', 'frameset', 'embed', 'object', 'style', 'link', 'meta'])
+const rxSafeTagName = /^[a-z][\w-]*$/i
 
 export default defineComponent({
   name: 'MDCRenderer',
@@ -132,7 +139,23 @@ export default defineComponent({
       }, runtimeData)
     }
 
-    return { tags, contentKey, route, runtimeData, updateRuntimeData }
+    // `data.component` usually comes from frontmatter, so unlike the `tag` prop it is untrusted
+    const root = computed(() => {
+      const component = props.data?.component
+      let tag = props.tag || component?.name || component || 'div'
+      let rootProps = component?.props
+      if (!props.tag && component) {
+        if (typeof tag === 'string' && (!rxSafeTagName.test(tag) || unsafeRootTags.has(tag.toLowerCase()))) {
+          tag = 'div'
+        }
+        if (rootProps) {
+          rootProps = validateProps(typeof tag === 'string' ? tag : '', rootProps)
+        }
+      }
+      return { tag, props: rootProps }
+    })
+
+    return { tags, contentKey, route, runtimeData, updateRuntimeData, root }
   },
   render(ctx: any) {
     const { tags, tag, body, data, contentKey, route, unwrap, runtimeData, updateRuntimeData } = ctx
@@ -143,12 +166,14 @@ export default defineComponent({
 
     const meta = { ...data, tags, $route: route, runtimeData, updateRuntimeData }
 
+    const { tag: rootTag, props: rootProps } = ctx.root
+
     // Resolve root component
-    const component: string | ConcreteComponent = tag !== false ? resolveComponentInstance((tag || meta.component?.name || meta.component || 'div') as string) : undefined
+    const component: string | ConcreteComponent = tag !== false ? resolveComponentInstance(rootTag) : undefined
 
     // Return Vue component
     return component
-      ? h(component as any, { ...meta.component?.props, class: ctx.class, ...this.$attrs, key: contentKey }, { default: defaultSlotRenderer })
+      ? h(component as any, { ...rootProps, class: ctx.class, ...this.$attrs, key: contentKey }, { default: defaultSlotRenderer })
       : defaultSlotRenderer?.()
 
     function defaultSlotRenderer() {

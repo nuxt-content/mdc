@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest'
 import { parseMarkdown } from '../utils/parser'
 import type { MDCElement } from '../../src/types'
-import { validateProp } from '../../src/runtime/parser/utils/props'
+import { validateProp, validateProps } from '../../src/runtime/parser/utils/props'
 
 const md = `\
 <!-- anchol link -->
@@ -59,7 +59,7 @@ it('XSS payloads with HTML entities should be caught', async () => {
   const md = `\
 ## XSS payloads with HTML entities
 <a href="jav&#x09;ascript:alert('XSS');">Click Me 1</a>
-<a href="jav&#x0A;ascript:alert('XSS');">Click Me 2</a>  
+<a href="jav&#x0A;ascript:alert('XSS');">Click Me 2</a>
 <a href="jav&#10;ascript:alert('XSS');">Click Me 3</a>
 <a href="&#x09;javascript:alert('XSS');">Click Me 4</a>
 
@@ -137,6 +137,29 @@ it('should block Vue directive-form event handlers and unsafe URLs', () => {
   for (const [attribute, value] of payloads) {
     expect(validateProp(attribute, value), `${attribute}="${value}"`).toBe(false)
   }
+})
+
+it('should block innerHTML and Vue .prop/^attr modifier bypasses', () => {
+  const payloads: Array<[string, string]> = [
+    ['innerHTML', '<img src=x onerror=alert(1)>'],
+    [':innerHTML', '<img src=x onerror=alert(1)>'],
+    ['outerHTML', '<img src=x onerror=alert(1)>'],
+    ['.innerHTML', '<img src=x onerror=alert(1)>'],
+    [':.innerHTML', '<img src=x onerror=alert(1)>'],
+    ['.srcdoc', '<script>alert(1)</script>'],
+    ['^srcdoc', '<script>alert(1)</script>'],
+    ['.onclick', 'alert(1)'],
+    ['^href', 'javascript:alert(1)'],
+    ['action', 'javascript:alert(1)'],
+  ]
+
+  for (const [attribute, value] of payloads) {
+    expect(validateProp(attribute, value), `${attribute}="${value}"`).toBe(false)
+  }
+})
+
+it('should drop all props of unsafe tags regardless of case', () => {
+  expect(validateProps('OBJECT', { data: 'javascript:alert(1)' })).toEqual({})
 })
 
 it('should allow safe Vue directive-form href and src values', () => {

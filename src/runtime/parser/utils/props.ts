@@ -5,6 +5,8 @@ export const unsafeTags = [
 export const unsafeAttributes = [
   'srcdoc',
   'formaction',
+  'innerhtml',
+  'outerhtml',
 ]
 
 export const unsafeLinkPrefix = [
@@ -43,13 +45,14 @@ function isAnchorLinkAllowed(value: string) {
 
 export const validateProp = (attribute: string, value: string) => {
   attribute = attribute.toLowerCase()
-    .replace(/^(:|v-bind:)/, '')
+    // `:`/`v-bind:` bindings, then Vue's `.prop` / `^attr` force modifiers
+    .replace(/^(?::|v-bind:)?[.^]?/, '')
     .replace(/^(@|v-on:)/, 'on')
   if (attribute.startsWith('on') || unsafeAttributes.includes(attribute)) {
     return false
   }
 
-  if (attribute === 'href' || attribute === 'src' || attribute === 'xlinkhref') {
+  if (attribute === 'href' || attribute === 'src' || attribute === 'xlinkhref' || attribute === 'action') {
     return isAnchorLinkAllowed(value)
   }
 
@@ -60,7 +63,7 @@ export const validateProps = (type: string, props?: Record<string, any>) => {
   /**
    * If the tag is marked as unsafe, drop all props
    */
-  if (unsafeTags.includes(type)) {
+  if (unsafeTags.includes(type.toLowerCase())) {
     return {}
   }
 
