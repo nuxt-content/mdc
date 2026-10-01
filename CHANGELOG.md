@@ -1,6 +1,70 @@
 # Changelog
 
 
+## v0.23.1
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.23.0...v0.23.1)
+
+### 🩹 Fixes
+
+- Freeze `@nuxt/module-builder@1.0.2` ([4ff9bd8](https://github.com/nuxt-content/mdc/commit/4ff9bd8))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+
+## v0.23.0
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.22.2...v0.23.0)
+
+### 🩹 Fixes
+
+- Vite 8 alias resolution supression ([#501](https://github.com/nuxt-content/mdc/pull/501))
+
+### 🏡 Chore
+
+- Upgrade deps ([51a20ed](https://github.com/nuxt-content/mdc/commit/51a20ed))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+- Adam DeHaven ([@adamdehaven](https://github.com/adamdehaven))
+
+## v0.22.2
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.22.1...v0.22.2)
+
+### 🩹 Fixes
+
+- **security:** All attributes should validate ([#496](https://github.com/nuxt-content/mdc/pull/496))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+
+## v0.22.1
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.22.0...v0.22.1)
+
+### 🩹 Fixes
+
+- Validate xlink:href and fix data:text/html prefix check in sanitizer ([#491](https://github.com/nuxt-content/mdc/pull/491))
+
+### 📖 Documentation
+
+- Clarify indentation when using components ([#482](https://github.com/nuxt-content/mdc/pull/482))
+
+### 🏡 Chore
+
+- Upgrade to pnpm 11 ([#486](https://github.com/nuxt-content/mdc/pull/486))
+- Upgrade deps ([4f01e82](https://github.com/nuxt-content/mdc/commit/4f01e82))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+- Farnabaz 01 <farnabaz.hand@gmail.com>
+- Dawit ([@oneminch](https://github.com/oneminch))
+
 ## v0.22.0
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.21.1...v0.22.0)

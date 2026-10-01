@@ -136,7 +136,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Register file-based configs as a hook listener so they are included
     // whenever mdc:configSources is fired, not just from modules:done.
-    nuxt.hook('mdc:configSources', (configs) => {
+    nuxt.hook('mdc:configSources', (configs: string[]) => {
       for (const path of fileConfigs) {
         if (!configs.includes(path)) configs.push(path)
       }

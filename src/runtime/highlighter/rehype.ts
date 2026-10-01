@@ -39,6 +39,7 @@ export function rehypeHighlight(opts: RehypeHighlightOption) {
           },
         )
           .then(({ tree, className, style, inlineStyle }) => {
+            // @ts-expect-error className type is string[] on hast new version
             _node.properties!.className = ((_node.properties!.className || '') + ' ' + className).trim()
             _node.properties!.style = ((_node.properties!.style || '') + ' ' + inlineStyle).trim()
 

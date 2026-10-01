@@ -16,10 +16,18 @@ let generatedMdcConfigs: MdcConfig[] | undefined
 
 export const createParseProcessor = async (inlineOptions: MDCParseOptions = {}) => {
   if (!moduleOptions) {
-    moduleOptions = await import('#mdc-imports' /* @vite-ignore */).catch(() => ({}))
+    // `#mdc-imports` / `#mdc-configs` resolve to the Nuxt-generated templates via the module's
+    // registered Vite/Nitro aliases. The `.catch()` is the fallback for environments where they are
+    // not registered (standalone / plain Node), where the import simply rejects.
+    //
+    // Do NOT re-add `/* @vite-ignore */` here. Under Vite 8 it suppresses alias resolution, so the
+    // bare `#mdc-imports` specifier is shipped to the client where it fails at runtime with
+    // "Failed to resolve module specifier" and dispatches a `vite:preloadError`. (Vite 7 resolved
+    // the alias even with the ignore comment, which is why this only regressed on Vite 8.)
+    moduleOptions = await import('#mdc-imports').catch(() => ({}))
   }
   if (!generatedMdcConfigs) {
-    generatedMdcConfigs = await import('#mdc-configs' /* @vite-ignore */)
+    generatedMdcConfigs = await import('#mdc-configs')
       .then(r => r.getMdcConfigs())
       .catch(() => ([]))
   }
