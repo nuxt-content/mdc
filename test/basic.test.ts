@@ -30,42 +30,41 @@ describe('ssr', async () => {
     expect(res2).toEqual({ tag: 'div', isCustomElement: false })
   })
 
-  it('blocks dangerous root tags from frontmatter', async () => {
-    const html = await $fetch('/xss/xss-root-component')
+  describe('root component from frontmatter', () => {
+    const render = async (frontmatter: string) => {
+      const html = await $fetch<string>('/xss/root-component', { query: { md: `---\n${frontmatter}\n---\n\nroot content` } })
+      // only the rendered markup; the payload legitimately appears (escaped) in the serialized `__NUXT_DATA__`
+      return html.slice(html.indexOf('id="root-component"'), html.indexOf('<div id="teleports"'))
+    }
 
-    // Extract the content inside #dangerous-iframe
-    const iframeSection = html.match(/<p id="dangerous-iframe">(.*?)<\/p>/)?.[1] || ''
-    expect(iframeSection).not.toContain('<iframe')
-    expect(iframeSection).toContain('iframe test')
+    it('replaces dangerous root tags with div and strips unsafe props', async () => {
+      const html = await render('component:\n  name: iframe\n  props:\n    srcdoc: "<script>alert(1)</script>"')
+      expect(html).not.toContain('<iframe')
+      expect(html).not.toContain('srcdoc')
+      expect(html).toContain('root content')
+    })
 
-    // Extract the content inside #dangerous-script
-    const scriptSection = html.match(/<p id="dangerous-script">(.*?)<\/p>/)?.[1] || ''
-    expect(scriptSection).not.toContain('<script')
-    expect(scriptSection).toContain('script test')
+    it('blocks script root tag', async () => {
+      const html = await render('component:\n  name: script\n  props:\n    src: "https://evil.example/x.js"')
+      expect(html).not.toContain('<script src')
+      expect(html).toContain('root content')
+    })
 
-    // srcdoc prop should be stripped everywhere
-    expect(iframeSection).not.toMatch(/srcdoc\s*=/)
-    const srcdocSection = html.match(/<p id="dangerous-srcdoc">(.*?)<\/p>/)?.[1] || ''
-    expect(srcdocSection).not.toMatch(/srcdoc\s*=/)
+    it('strips innerHTML from root props', async () => {
+      const html = await render('component:\n  name: div\n  props:\n    innerHTML: "<img src=x onerror=alert(1)>"\n    .innerHTML: "<img src=x onerror=alert(2)>"')
+      expect(html).not.toContain('onerror')
+      expect(html).toContain('root content')
+    })
 
-    // Safe component should still render normally
-    expect(html).toContain('Hello')
-  })
+    it('rejects malformed root tag names', async () => {
+      const html = await render('component:\n  name: "div><img src=x onerror=alert(1)"')
+      expect(html).not.toContain('onerror')
+      expect(html).toContain('root content')
+    })
 
-  it('validates frontmatter POC: iframe srcdoc root is blocked by renderer', async () => {
-    const html = await $fetch('/xss/xss-frontmatter-poc')
-
-    // Working payload: frontmatter root iframe with srcdoc — iframe replaced with div, srcdoc stripped
-    const workingSection = html.match(/<p id="working-payload">(.*?)<\/p>/)?.[1] || ''
-    expect(workingSection).not.toContain('<iframe')
-    expect(workingSection).not.toMatch(/srcdoc\s*=/)
-    expect(workingSection).toContain('safe')
-
-    // Negative control: raw iframe in body AST (bypasses compiler validation) —
-    // the iframe renders because propsToData doesn't re-validate; the compiler
-    // is what strips srcdoc from child nodes. This confirms the fix targets
-    // the frontmatter root path specifically, not breaking child-node behavior.
-    const controlSection = html.match(/<p id="negative-control">(.*?)<\/p>/)?.[1] || ''
-    expect(controlSection).toContain('<iframe')
+    it('keeps safe root tags and props', async () => {
+      const html = await render('component:\n  name: section\n  props:\n    id: safe-root')
+      expect(html).toMatch(/<section[^>]*id="safe-root"/)
+    })
   })
 })
