@@ -12,3 +12,13 @@ allowBuilds:
 
 minimumReleaseAgeExclude:
   - remark-mdc@3.11.1
+  - '@iconify-json/lucide@1.2.138'
+  - '@shikijs/core@4.5.0'
+  - '@shikijs/engine-javascript@4.5.0'
+  - '@shikijs/engine-oniguruma@4.5.0'
+  - '@shikijs/langs@4.5.0'
+  - '@shikijs/primitive@4.5.0'
+  - '@shikijs/themes@4.5.0'
+  - '@shikijs/transformers@4.5.0'
+  - '@shikijs/types@4.5.0'
+  - shiki@4.5.0
