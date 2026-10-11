@@ -110,7 +110,7 @@
     "unified": "^11.0.5",
     "unist-builder": "^4.0.0",
     "unist-util-visit": "^5.1.0",
-    "unwasm": "^0.5.3",
+    "unwasm": "^0.6.1",
     "vfile": "^6.0.3"
   },
   "devDependencies": {
@@ -118,22 +118,22 @@
     "@nuxt/eslint-config": "^1.17.0",
     "@nuxt/module-builder": "1.0.3",
     "@nuxt/schema": "^4.5.2",
-    "@nuxt/test-utils": "^4.3.2",
-    "@nuxt/ui": "^4.11.2",
+    "@nuxt/test-utils": "^4.3.3",
+    "@nuxt/ui": "^4.11.3",
     "@nuxtjs/mdc": "link:.",
-    "@types/node": "^26.6.3",
-    "eslint": "^10.11.0",
+    "@types/node": "^26.6.5",
+    "eslint": "^10.12.0",
     "nuxt": "^4.5.2",
     "rehype": "^13.0.2",
-    "release-it": "^21.1.0",
+    "release-it": "^21.1.1",
     "typescript": "6.0.3",
-    "vitest": "^4.1.10",
-    "vue-tsc": "^3.3.11"
+    "vitest": "^4.1.11",
+    "vue-tsc": "^3.3.12"
   },
   "resolutions": {
-    "mkdist": "2.3.0"
+    "mkdist": "2.4.1"
   },
-  "packageManager": "pnpm@12.8.1",
+  "packageManager": "pnpm@12.11.2",
   "release-it": {
     "git": {
       "commitMessage": "chore(release): release v${version}"
