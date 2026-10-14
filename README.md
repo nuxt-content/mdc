@@ -94,6 +94,57 @@ const { data: ast } = await useAsyncData('markdown', () => parseMarkdown('::aler
 </template>
 ```
 
+#### Dynamic props with interpolation
+
+Props with a `:` or `v-bind:` prefix can mix fixed text with `{{ }}` placeholders. MDC resolves each placeholder from your document data and passes the result to the component as a string.
+
+```md
+---
+snippet:
+  api:
+    id: abc123
+---
+
+::button
+---
+:to: https://apiconsole.example.com/repository/{{ snippet.api.id }}
+:title: Version {{ snippet.api.version || '1.0' }}
+---
+Open the API console
+::
+
+:a[Read more]{:href="/docs/{{ doc.slug }}/overview"}
+```
+
+A placeholder is a dotted path, with optional indexes (`items[0].name`) and an optional default (`|| 'text'`). It reads document data, ancestor props and slot props, but not sibling props. Use `$doc.key` when an ancestor prop hides a document key.
+
+- **Values:** strings, finite numbers and booleans are inserted as text. Anything else uses the default, or an empty string.
+- **Whitespace:** line breaks and tabs in inserted values become one space. Other control characters are removed.
+- **No encoding:** values are not URL-encoded or escaped. Only insert data you trust, especially for props like `id` or `name`.
+- **Safe lookups:** placeholders read own properties only and never call functions. They cannot read `__proto__`, `constructor`, `prototype`, `$route`, `runtimeData`, `updateRuntimeData` or a root `tags`.
+- **Stale values:** like `{{ }}` in text, placeholders read the data passed to the renderer. A value changed only through `v-model` can look stale.
+- **Quoting:** in YAML, quote values that start with `{{`, or that contain `: ` or ` #`. Inline attributes must always be quoted.
+
+##### Left as written
+
+MDC does not interpolate these values. They keep their original behavior, so a typo stays visible as literal text:
+
+- Props without the `:` prefix, and the props `key`, `ref`, `is` and `style`.
+- Malformed templates, such as `{{ a | upper }}` or `{{ a + b }}`.
+- Templates over 4096 characters, 16 placeholders, or 256 characters per placeholder.
+- JSON arrays and objects. MDC passes YAML arrays and objects as JSON, so `items: ["{{ x }}"]` stays an array.
+
+##### Removed with a warning
+
+MDC checks the final string and removes the prop when it is unsafe. The console warning names the prop only. This happens when:
+
+- the result is over 4096 characters.
+- the prop name is unsafe, such as a name that starts with `on`, or `srcdoc`.
+- the value starts with an unsafe link prefix in any prop, such as `javascript:`, `vbscript:` or `data:text/html`.
+- an `href`, `src`, `action` or `xlinkHref` value has a malformed `%` sequence.
+
+**Existing content:** a `:` prop that already contained a well-formed `{{ }}` now interpolates. For literal braces, use a prop without the `:` prefix.
+
 ### `<MDCSlot>`
 
 This component is a replacement for Vue's `<slot/>` component, specifically designed for MDC. Using this component, you can render a component's children while removing one or multiple wrapping elements. In the below example, the Alert component receives text and its default slot (children). But if the component renders this slot using the normal `<slot/>`, it will render a `<p>` element around the text.
