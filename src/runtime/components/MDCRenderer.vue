@@ -9,6 +9,7 @@ import htmlTags from '../parser/utils/html-tags-list'
 import { flatUnwrap, nodeTextContent } from '../utils/node'
 import { pick } from '../utils'
 import { validateProps } from '../parser/utils/props'
+import { isInterpolatedProp, resolvePropTemplate } from '../utils/template'
 
 type CreateElement = typeof h
 
@@ -233,7 +234,7 @@ function _renderNode(node: MDCNode, h: CreateElement, options: MDCRenderOptions,
     component.tag = originalTag
   }
 
-  const props = propsToData(node, documentMeta)
+  const props = propsToData(node, documentMeta, parentScope)
   if (keyInParent) {
     props.key = keyInParent
   }
@@ -337,8 +338,16 @@ function renderBinding(node: MDCElement, h: CreateElement, documentMeta: MDCData
 /**
  * Create component data from node props.
  */
-function propsToData(node: MDCElement, documentMeta: MDCData) {
+function propsToData(node: MDCElement, documentMeta: MDCData, parentScope: Record<string, unknown> = {}) {
   const { tag = '', props = {} } = node
+  // Same scope as `renderBinding`. Built once per node, and only when a template needs it.
+  let scope: Record<string, unknown> | undefined
+  const getScope = () => scope ??= {
+    ...documentMeta.runtimeData,
+    ...parentScope,
+    $document: documentMeta,
+    $doc: documentMeta,
+  }
   return Object.keys(props).reduce(function (data, key) {
     // Ignore internal `__ignoreMap` prop.
     if (key === '__ignoreMap') {
@@ -364,7 +373,7 @@ function propsToData(node: MDCElement, documentMeta: MDCData) {
 
     // `:foo="bar"`, `v-bind:foo="bar"`
     if (rxBind.test(key)) {
-      return propsToDataRxBind(key, value, data, documentMeta)
+      return propsToDataRxBind(key, value, data, documentMeta, getScope)
     }
 
     const { attribute } = find(html, key)
@@ -421,8 +430,19 @@ function propsToDataRxOn(key: string, value: any, data: any, documentMeta: MDCDa
 /**
  * Handle single binding `v-bind:` and `:`
  */
-function propsToDataRxBind(key: string, value: any, data: any, documentMeta: MDCData) {
+function propsToDataRxBind(key: string, value: any, data: any, documentMeta: MDCData, getScope: () => Record<string, unknown>) {
   key = key.replace(rxBind, '')
+  if (isInterpolatedProp(key, value)) {
+    const result = resolvePropTemplate(value, getScope(), { attribute: key })
+    // Remove the key, so an earlier static value does not show.
+    if (result === undefined) {
+      Reflect.deleteProperty(data, key)
+    }
+    else {
+      data[key] = result
+    }
+    return data
+  }
   data[key] = evalInContext(value, documentMeta)
   return data
 }

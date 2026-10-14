@@ -18,10 +18,35 @@ export const unsafeLinkPrefix = [
   'data:text/css',
   'data:text/plain',
   'data:text/xml',
+  'data:application/xhtml+xml',
+  'data:application/xml',
 ]
 
-function isAnchorLinkAllowed(value: string) {
-  const decodedUrl = decodeURIComponent(value)
+/** Options for `isAnchorLinkAllowed`. */
+export interface AnchorLinkOptions {
+  /** Accept values that are not decodable or not a valid URL. Only unsafe schemes fail. Use it for props that are not links. */
+  lenient?: boolean
+}
+
+/**
+ * Check if a value is a safe link target.
+ *
+ * @param value - Link value to check.
+ * @param options - Check options.
+ */
+export function isAnchorLinkAllowed(value: string, options: AnchorLinkOptions = {}) {
+  const { lenient = false } = options
+  let decodedUrl = value
+  try {
+    decodedUrl = decodeURIComponent(value)
+  }
+  catch {
+    // Malformed encoding is unsafe in a link.
+    if (!lenient) {
+      return false
+    }
+  }
+
   const urlSanitized = decodedUrl.replace(/&#x([0-9a-f]+);?/gi, '')
     .replace(/&#(\d+);?/g, '')
     .replace(/&[a-z]+;?/gi, '')
@@ -32,12 +57,14 @@ function isAnchorLinkAllowed(value: string) {
       return true
     }
 
-    if (unsafeLinkPrefix.some(prefix => url.href.toLowerCase().startsWith(prefix))) {
+    // The media type parser ignores spaces after `data:`, so `data: text/html` is still HTML.
+    const href = url.href.toLowerCase().replace(/^data:\s+/, 'data:')
+    if (unsafeLinkPrefix.some(prefix => href.startsWith(prefix))) {
       return false
     }
   }
   catch {
-    return false
+    return lenient
   }
 
   return true

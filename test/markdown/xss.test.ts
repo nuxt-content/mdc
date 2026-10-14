@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest'
 import { parseMarkdown } from '../utils/parser'
 import type { MDCElement } from '../../src/types'
-import { validateProp, validateProps } from '../../src/runtime/parser/utils/props'
+import { isAnchorLinkAllowed, validateProp, validateProps } from '../../src/runtime/parser/utils/props'
 
 const md = `\
 <!-- anchol link -->
@@ -196,4 +196,51 @@ it('should strip v-bind directive-form unsafe attributes from parsed HTML', asyn
   const a = p.children?.[0] as MDCElement
 
   expect(a.props?.href ?? a.props?.['v-bind:href']).toBeUndefined()
+})
+
+it('should treat malformed percent-encoding in link attributes as unsafe', async () => {
+  expect(validateProp('href', '%')).toBe(false)
+  expect(validateProp('src', '/a/%E0%A4%A')).toBe(false)
+
+  const { body } = await parseMarkdown(':a{href="%"}\n\n[x](/%E0%A4%A)')
+  const inline = body.children[0] as MDCElement
+  const link = (body.children[1] as MDCElement).children?.[0] as MDCElement
+
+  expect(inline.props?.href).toBeUndefined()
+  expect(link.props?.href).toBeUndefined()
+})
+
+it('should support a lenient mode for non-link values', () => {
+  expect(isAnchorLinkAllowed('Save 50%', { lenient: true })).toBe(true)
+  expect(isAnchorLinkAllowed('http://', { lenient: true })).toBe(true)
+  expect(isAnchorLinkAllowed('Save 50%')).toBe(false)
+  expect(isAnchorLinkAllowed('javascript:alert(1)%', { lenient: true })).toBe(false)
+  expect(isAnchorLinkAllowed('data:text/html,x%', { lenient: true })).toBe(false)
+})
+
+it.each([
+  'data: text/html,<script>alert(1)</script>',
+  'data:  text/html,<script>alert(1)</script>',
+  'data:%20text/html,<script>alert(1)</script>',
+  'DATA: TEXT/HTML,<script>alert(1)</script>',
+  'data:\ttext/html,<script>alert(1)</script>',
+  'data: application/xhtml+xml,<html xmlns="http://www.w3.org/1999/xhtml"></html>',
+  'data:application/xhtml+xml,<html xmlns="http://www.w3.org/1999/xhtml"></html>',
+  'data:application/xml,<html xmlns="http://www.w3.org/1999/xhtml"></html>',
+])('should block script-capable data URLs, including whitespace after the colon: %j', (value) => {
+  for (const attribute of ['href', 'src', 'action', ':src', 'v-bind:href']) {
+    expect(validateProp(attribute, value)).toBe(false)
+  }
+})
+
+it('should keep allowing data image URLs', () => {
+  expect(validateProp('src', 'data:image/png;base64,iVBORw0KGgo=')).toBe(true)
+  expect(validateProp('src', 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>')).toBe(true)
+})
+
+it('should strip script-capable data URLs with whitespace from parsed content', async () => {
+  const { body } = await parseMarkdown(':iframe{src="data: text/html,<script>alert(1)</script>"}')
+  const iframe = body.children[0] as MDCElement
+
+  expect(iframe.props?.src).toBeUndefined()
 })
