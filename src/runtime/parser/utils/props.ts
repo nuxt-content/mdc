@@ -22,7 +22,10 @@ export const unsafeLinkPrefix = [
   'data:application/xml',
 ]
 
-/** Options for `isAnchorLinkAllowed`. */
+/**
+ * Options for `isAnchorLinkAllowed`.
+ * @internal
+ */
 export interface AnchorLinkOptions {
   /** Accept values that are not decodable or not a valid URL. Only unsafe schemes fail. Use it for props that are not links. */
   lenient?: boolean
@@ -33,6 +36,7 @@ export interface AnchorLinkOptions {
  *
  * @param value - Link value to check.
  * @param options - Check options.
+ * @internal
  */
 export function isAnchorLinkAllowed(value: string, options: AnchorLinkOptions = {}) {
   const { lenient = false } = options

@@ -134,8 +134,9 @@ describe('defaults', () => {
     expect(resolve('/{{a||\'d\'}}', {})).toBe('/d')
   })
 
-  it('strips control characters from a default', () => {
-    expect(resolve('/{{ a || \'x\ty\' }}', {})).toBe('/xy')
+  it('cleans control characters in a default like a value', () => {
+    expect(resolve('/{{ a || \'x\ty\' }}', {})).toBe('/x y')
+    expect(resolve('/{{ a || \'x\u0000y\' }}', {})).toBe('/xy')
   })
 })
 
@@ -370,9 +371,26 @@ describe('control characters', () => {
     expect(warn).toHaveBeenCalledTimes(1)
   })
 
-  it('strips control characters from a benign value', () => {
-    expect(resolve('/{{ a }}', { a: 'a\tb' })).toBe('/ab')
-    expect(resolve('/{{ a }}', { a: 'a\nb\u0000c\u007Fd\u001Fe' })).toBe('/abcde')
+  it('turns line breaks and tabs into one space', () => {
+    expect(resolve('{{ d }}', { d: 'Line one\nLine two' }, 'title')).toBe('Line one Line two')
+    expect(resolve('{{ d }}', { d: 'one\r\ntwo' }, 'aria-label')).toBe('one two')
+    expect(resolve('/{{ a }}', { a: 'a\tb' })).toBe('/a b')
+    expect(resolve('{{ x || \'a\nb\' }}', {}, 'title')).toBe('a b')
+  })
+
+  it('strips other control characters from a benign value', () => {
+    expect(resolve('/{{ a }}', { a: 'a\u0000b\u007Fc\u001Fd' })).toBe('/abcd')
+    expect(resolve('/{{ a }}', { a: 'a\nb\u0000c' })).toBe('/a bc')
+  })
+
+  it.each([
+    '\njavascript:alert(1)',
+    'java\n\tscript:alert(1)',
+    'java\r\nscript:alert(1)',
+    'vb\tscript:x',
+  ])('still drops a scheme hidden behind line breaks: %j', (value) => {
+    expect(resolve('{{ u }}', { u: value }, 'to')).toBeUndefined()
+    expect(resolve('{{ u }}', { u: value }, 'href')).toBeUndefined()
   })
 
   it('keeps non-control whitespace and unicode', () => {
@@ -630,5 +648,35 @@ describe('isInterpolatedProp keeps legacy values', () => {
 
   it('still drops a malformed template in resolvePropTemplate', () => {
     expect(resolve('Use {{ name | upper }}', {}, 'title')).toBeUndefined()
+  })
+})
+
+describe('path syntax', () => {
+  it.each([
+    ['unicode letters', '/{{ café }}', { café: 'z' }, '/z'],
+    ['non-latin keys', '/{{ 日本.名前 }}', { 日本: { 名前: 'n' } }, '/n'],
+    ['numeric dot segment', '/{{ a.0 }}', { a: ['first'] }, '/first'],
+    ['numeric segment in the middle', '/{{ a.1.b }}', { a: [{}, { b: 'x' }] }, '/x'],
+    ['numeric segment under $doc', '/{{ $doc.items.1 }}', { $doc: { items: ['a', 'b'] } }, '/b'],
+  ])('resolves %s', (_name, template, context, expected) => {
+    expect(resolve(template, context)).toBe(expected)
+  })
+
+  it.each([
+    ['numeric first segment', '{{ 1 }}'],
+    ['leading dot', '{{ .a }}'],
+    ['double dot', '{{ a..b }}'],
+    ['trailing dot', '{{ a. }}'],
+    ['bracket text index', '{{ a[b] }}'],
+    ['space in a path', '{{ a b }}'],
+  ])('rejects %s', (_name, template) => {
+    expect(resolve(template, { a: ['x'] })).toBeUndefined()
+  })
+
+  it('stays linear on long dotted paths', () => {
+    const start = performance.now()
+    expect(resolve(`{{ ${'a.'.repeat(120)}! }}`, {})).toBeUndefined()
+    expect(resolve(`{{ ${'é'.repeat(250)}! }}`, {})).toBeUndefined()
+    expect(performance.now() - start).toBeLessThan(500)
   })
 })

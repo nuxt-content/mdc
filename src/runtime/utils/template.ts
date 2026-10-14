@@ -1,15 +1,27 @@
 import { isAnchorLinkAllowed, validateProp } from '../parser/utils/props'
 
-/** Maximum length of a template and of the assembled output. */
+/**
+ * Maximum length of a template and of the assembled output.
+ * @internal
+ */
 export const MAX_TEMPLATE_LENGTH = 4096
 
-/** Maximum number of `{{ }}` bindings in one template. */
+/**
+ * Maximum number of `{{ }}` bindings in one template.
+ * @internal
+ */
 export const MAX_BINDINGS = 16
 
-/** Maximum length of the text between `{{` and `}}`. */
+/**
+ * Maximum length of the text between `{{` and `}}`.
+ * @internal
+ */
 export const MAX_BINDING_LENGTH = 256
 
-/** Options for `resolvePropTemplate`. */
+/**
+ * Options for `resolvePropTemplate`.
+ * @internal
+ */
 export interface ResolvePropTemplateOptions {
   /** Prop name without the `:` or `v-bind:` prefix. Used for validation and warnings. */
   attribute: string
@@ -18,18 +30,22 @@ export interface ResolvePropTemplateOptions {
 const RESERVED_ATTRIBUTES = ['key', 'ref', 'is', 'style']
 const BLOCKED_SEGMENTS = ['__proto__', 'constructor', 'prototype', '$route', 'runtimeData', 'updateRuntimeData']
 
-/** One anchored pattern with no nested quantifiers, so matching is linear. */
-const BINDING_PATTERN = /^([A-Z_$][\w$-]*(?:\.[A-Z_$][\w$-]*|\[\d+\])*)(?:[ \t]*\|\|[ \t]*(?:'([^']*)'|"([^"]*)"))?$/i
+/**
+ * One anchored pattern with no nested quantifiers, so matching is linear.
+ * The first segment cannot start with a digit. Later segments can, so `items.0` works.
+ */
+const BINDING_PATTERN = /^([\p{L}_$][\p{L}\p{N}_$-]*(?:\.[\p{L}\p{N}_$][\p{L}\p{N}_$-]*|\[\d+\])*)(?:[ \t]*\|\|[ \t]*(?:'([^']*)'|"([^"]*)"))?$/u
 
-/** Control characters allow scheme smuggling such as `java\tscript:`. */
 // eslint-disable-next-line no-control-regex
 const CONTROL_CHARACTERS = /[\u0000-\u001F\u007F]/g
+const LINE_BREAKS = /[\t\r\n]+/g
 
 /**
  * Check if a value is a string with a `{{` followed later by `}}`.
  * Runs in linear time.
  *
  * @param value - Value to check.
+ * @internal
  */
 export function hasTemplate(value: unknown): boolean {
   if (typeof value !== 'string') {
@@ -122,6 +138,7 @@ function parseTemplate(template: string): TemplatePart[] | undefined {
  *
  * @param attribute - Prop name without the `:` or `v-bind:` prefix.
  * @param value - Prop value.
+ * @internal
  */
 export function isInterpolatedProp(attribute: string, value: unknown): boolean {
   const name = attribute.toLowerCase().replace(/^[.^]/, '')
@@ -184,6 +201,7 @@ function drop(attribute: string): undefined {
  * @param context - Data used to resolve paths. The function does not change it.
  * @param options - Resolve options.
  * @returns The assembled string, or `undefined` when the prop must be dropped.
+ * @internal
  */
 export function resolvePropTemplate(
   template: string,
@@ -200,13 +218,18 @@ export function resolvePropTemplate(
   // Context data is not trusted. A getter or proxy trap can throw.
   try {
     let output = ''
+    // Browsers ignore line breaks and tabs in a URL, so `java\tscript:` is a script scheme.
+    // Check a second copy without any control character.
+    let compact = ''
     for (const part of parts) {
       if (typeof part === 'string') {
         output += part
+        compact += part
         continue
       }
       const value = resolvePath(part.path, context) ?? part.fallback
-      output += value.replace(CONTROL_CHARACTERS, '')
+      output += value.replace(LINE_BREAKS, ' ').replace(CONTROL_CHARACTERS, '')
+      compact += value.replace(CONTROL_CHARACTERS, '')
       // Stop early, so a huge value cannot grow the output.
       if (output.length > MAX_TEMPLATE_LENGTH) {
         return drop(attribute)
@@ -214,7 +237,9 @@ export function resolvePropTemplate(
     }
 
     // `validateProp` stays strict for link props. The scheme check is lenient so text such as `50%` survives.
-    if (!validateProp(attribute, output) || !isAnchorLinkAllowed(output, { lenient: true })) {
+    const safe = [output, compact].every(value =>
+      validateProp(attribute, value) && isAnchorLinkAllowed(value, { lenient: true }))
+    if (!safe) {
       return drop(attribute)
     }
     return output
