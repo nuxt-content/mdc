@@ -76,7 +76,7 @@
     "@shikijs/transformers": "^4.5.0",
     "@types/hast": "^3.0.5",
     "@types/mdast": "^4.0.4",
-    "@vue/compiler-core": "^3.5.43",
+    "@vue/compiler-core": "^3.5.44",
     "consola": "^3.4.2",
     "debug": "^4.4.3",
     "defu": "^6.1.7",
@@ -110,30 +110,30 @@
     "unified": "^11.0.5",
     "unist-builder": "^4.0.0",
     "unist-util-visit": "^5.1.0",
-    "unwasm": "^0.5.3",
+    "unwasm": "^0.6.2",
     "vfile": "^6.0.3"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^3.4.2",
+    "@nuxt/devtools": "^3.4.4",
     "@nuxt/eslint-config": "^1.17.0",
     "@nuxt/module-builder": "1.0.3",
     "@nuxt/schema": "^4.5.2",
-    "@nuxt/test-utils": "^4.3.2",
-    "@nuxt/ui": "^4.11.2",
+    "@nuxt/test-utils": "^4.3.4",
+    "@nuxt/ui": "^4.12.0",
     "@nuxtjs/mdc": "link:.",
-    "@types/node": "^26.6.3",
-    "eslint": "^10.11.0",
+    "@types/node": "^26.6.5",
+    "eslint": "^10.13.0",
     "nuxt": "^4.5.2",
     "rehype": "^13.0.2",
-    "release-it": "^21.1.0",
+    "release-it": "^21.1.1",
     "typescript": "6.0.3",
-    "vitest": "^4.1.10",
-    "vue-tsc": "^3.3.11"
+    "vitest": "^4.1.12",
+    "vue-tsc": "^3.3.13"
   },
   "resolutions": {
-    "mkdist": "2.3.0"
+    "mkdist": "2.4.1"
   },
-  "packageManager": "pnpm@12.8.1",
+  "packageManager": "pnpm@12.15.0",
   "release-it": {
     "git": {
       "commitMessage": "chore(release): release v${version}"
