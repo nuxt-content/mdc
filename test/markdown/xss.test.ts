@@ -197,3 +197,49 @@ it('should strip v-bind directive-form unsafe attributes from parsed HTML', asyn
 
   expect(a.props?.href ?? a.props?.['v-bind:href']).toBeUndefined()
 })
+
+it('should drop bound props that could be used as a component', async () => {
+  const { body } = await parseMarkdown(`\
+::comp{:as='{"template":"<b>x</b>"}' :is='["a"]' :tag='42' v-bind='{"as":{"template":"x"}}'}
+::
+
+::comp{:icon='{"extends":{"template":"<b>x</b>"}}' :items='[{"render":"x"}]' v-bind:config='{"SETUP":1}' :options='{"mixins":[]}' :value='{"ssrRender":"x"}'}
+::
+
+::comp{:icon='{"__v_isVNode":true,"type":"script"}' :items='[{"label":{"__v_skip":true}}]'}
+::
+
+::comp
+---
+icon:
+  extends:
+    template: "<b>x</b>"
+---
+::
+`)
+
+  for (const node of body.children) {
+    expect((node as MDCElement).props).toEqual({})
+  }
+})
+
+it('should keep string tags and data-valued bound props', async () => {
+  const { body } = await parseMarkdown(`\
+::comp{as="section" :is='"article"' :tag="path.to.value" :items='[{"label":"a"}]' :options='{"k":"v"}' v-bind='{"size":"lg"}'}
+::
+`)
+
+  expect((body.children[0] as MDCElement).props).toEqual({
+    'as': 'section',
+    ':is': '"article"',
+    ':tag': 'path.to.value',
+    ':items': '[{"label":"a"}]',
+    ':options': '{"k":"v"}',
+    'v-bind': '{"size":"lg"}',
+  })
+})
+
+it('should drop component-like root props from frontmatter', () => {
+  expect(validateProps('div', { as: { template: 'x' }, config: { nested: [{ extends: {} }] }, id: 'root', items: [{ label: 'a' }] }))
+    .toEqual({ id: 'root', items: [{ label: 'a' }] })
+})

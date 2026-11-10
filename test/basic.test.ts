@@ -67,4 +67,71 @@ describe('ssr', async () => {
       expect(html).toMatch(/<section[^>]*id="safe-root"/)
     })
   })
+
+  describe('component-like prop values', () => {
+    const template = '<b>{{ 7 * 191 }}</b>'
+    const render = async (md: string) => {
+      const html = await $fetch<string>('/xss/root-component', { query: { md } })
+      return html.slice(html.indexOf('id="root-component"'), html.indexOf('<div id="teleports"'))
+    }
+
+    it.each(['as', 'is', 'tag'])('does not compile a `template` object bound to `%s`', async (prop) => {
+      const html = await render(`::poly{:${prop}='{"template":"${template}"}'}\n::`)
+      expect(html).toContain('>poly<')
+      expect(html).not.toContain('1337')
+    })
+
+    it('does not compile a nested `extends` component object', async () => {
+      const html = await render(`::poly-icon{:icon='{"extends":{"template":"${template}"}}'}\n::`)
+      expect(html).toContain('icon')
+      expect(html).not.toContain('1337')
+    })
+
+    it('does not render a forged VNode object', async () => {
+      const vnode = '{"__v_isVNode":true,"type":"script","props":{"innerHTML":"globalThis.__MDC_XSS__=1"},"shapeFlag":1}'
+      const html = await render(`::poly-icon{:icon='${vnode}'}\n::`)
+      expect(html).toContain('icon')
+      expect(html).not.toContain('__MDC_XSS__')
+    })
+
+    it('does not compile a component object from YAML props', async () => {
+      const html = await render(`::poly-icon\n---\nicon:\n  extends:\n    template: "${template}"\n---\n::`)
+      expect(html).not.toContain('1337')
+    })
+
+    it('does not compile a component object spread with `v-bind`', async () => {
+      const html = await render(`::poly{v-bind='{"as":{"template":"${template}"}}'}\n::`)
+      expect(html).toContain('>poly<')
+      expect(html).not.toContain('1337')
+    })
+
+    it('does not compile a component object bound from frontmatter', async () => {
+      const html = await render(`---\npayload:\n  template: "${template}"\n---\n\n::poly{:as="payload"}\n::`)
+      expect(html).toContain('>poly<')
+      expect(html).not.toContain('1337')
+    })
+
+    it('does not compile a root component object from frontmatter', async () => {
+      const html = await render(`---\ncomponent:\n  template: "${template}"\n---\n\nroot content`)
+      expect(html).toContain('root content')
+      expect(html).not.toContain('1337')
+    })
+
+    it('does not compile a component object mapped in frontmatter', async () => {
+      const html = await render(`---\nmdc:\n  components:\n    p:\n      template: "${template}"\n---\n\nroot content`)
+      expect(html).toContain('root content')
+      expect(html).not.toContain('1337')
+    })
+
+    it('keeps string tags', async () => {
+      expect(await render('::poly{as="section"}\n::')).toContain('<section>poly</section>')
+      expect(await render('::poly{:as=\'"article"\'}\n::')).toContain('<article>poly</article>')
+    })
+
+    it('keeps object and array data props', async () => {
+      const html = await render('::poly-items{:items=\'[{"label":"a"}]\' :options=\'{"k":"v"}\'}\n::')
+      expect(html).toContain('<li>a</li>')
+      expect(html).toContain('data-options="{&quot;k&quot;:&quot;v&quot;}"')
+    })
+  })
 })
