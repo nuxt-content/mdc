@@ -206,6 +206,9 @@ it('should drop bound props that could be used as a component', async () => {
 ::comp{:icon='{"extends":{"template":"<b>x</b>"}}' :items='[{"render":"x"}]' v-bind:config='{"SETUP":1}' :options='{"mixins":[]}' :value='{"ssrRender":"x"}'}
 ::
 
+::comp{:icon='{"__v_isVNode":true,"type":"script"}' :items='[{"label":{"__v_skip":true}}]'}
+::
+
 ::comp
 ---
 icon:

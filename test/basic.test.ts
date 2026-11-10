@@ -87,6 +87,13 @@ describe('ssr', async () => {
       expect(html).not.toContain('1337')
     })
 
+    it('does not render a forged VNode object', async () => {
+      const vnode = '{"__v_isVNode":true,"type":"script","props":{"innerHTML":"globalThis.__MDC_XSS__=1"},"shapeFlag":1}'
+      const html = await render(`::poly-icon{:icon='${vnode}'}\n::`)
+      expect(html).toContain('icon')
+      expect(html).not.toContain('__MDC_XSS__')
+    })
+
     it('does not compile a component object from YAML props', async () => {
       const html = await render(`::poly-icon\n---\nicon:\n  extends:\n    template: "${template}"\n---\n::`)
       expect(html).not.toContain('1337')

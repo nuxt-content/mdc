@@ -55,8 +55,13 @@ const componentSelectors = ['as', 'is', 'tag']
 const componentOptionKeys = new Set(['template', 'render', 'ssrrender', 'setup', 'extends', 'mixins'])
 
 /**
- * Whether a prop value could make Vue treat it as a component:
- * `as` / `is` / `tag` must be strings, and no object at any depth may carry component options.
+ * Prefix of Vue's internal markers, such as `__v_isVNode`: an object with one is treated as a VNode or reactive value.
+ */
+const vueInternalKeyPrefix = '__v_'
+
+/**
+ * Whether a prop value could make Vue treat it as a component or VNode:
+ * `as` / `is` / `tag` must be strings, and no object at any depth may carry component options or Vue internal markers.
  */
 export const isComponentPropViolation = (attribute: string, value: unknown) => {
   if (componentSelectors.includes(normalizePropName(attribute)) && typeof value !== 'string') {
@@ -72,7 +77,8 @@ export const isComponentPropViolation = (attribute: string, value: unknown) => {
     }
     seen.add(current)
     for (const [key, item] of Object.entries(current)) {
-      if (!Array.isArray(current) && componentOptionKeys.has(key.toLowerCase())) {
+      const name = key.toLowerCase()
+      if (!Array.isArray(current) && (componentOptionKeys.has(name) || name.startsWith(vueInternalKeyPrefix))) {
         return true
       }
       pending.push(item)
