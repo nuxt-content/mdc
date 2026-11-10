@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.23.3
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.23.2...v0.23.3)
+
+### 🩹 Fixes
+
+- Restrict object values in bound props ([#520](https://github.com/nuxt-content/mdc/pull/520))
+
+### 🏡 Chore
+
+- Upgrade deps ([#522](https://github.com/nuxt-content/mdc/pull/522))
+
+### ❤️ Contributors
+
+- Farnabaz <farnabaz@gmail.com>
+- Sébastien Chopin <seb@nuxt.com>
+
 ## v0.23.2
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.23.1...v0.23.2)
