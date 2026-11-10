@@ -35,7 +35,6 @@ const props = defineProps({
 
 const refinedSrc = computed(() => {
   if (props.src?.startsWith('/') && !props.src.startsWith('//')) {
-    // @ts-expect-error runtime config is not typed
     const _base = withLeadingSlash(withTrailingSlash(useRuntimeConfig().app.baseURL))
     if (_base !== '/' && !props.src.startsWith(_base)) {
       return joinURL(_base, props.src)
