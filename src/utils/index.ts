@@ -1,10 +1,12 @@
 import { useNitro } from '@nuxt/kit'
 import type { Nuxt } from '@nuxt/schema'
+import type { Nitro } from 'nitropack'
 
 export function addWasmSupport(nuxt: Nuxt) {
   nuxt.hook('ready', () => {
-    const nitro = useNitro()
-    const _addWasmSupport = (_nitro: typeof nitro) => {
+    // `useNitro()` returns a fallback type unless a server builder registers its types
+    const nitro = useNitro() as unknown as Nitro
+    const _addWasmSupport = (_nitro: Nitro) => {
       if (nitro.options.experimental?.wasm) {
         return
       }

@@ -97,7 +97,6 @@ export default defineNuxtModule<ModuleOptions>({
       options.rehypePlugins.highlight.options ||= {}
     }
 
-    // @ts-expect-error nitro options are not typed
     const nitroOptions = nuxt.options.nitro as NitroConfig
     const registerTemplate: typeof addTemplate = (options) => {
       const name = (options as any).filename.replace(/\.m?js$/, '')
