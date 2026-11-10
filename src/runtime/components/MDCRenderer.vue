@@ -8,7 +8,7 @@ import type { MDCElement, MDCNode, MDCRoot, MDCData, MDCRenderOptions } from '@n
 import htmlTags from '../parser/utils/html-tags-list'
 import { flatUnwrap, nodeTextContent } from '../utils/node'
 import { pick } from '../utils'
-import { validateProps } from '../parser/utils/props'
+import { isComponentPropViolation, validateProps } from '../parser/utils/props'
 
 type CreateElement = typeof h
 
@@ -106,7 +106,8 @@ export default defineComponent({
     const tags = computed(() => ({
       ...(mdc?.components?.prose && props.prose !== false ? proseComponentMap : {}),
       ...(mdc?.components?.map || {}),
-      ...toRaw(props.data?.mdc?.components || {}),
+      // Document data is untrusted: it may only map tags to component names, never to component definitions
+      ...Object.fromEntries(Object.entries(toRaw(props.data?.mdc?.components || {})).filter(([, value]) => typeof value === 'string')),
       ...props.components,
     }))
 
@@ -145,11 +146,11 @@ export default defineComponent({
       let tag = props.tag || component?.name || component || 'div'
       let rootProps = component?.props
       if (!props.tag && component) {
-        if (typeof tag === 'string' && (!rxSafeTagName.test(tag) || unsafeRootTags.has(tag.toLowerCase()))) {
+        if (typeof tag !== 'string' || !rxSafeTagName.test(tag) || unsafeRootTags.has(tag.toLowerCase())) {
           tag = 'div'
         }
         if (rootProps) {
-          rootProps = validateProps(typeof tag === 'string' ? tag : '', rootProps)
+          rootProps = validateProps(tag, rootProps)
         }
       }
       return { tag, props: rootProps }
@@ -209,6 +210,10 @@ function _renderNode(node: MDCNode, h: CreateElement, options: MDCRenderOptions,
   }
 
   const originalTag = node.tag!
+  // Only a string tag may pick a component: never a value (object, function) from the document
+  if (typeof originalTag !== 'string') {
+    return h(Comment, null, 'invalid tag')
+  }
   // `_ignoreMap` is an special prop to disables tag-mapper
   const renderTag: string = findMappedTag(node as MDCElement, documentMeta.tags)
 
@@ -339,7 +344,7 @@ function renderBinding(node: MDCElement, h: CreateElement, documentMeta: MDCData
  */
 function propsToData(node: MDCElement, documentMeta: MDCData) {
   const { tag = '', props = {} } = node
-  return Object.keys(props).reduce(function (data, key) {
+  const data = Object.keys(props).reduce(function (data, key) {
     // Ignore internal `__ignoreMap` prop.
     if (key === '__ignoreMap') {
       return data
@@ -379,6 +384,9 @@ function propsToData(node: MDCElement, documentMeta: MDCData) {
 
     return data
   }, {} as any)
+
+  // Never hand a component a value it could treat as a component definition, whatever the binding resolved to
+  return Object.fromEntries(Object.entries(data).filter(([key, value]) => !isComponentPropViolation(key, value)))
 }
 
 /**
@@ -534,7 +542,7 @@ async function resolveContentComponents(body: MDCRoot, meta: Record<string, any>
   function loadComponents(node: MDCRoot | MDCNode, documentMeta: Record<string, any>) {
     const tag = (node as MDCElement).tag
 
-    if (node.type === 'text' || tag === 'binding' || node.type === 'comment') {
+    if (node.type === 'text' || tag === 'binding' || node.type === 'comment' || (node.type !== 'root' && typeof tag !== 'string')) {
       return []
     }
 
