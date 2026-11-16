@@ -223,6 +223,23 @@ icon:
   }
 })
 
+it('should drop `as` / `is` that are not plain tag names or name a tag that runs code', async () => {
+  const { body } = await parseMarkdown(`\
+::comp{as="img src=x onerror=alert(1)"}
+::
+
+::comp{:as='"svg onload=alert(1)"' is="SCRIPT"}
+::
+
+::comp{as="iframe" :is='"object"'}
+::
+`)
+
+  for (const node of body.children) {
+    expect((node as MDCElement).props).toEqual({})
+  }
+})
+
 it('should keep string tags and data-valued bound props', async () => {
   const { body } = await parseMarkdown(`\
 ::comp{as="section" :is='"article"' :tag="path.to.value" :items='[{"label":"a"}]' :options='{"k":"v"}' v-bind='{"size":"lg"}'}
