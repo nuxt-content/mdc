@@ -49,6 +49,14 @@ function isAnchorLinkAllowed(value: string) {
 const componentSelectors = ['as', 'is', 'tag']
 
 /**
+ * `as` / `is` end up as an element name, so they must be a plain tag or component name: Vue's server renderer
+ * writes anything else (`img src=x onerror=…`) into the opening tag. These tags also run or load code from their
+ * content or attributes.
+ */
+const rxSafeSelectorName = /^[a-z][\w-]*$/i
+const unsafeSelectorTags = new Set(['script', 'style', 'iframe', 'frame', 'frameset', 'object', 'embed', 'applet', 'base', 'link', 'meta', 'noscript'])
+
+/**
  * Keys that make a plain object a Vue component definition.
  * Markdown and JSON can't carry functions, so an object with these keys is never a legit component.
  */
@@ -61,11 +69,17 @@ const vueInternalKeyPrefix = '__v_'
 
 /**
  * Whether a prop value could make Vue treat it as a component or VNode:
- * `as` / `is` / `tag` must be strings, and no object at any depth may carry component options or Vue internal markers.
+ * `as` / `is` / `tag` must be strings (`as` / `is` plain tag names), and no object at any depth may carry component options or Vue internal markers.
  */
 export const isComponentPropViolation = (attribute: string, value: unknown) => {
-  if (componentSelectors.includes(normalizePropName(attribute)) && typeof value !== 'string') {
-    return true
+  const name = normalizePropName(attribute)
+  if (componentSelectors.includes(name)) {
+    if (typeof value !== 'string') {
+      return true
+    }
+    if ((name === 'as' || name === 'is') && (!rxSafeSelectorName.test(value) || unsafeSelectorTags.has(value.toLowerCase()))) {
+      return true
+    }
   }
   // Iterative with a visited set: cyclic or shared values neither overflow the stack nor get scanned twice
   const seen = new Set<object>()

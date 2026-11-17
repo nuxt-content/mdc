@@ -123,6 +123,14 @@ describe('ssr', async () => {
       expect(html).not.toContain('1337')
     })
 
+    it('does not render an `as` that is not a plain tag name or runs code', async () => {
+      for (const markdown of ['::poly{as="img src=x onerror=alert(1)"}\n::', '::poly{as="iframe" srcdoc="<script>alert(1)</script>"}\n::', '::poly{:as=\'"object"\'}\n::']) {
+        const html = await render(markdown)
+        expect(html).toContain('>poly<')
+        expect(html).not.toMatch(/onerror|<iframe|<object/)
+      }
+    })
+
     it('keeps string tags', async () => {
       expect(await render('::poly{as="section"}\n::')).toContain('<section>poly</section>')
       expect(await render('::poly{:as=\'"article"\'}\n::')).toContain('<article>poly</article>')
