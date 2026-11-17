@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.23.4
+
+[compare changes](https://github.com/nuxt-content/mdc/compare/v0.23.3...v0.23.4)
+
+### 🩹 Fixes
+
+- Only allow plain tag names in `as` and `is` ([#523](https://github.com/nuxt-content/mdc/pull/523))
+
+### ❤️ Contributors
+
+- Benjamin Canac ([@benjamincanac](https://github.com/benjamincanac))
+
 ## v0.23.3
 
 [compare changes](https://github.com/nuxt-content/mdc/compare/v0.23.2...v0.23.3)
