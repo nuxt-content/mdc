@@ -8,6 +8,11 @@ export const registerMDCSlotTransformer = (resolver: Resolver) => {
     compilerOptions.nodeTransforms = [
       ...compilerOptions.nodeTransforms ?? [],
       <NodeTransform> function viteMDCSlot(node: ElementNode, context) {
+        // Vapor templates are compiled with a different transform context, which has no `nodeTransforms`
+        if (!context.nodeTransforms) {
+          return
+        }
+
         const isVueSlotWithUnwrap = node.tag === 'slot' && node.props.find(p => p.name === 'mdc-unwrap' || p.name === 'mdcUnwrap' || (p.name === 'bind' && (p as DirectiveNode).rawName === ':mdc-unwrap'))
         const isMDCSlot = node.tag === 'MDCSlot'
 
